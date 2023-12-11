@@ -1,0 +1,222 @@
+
+
+.logo-accueil{
+    width: 100%;
+    background-color: #1e293b;
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+}
+
+#dashboard-icon{
+    position: absolute;
+    width: 30%;
+    right: 0px;
+    top: -10px;
+    opacity: 0.1;
+}
+
+.logo-accueil #logo-dashboard{
+    width: 30%;
+}
+.accueil{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(5, 1fr); 
+    column-gap: 40px;
+    row-gap: 40px;
+    margin: 2%;
+}
+
+.accueil-kpi{
+    background-color: white;
+    min-height: 160px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.kpi-6{
+    grid-row:span 2;
+}
+
+.kpi-8{
+    grid-row: 5 / 7;
+}
+
+.kpi-9{
+    grid-row: 7 / 9;
+    grid-column: span 2;
+    background-color: #1e293b;
+    color: white;
+}
+
+.kpi-9 button{
+    background-color: #2f353e;
+    width: 120px;
+
+    border-radius: 20px;
+    padding: 10px;
+    position: absolute;
+    right: 40px;
+    top: 40px;
+}
+
+.kpi-9 p{
+    color: white;
+}
+
+.accueil-kpi-header i{
+    margin: 0px 4px;
+}
+
+.kpi-data{
+    min-height: 100px;
+}
+
+.kpi-data{
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    align-items: center;
+    flex-direction: row;
+}
+
+.kpi-1-data-1{
+    font-size: 32px;
+    font-weight: bold;
+    color: #60a5fa;
+}
+
+.kpi-data.kpi-2-data {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    gap: 70px;
+}
+.kpi-data.kpi-2-data span{
+    display: block;
+}
+
+.kpi-data.kpi-2-data span:first-child{font-size: 30px;
+}
+
+.kpi-2-data-1{
+    color: orange;
+}
+
+.kpi-2-data-2{
+    color: #4ade80;
+}
+
+.kpi-2-data-3{
+    color: red;
+}
+
+.kpi-3-data-1{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.kpi-3-data-1 div{
+    margin-top: 30px;
+    color: #64748b;
+}
+#ouvert{
+    font-size: 20px;
+}
+
+#traité-nb{
+    font-size: 30px;
+    color: #64748b;
+
+}
+
+
+.kpi-4-data-1{
+    color: #4ade80;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+
+.kpi-background{
+    width: 80px;
+    position: absolute;
+    right: -20px;
+    bottom: -20px;
+    opacity: 0.2;
+}
+
+.accueil-kpi-header-5 p{
+    color: rgb(0, 221, 0);
+}
+
+.accueil-kpi-header-7 p{
+    color: red;
+}
+
+
+/*************************Tableau*/
+
+
+.vertical-table {
+      display: flex;
+      flex-direction: column;
+      max-width: 100%;
+      overflow-x: auto;
+    }
+
+.accueil-kpi    .table-row {
+      display: flex;
+      flex-direction: row;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .header-cell,
+    .data-cell {
+      flex: 1;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .data-cell{
+        text-align: right;
+    }
+
+    .header-cell {
+      background-color: #ffffff;
+      font-weight: bold;
+      max-width: 100px;
+    }
+
+    .circle-column {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .circle {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      margin: 5px 0; /* Adjust margin as needed */
+    }
+
+    .circle-1{
+      background-color: orange; /* Set your desired circle color */
+        
+    }
+    .circle-2{
+      background-color: green; /* Set your desired circle color */
+
+    }
+    .circle-3{
+      background-color: red; /* Set your desired circle color */
+
+    }

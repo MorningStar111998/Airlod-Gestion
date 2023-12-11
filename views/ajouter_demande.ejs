@@ -1,0 +1,207 @@
+<%- include("partials/header") -%>
+<section class="ajouter-demande">
+  <div class="ajouter-demande-header">
+    <h3><i class="bx bx-plus"></i> Nouvelle Demande</h3>
+    <p>Veuillez remplir tous les champs obligatoire et cliquer sur ajouter !</p>
+  </div>
+  <div class="ajouter-demande-formulaire">
+    <form action="/ajouter_demande" method="POST" class="form">
+      <div class="input-fields-container">
+        <div class="column-1">
+          <div class="input-box">
+            <label for="demande">N° Demande</label>
+            <input type="number" name="demande" value="<%= nextNumDemande %>" readonly />
+            
+          </div>
+          <div class="input-box input-box-2">
+            <label class="required-field" for="destinataire"
+              >Nom du Client</label
+            >
+            <input type="text" name="destinataire" required />
+          </div>
+          <div class="input-box span-2">
+            <label class="required-field" for="telephone"
+              >Numéro de Téléphone</label
+            >
+            <input type="tel" name="telephone" required />
+          </div>
+          <div class="input-box span-2">
+            <label for="email">E-mail</label>
+            <input type="email" name="email" placeholder="exemple@gmail.com"/>
+          </div>
+
+          <div class="input-box span-2">
+            <label class="required-field" for="ville">Ville</label>
+            <input type="text" id="villeInput"  name="ville" list="villes" required />
+            <datalist id="villes">
+
+            </datalist>
+          </div>
+          <div class="input-box span-2">
+            <label for="adresse">Adresse</label>
+            <input type="text" name="adresse" required />
+          </div>
+          <div class="grid-row">
+            <div class="input-box flex-1">
+              <label class="required-field" for="type-client"
+                >Type de Client</label
+              >
+              <select name="type-client" required>
+                <option disabled selected value="">
+                  -- Sélectionner une option --
+                </option>
+                <option value="presse">Client pressé</option>
+                <option value="instruit">Instruit</option>
+                <option value="indecis">Indécis</option>
+                <option value="agressif">Agressif</option>
+                <option value="negociateur">Négociateur</option>
+              </select>
+            </div>
+
+            <div class="input-box flex-1">
+              <label class="required-field" for="source">Source</label>
+              <select name="source" required>
+                <option disabled selected value="">
+                  -- Sélectionner une option --
+                </option>
+                <option value="whatsapp">Whatsapp</option>
+                <option value="messebger">Messenger</option>
+                <option value="instagram">Instagram</option>
+                <option value="landing">Landing Page</option>
+                <option value="site">Site</option>
+                <option value="bouche-a-oreil">Bouche à Oreil</option>
+              </select>
+            </div>
+          </div>
+          <div class="input-box span-2">
+            <label class="required-field" for="etape">Etape Actuelle</label>
+            <select name="etape" required>
+              <option disabled selected value="">
+                -- Sélectionner une option --
+              </option>
+              <option value="decouvre">Découvre ses besoins</option>
+              <option value="conception">Conception</option>
+              <option value="validation">Validation</option>
+              <option value="production">Production</option>
+              <option value="livraison">Livraison</option>
+            </select>
+          </div>
+          <div class="input-box span-4">
+            <label class="required-field" for="etat-client">Etat du client</label>
+            <select name="etat-client" required>
+              <option disabled selected value="">
+                -- Sélectionner une option --
+              </option>
+              <option value="discussion">En Discussion</option>
+              <option value="interesse">Intéressé</option>
+              <option value="attente-logo">Attente de Logo</option>
+              <option value="design-cours">Design En Cours</option>
+              <option value="design-valide">Design Validé</option>
+              <option value="attente-confirmation">Attente de Confirmation</option>
+              <option value="attente-ramassage">Attente de Ramassage</option>
+              <option value="envoye">Envoyé</option>
+              <option value="non-reponse">Pas de Réponse</option>
+              <option value="non-interesse">Non Intéressé</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="column-2">
+          <div class="input-box span-2">
+            <label for="facture">N° Facture</label>
+            <input type="number" name="facture" required />
+          </div>
+          <div class="input-box span-2">
+            <label for="produit">Produit</label>
+            <input type="text" name="produit" required />
+          </div>
+          <div class="input-box span-1">
+            <label for="prix">Prix</label>
+            <input type="number" name="prix" placeholder="Dhs"/>
+          </div>
+          <div class="input-box span-1">
+            <label for="quantite">Quantité</label>
+            <input type="number" name="quantite" />
+          </div>
+          <div class="input-box span-2">
+            <label for="paiement">Type de Paiement</label>
+            <select name="paiement" id="paiement">
+              <option disabled selected value="">
+                -- Sélectionner une option --
+              </option>
+              <option value="virement">Viremement</option>
+              <option value="livraison">A la Livraison</option>
+            </select>
+          </div>
+
+          <div class="input-box span-4">
+            <label for="description">Description</label>
+            <textarea name="description" id="description" rows="5"></textarea>
+          </div>
+          <div class="input-box span-4">
+            <label for="remarque">Remarque (NB)</label>
+            <textarea name="remarque" id="remarque" rows="5"></textarea>
+          </div>
+        </div>
+      </div>
+      <hr />
+
+      <button class="demande-form-button" type="submit">Ajouter</button>
+    </form>
+  </div>
+</section>
+
+<!-- <section class="tableau">
+  <div class="liste-demande">
+    <div class="liste-demande-header">
+      <h4><span>(0)</span>Demande pour ramassage</h4>
+    </div>
+
+    <div class="tableau-demande">
+      <table>
+        <thead>
+          <tr>
+            <th>Actions</th>
+            <th>N°CMD</th>
+            <th>Destinataire</th>
+            <th>Ville</th>
+            <th>Adresse</th>
+            <th>Prix</th>
+            <th>Telephone</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Action 1</td>
+            <td>123</td>
+            <td>John Doe</td>
+            <td>City</td>
+            <td>123 Street</td>
+            <td>$50.00</td>
+            <td>123-456-7890</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="import">
+    <button id="import-button-sheet">
+      <img src="/images/google-sheets.png" alt="google sheet icon" /> Google
+      Sheet
+    </button>
+    <button id="import-button-excel">
+      <i class="bx bx-plus"></i>Import Excel
+    </button>
+    <button id="import-button-a4">
+      <i class="bx bx-printer"></i>Etiquettes(A4)
+    </button>
+    <button id="import-button-ramassage">
+      <i class="bx bx-send"></i>Ramassage
+    </button>
+    <button id="import-button-agence">
+      <i class="bx bx-run"></i>Aller à l'agence
+    </button>
+  </div>
+</section> -->
+
+<%- include("partials/footer") -%>

@@ -1,0 +1,120 @@
+<%- include("partials/header") -%>
+<div class="mes-demandes-header">
+  <h1 class="mes-demandes-title">
+    Demande<a href="/ajouter_demande"><i class="bx bx-plus"></i></a>
+  </h1>
+  <div class="mes-demandes-filters">
+    <div class="filtre-1 mes-demandes-search-bar">
+      <input id="search-bar-text" type="text" class="search-bar-text" />
+    </div>
+    <div class="filtre-2 mes-demandes-search-category">
+      <select name="search-bar-option" id="search-bar-option">
+        <option value="search-nomClient">Nom du Client</option>
+        <option value="search-tel">Numéro de Téléphone</option>
+        <option value="search-email">E-mail</option>
+        <option value="search-produit">Produit</option>
+      </select>
+    </div>
+    <div class="filtre-3 mes-demandes-search-button">
+      <button id="search-button" type="" class=""><i class="bx bx-search"></i></button>
+    </div>
+    <div class="span-2 filtre-4">
+      <label for="type-de-client">Type de client</label>
+      <select name="type-de-client" id="type-de-client">
+        <option disabled selected value="">
+          -- Sélectionner une option --
+        </option>
+        <option value="search-presse">Client pressé</option>
+        <option value="search-instruit">Instruit</option>
+        <option value="search-indecis">Indécis</option>
+        <option value="search-agressif">Agressif</option>
+        <option value="search-negociateur">Négociateur</option>
+
+      </select>
+    </div>
+    <div class="span-2 filtre-5">
+      <label for="etape-actuelle">Etape Actuelle</label>
+      <select name="etape-actuelle" id="etape-actuelle">
+        <option disabled selected value="">
+          -- Sélectionner une option --
+        </option>
+        <option value="decouvre">Découvre ses besoins</option>
+        <option value="search-conception">Conception</option>
+        <option value="search-validation">Validation</option>
+        <option value="search-production">Production</option>
+        <option value="search-livraison">Livraison</option>
+      </select>
+    </div>
+    <div class="span-2 filtre-6">
+      <label for="">Source</label>
+      <select name="" id="">
+        <option disabled selected value="">
+          -- Sélectionner une option --
+        </option>
+        <option value="search-whatsapp">Whatsapp</option>
+        <option value="search-messebger">Messenger</option>
+        <option value="search-instagram">Instagram</option>
+        <option value="search-landing">Landing Page</option>
+        <option value="search-site">Site</option>
+        <option value="search-bouche_a_oreil">Bouche à Oreil</option>
+      </select>
+    </div>
+  </div>
+</div>
+<div class="table-demande-container">
+  <table id="table-demande">
+    <colgroup>
+      <col class="demande" span="1" style="width: 9%" />
+      <col class="nom-client" span="1" style="width: 10%" />
+      <col class="telephone" span="1" style="width: 10%" />
+      <col class="type-client" span="1" style="width: 10%" />
+      <col class="etape-actuelle" span="1" style="width: 10%" />
+      <col class="produit" span="1" style="width: 10%" />
+      <col class="quantite" span="1" style="width: 7%" />
+      <col class="email" span="1" style="width: 16%" />
+      <col class="source" span="1" style="width: 10%" />
+      <col class="num-facture" span="1" style="width: 8%" />
+    </colgroup>
+    <thead>
+      <tr id="table-demande-header">
+        <th>N° Demande</th>
+        <th>Nom du Client</th>
+        <th>Telephone</th>
+        <th>Type de Client</th>
+        <th>Etape Actuelle</th>
+        <th>Produit</th>
+        <th>Quantité</th>
+        <th>Email</th>
+        <th>Source</th>
+        <th>N° Facture</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Add your data rows here -->
+      <% data.forEach(function(row) { %>
+      <tr class="table-row">
+        <td><%= row.numDemande %></td>
+        <td><%= row.nomClient %></td>
+        <td><%= row.numTelephone %></td>
+        <td><%= row.typeClient %></td>
+        <td><%= row.etapeActuelle %></td>
+        <td><%= row.produit %></td>
+        <td><%= row.quantite %></td>
+        <td><%= row.email %></td>
+        <td><%= row.source %></td>
+        <td><%= row.numfacture %></td>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>
+  <div class="mes-demandes-footer">
+    <div class="footer-page-control">
+      <div class="first-page"><i class="bx bx-skip-previous"></i></div>
+      <div class="previous"><i class="bx bxs-left-arrow"></i></div>
+      <div class="next"><i class="bx bxs-right-arrow"></i></div>
+      <div class="last-page"><i class="bx bx-skip-next"></i></div>
+    </div>
+  </div>
+</div>
+
+<%- include("partials/footer") -%>

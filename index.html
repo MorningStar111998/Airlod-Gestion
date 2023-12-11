@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="sidebar.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;200;300;400;500;600;700;800;900&family=Roboto+Mono:wght@100;200;300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+    />
+  </head>
+  <body>
+    <nav class="sidebar">
+      <img
+        id="background-icon"
+        src="assets/images/ICON .png"
+        alt="icone Airlod"
+      />
+      <div class="sidebar-header">
+        <img
+          class="sidebar-logo"
+          src="assets/images/logo petit.png"
+          alt="logo de Airlod"
+        />
+        <div class="sidebar-btn"><i class="bx bx-menu"></i></div>
+      </div>
+      <hr />
+      <ul class="menu">
+        <li>
+          <a href="#"
+            ><i class="bx bxs-home"></i>
+            <span class="link_name">Accueil</span></a
+          >
+          <span class="tool_tip">Accueil</span>
+        </li>
+        <li class="toggle-menu">
+          <div class="icon-link">
+            <a href="#">
+              <i class="bx bx-package"></i>
+              <span class="link_name">Colis</span></a
+            >
+            <i class="chevron bx bxs-chevron-right"></i>
+            <span class="tool_tip">Colis</span>
+          </div>
+          <ul class="sub-menu">
+            <li>
+              <a href="#"><i class="bx bx-plus"></i> Ajouter Colis </a>
+            </li>
+            <li>
+              <a href="#"><i class="bx bx-list-ul"></i> Mes Colis </a>
+            </li>
+          </ul>
+        </li>
+        <li class="toggle-menu">
+          <div class="icon-link">
+            <a href="#"
+              ><i class="bx bx-box"></i> <span class="link_name">Stock</span></a
+            >
+            <i class="chevron bx bxs-chevron-right"></i>
+            <span class="tool_tip">Stock</span>
+          </div>
+          <ul class="sub-menu">
+            <li>
+              <a href="#"><i class="bx bx-plus"></i> Ajouter Produit </a>
+            </li>
+            <li>
+              <a href="#"><i class="bx bx-list-ul"></i> Mon Stock </a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#"
+            ><i class="bx bxs-truck"></i>
+            <span class="link_name">Ramassage</span></a
+          >
+          <span class="tool_tip">Ramassage</span>
+        </li>
+        <li>
+          <a href="#"
+            ><i class="bx bx-headphone"></i>
+            <span class="link_name">Réclamation</span></a
+          >
+          <span class="tool_tip">Réclamation</span>
+        </li>
+        <li>
+          <a href="#"
+            ><i class="bx bx-notepad"></i>
+            <span class="link_name">Factures</span></a
+          >
+          <span class="tool_tip">Factures</span>
+        </li>
+        <li>
+          <a href="#"
+            ><i class="bx bx-arrow-back"></i>
+            <span class="link_name">Retour</span></a
+          >
+          <span class="tool_tip">Retour</span>
+        </li>
+      </ul>
+      <div class="profile">
+        <div class="profile-content">
+          <img src="assets/images/petite-fille.png" alt="photo de profile" />
+          <div class="name">Regis Tougouri</div>
+        </div>
+        <i class="bx bx-log-out" id="log-out"></i>
+      </div>
+    </nav>
+    <div class="main-content">
+      <div class="header-bar">
+        <div id="sole">Solde: <span> 00,00 DH</span></div>
+      </div>
+    </div>
+
+    <script src="sidebar.js"></script>
+  </body>
+</html>

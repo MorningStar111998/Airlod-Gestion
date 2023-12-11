@@ -1,0 +1,173 @@
+<%- include("partials/header") -%>
+<div class="body-accueil">
+  <div class="logo-accueil">
+    <img id="dashboard-icon" src="/images/ICON .png" alt="icône Airlod" />
+    <img id="logo-dashboard" src="/images/FULL LOGO.png" alt="logo Airlod" />
+  </div>
+  <div class="accueil">
+    <div class="accueil-kpi kpi-1">
+      <div class="accueil-kpi-header">
+        <h4 class="kpi-title"><i class="bx bx-dollar"></i>Total des gains</h4>
+      </div>
+      <div class="kpi-data">
+        <div class="kpi-1-data-1">
+          <span>000.00 DH</span>
+        </div>
+      </div>
+    </div>
+    <div class="accueil-kpi kpi-2">
+      <div class="accueil-kpi-header">
+        <h4 class="kpi-title"><i class="bx bx-package"></i>Colis en cours</h4>
+      </div>
+      <div class="kpi-data kpi-2-data">
+        <div class="kpi-2-data-1">
+          <span>0</span>
+          <span>Rammasé</span>
+        </div>
+        <div class="kpi-2-data-2">
+          <span>0</span>
+          <span>Livré non facturé</span>
+        </div>
+        <div class="kpi-2-data-3">
+          <span>0</span>
+          <span>Retour</span>
+        </div>
+      </div>
+    </div>
+    <div class="accueil-kpi kpi-3">
+      <div class="accueil-kpi-header">
+        <h4 class="kpi-title"><i class="bx bx-headphone"></i>Réclamations</h4>
+      </div>
+      <div class="kpi-data">
+        <div class="kpi-3-data-1">
+          <span id="traité-nb">0</span>
+          <span id="ouvert">Ouvert</span>
+          <div>
+            <span>Traité : <span>0</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="accueil-kpi kpi-4">
+      <div class="accueil-kpi-header">
+        <h4 class="kpi-title"><i class="bx bx-box"></i>Stock</h4>
+      </div>
+      <div class="kpi-data">
+        <div class="kpi-4-data-1">
+          <span>Actif</span>
+        </div>
+      </div>
+    </div>
+    <div class="accueil-kpi kpi-5">
+      <img class="kpi-background" src="/images/checked.png" alt="">
+
+      <div class="accueil-kpi-header accueil-kpi-header-5">
+        <h4 class="kpi-title"><i class="bx bx-dollar"></i>Facture N°</h4>
+        <p>Payé le</p>
+      </div>
+      <div class="kpi-data">
+        
+          <div class="kpi-5-data-1">
+            <span>Total : <span>_</span></span>
+          </div>
+          <div class="kpi-5-data-2">
+            <span>Frais : <span>__</span></span>
+          </div>
+          <div class="kpi-5-data-3">
+            <span>Somme Finale : <span>_</span></span>
+          </div>
+        
+      </div>
+    </div>
+    <div class="accueil-kpi kpi-6">
+      <div class="accueil-kpi-header">
+        <h4 class="kpi-title">
+          <i class="bx bx-package"></i>Total Des Colis Livrés
+        </h4>
+      </div>
+      <div class="kpi-data">
+        <div class="kpi-6-data-1"></div>
+      </div>
+    </div>
+    <div class="accueil-kpi kpi-7">
+      <img class="kpi-background" src="/images/error.png" alt="">
+      <div class="accueil-kpi-header accueil-kpi-header-7">
+        <h4 class="kpi-title">
+          <i class="bx bx-dollar"></i>Facture en attente N° -
+        </h4>
+        <p>Devrait être réglée avant le</p>
+      </div>
+      <div class="kpi-data kpi-7-data">
+        
+          <div class="kpi-7-data-1">
+            <span>Total : <span>_</span></span>
+          </div>
+          <div class="kpi-7-data-2">
+            <span>Frais : <span>__</span></span>
+          </div>
+          <div class="kpi-7-data-3">
+            <span>Somme Finale : <span>_</span></span>
+          </div>
+        
+      </div>
+    </div>
+    <div class="accueil-kpi kpi-8">
+      <div class="accueil-kpi-header">
+        <h4 class="kpi-title"><i class="bx bx-package"></i>Total des colis</h4>
+      </div>
+      <div class="kpi-8-data">
+        <div class="kpi-8-data-1">
+          <div class="vertical-table">
+            <!-- First Row (Header) -->
+            <div class="table-row">
+              <div class="circle-column">
+                <div class="circle circle-1"></div>
+              </div>
+              <div class="header-cell">En cours</div>
+              <div class="data-cell">Data 1</div>
+              <div class="data-cell">Data 2</div>
+            </div>
+
+            <!-- Second Row -->
+            <div class="table-row">
+              <div class="circle-column">
+                <div class="circle circle-2"></div>
+              </div>
+              <div class="header-cell">Livrés</div>
+              <div class="data-cell">Data 3</div>
+              <div class="data-cell">Data 4</div>
+            </div>
+
+            <!-- Third Row -->
+            <div class="table-row">
+              <div class="circle-column">
+                <div class="circle circle-3"></div>
+              </div>
+              <div class="header-cell">Retournés</div>
+              <div class="data-cell">Data 5</div>
+              <div class="data-cell">Data 6</div>
+            </div>
+
+            <!-- Add more rows as needed -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="accueil-kpi kpi-9">
+      <div class="accueil-kpi-header">
+        <div class="accueil-kpi-header-title">
+          <h4 class="kpi-title">Aperçu des gains</h4>
+          <p>les gains par jour</p>
+        </div>
+        <div class="accueil-kpi-header-button">
+          <button>Aujourd'hui</button>
+        </div>
+      </div>
+      <div class="kpi-data">
+        <div class="kpi-9-data-1"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include("partials/footer") -%>

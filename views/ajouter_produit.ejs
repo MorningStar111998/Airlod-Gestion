@@ -1,0 +1,44 @@
+<%- include("partials/header") -%>
+<section class="ajouter-colis">
+  <div class="ajouter-colis-header">
+    <h3><i class="bx bx-plus"></i> Nouveau Colis</h3>
+    <p>Veuillez remplir tous les champs obligatoire et cliquer sur ajouter !</p>
+  </div>
+  <div class="ajouter-produit-formulaire">
+    <form action="" class="form-produit">
+      <div class="input-fields-container">
+        <div class="produit-column-1">
+          <div class="form-img">
+            <label for="produit-image">Image Produit</label>
+            <input class="form-img-upload" type="file" />
+          </div>
+        </div>
+        <div class="produit-column-2">
+          <div class="produit-input-box">
+            <label class="required-field" for="stock">Stock</label>
+            <input type="number" name="stock" required />
+          </div>
+          <div class="produit-input-box">
+            <label class="required-field" for="nom-produit">Nom Produit</label>
+            <input type="number" name="nom-produit" required />
+          </div>
+          <div class="produit-input-box">
+            <label for="categorie">Catégorie</label>
+            <input type="text" name="categorie" />
+          </div>
+          <div class="produit-input-box">
+            <label for="quantite">Quantité</label>
+            <input type="text" name="quantite" />
+          </div>
+          <div class="produit-input-box">
+            <label for="note">Note</label>
+            <input type="text" name="note" />
+          </div>
+        </div>
+      </div>
+      <button class="produit-form-button" type="submit">Ajouter</button>
+    </form>
+  </div>
+</section>
+
+<%- include("partials/footer") -%>

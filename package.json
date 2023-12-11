@@ -1,0 +1,16 @@
+{
+  "name": "air-load---livraison",
+  "version": "1.0.0",
+  "description": "Projet de création d'une plateforme de livraison pour Airlod",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Regis Tougouri",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "mysql": "^2.18.1"
+  }
+}

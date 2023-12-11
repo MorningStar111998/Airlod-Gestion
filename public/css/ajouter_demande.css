@@ -1,0 +1,232 @@
+h3 {
+  font-weight: bold;
+  padding-left: 10px;
+}
+
+p {
+  color: rgb(108, 108, 108);
+  padding-left: 10px;
+}
+
+.ajouter-demande {
+  padding: 20px;
+}
+
+.ajouter-demande-formulaire {
+  background-color: white;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.form {
+  position: relative;
+  min-height: 650px;
+}
+
+.input-fields-container {
+  display: flex;
+  gap: 40px;
+  padding: 30px;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+}
+
+@media (max-width: 15in) {
+  .input-fields-container {
+    flex-direction: column;
+    padding: 30px 10% 30px 10%;
+  }
+  .form {
+    min-height: 900px;
+  }
+}
+
+.ajouter-demande-formulaire label {
+  display: block;
+  font-size: 11px;
+  margin: 4px 0px 4px 4px;
+}
+
+.ajouter-demande-formulaire select,
+.ajouter-demande-formulaire input,
+.ajouter-demande-formulaire textarea {
+  width: 100%;
+  padding: 14px;
+  border: solid rgb(199, 199, 199) 1px;
+  border-radius: 4px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  color: black;
+}
+
+.ajouter-demande-formulaire input:focus {
+  outline-color: rgb(28, 28, 255);
+}
+
+.ajouter-demande-formulaire input:focus:required:invalid,
+select:focus:required:invalid {
+  outline-color: rgb(255, 0, 0);
+}
+
+.ajouter-demande-formulaire input:required:valid:focus,
+select:required:valid:focus {
+  outline-color: greenyellow;
+}
+
+.required-field::after {
+  content: " *";
+  color: rgb(167, 0, 0);
+  margin-right: 5px;
+}
+
+.column-1 {
+  flex: 4.5;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  column-gap: 10px;
+  row-gap: 10px;
+  width: 100%;
+}
+
+.column-2 {
+  flex: 4;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  width: 100%;
+}
+
+.input-box-2 {
+  grid-column: span 3;
+}
+.span-1 {
+  grid-column: span 1;
+}
+.span-2 {
+  grid-column: span 2;
+}
+.span-3 {
+  grid-column: span 3;
+}
+.span-4 {
+  grid-column: span 4;
+}
+.grid-row {
+  grid-column: span 4;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+hr {
+  width: 95%;
+  margin: auto;
+  border-top: solid 0.5px rgb(199, 199, 199);
+}
+
+.demande-form-button {
+  position: absolute;
+  right: 30px;
+  bottom: 30px;
+  background-color: #2f353e;
+  width: 120px;
+  border-radius: 20px;
+  padding: 10px;
+  font-weight: bold;
+  color: white;
+}
+
+/*************************Table Colis***************************/
+/* .tableau {
+  padding: 20px;
+  display: flex;
+  gap: 40px;
+}
+
+.liste-demande {
+  flex: 8;
+  background-color: white;
+  border-radius: 10px;
+  padding: 30px;
+}
+
+.liste-demande table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+
+.liste-demande table th,
+.liste-demande table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.liste-demande table th {
+  background-color: #f2f2f2;
+}
+
+.import {
+  flex: 2;
+  background-color: white;
+  border-radius: 10px;
+  padding: 30px;
+} */
+
+/****************************************************Import**********************************************/
+/* .import button {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+  border: solid 1px rgb(199, 199, 199);
+  border-radius: 40px;
+  background-color: white;
+  font-weight: bold;
+  margin: 10px;
+  width: 220px;
+}
+
+.import button:hover {
+  filter: grayscale(30%);
+  border-color: rgb(0, 0, 0);
+}
+
+.import button img {
+  width: 25px;
+}
+
+.import button i {
+  font-size: 20px;
+}
+
+#import-button-sheet {
+  background-color: rgb(195, 195, 195);
+  color: white;
+}
+
+#import-button-excel {
+  background-color: #377c5b;
+  color: white;
+}
+
+#import-button-a4 {
+  background-color: rgb(214, 0, 0);
+  color: white;
+}
+
+#import-button-ramassage {
+  background-color: black;
+  color: white;
+}
+
+#import-button-agence {
+  background-color: rgb(65, 65, 255);
+  color: white;
+} */
