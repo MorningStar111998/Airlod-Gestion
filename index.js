@@ -37,16 +37,42 @@ app.get("/ajouter_demande", (req, res) => {
 });
 
 app.get("/mes_demandes", (req, res) => {
-  db.query("SELECT * FROM demande", (err, results) => {
-    if (err) {
-      console.error("Error fetching data from the database: " + err.stack);
-      res.status(500).send("Internal Server Error");
-      return;
-    }
+  db.query(
+    "SELECT * FROM demande ORDER BY dateEnregistrement DESC",
+    (err, results) => {
+      if (err) {
+        console.error("Error fetching data from the database: " + err.stack);
+        res.status(500).send("Internal Server Error");
+        return;
+      }
 
-    res.render("mes_demandes", { data: results, activePage: "mes_demandes" });
-  });
+      // Convert the database results to a JavaScript array
+      const dataArray = results.map((row) => {
+        return {
+          numDemande: row.numDemande,
+          nomClient: row.nomClient,
+          numTelephone: row.numTelephone,
+          typeClient: row.typeClient,
+          etapeActuelle: row.etapeActuelle,
+          produit: row.produit,
+          quantite: row.quantite,
+          email: row.email,
+          source: row.source,
+          numFacture: row.numFacture,
+          dateEnregistrement: row.dateEnregistrement,
+        };
+      });
+
+      console.log(dataArray);
+
+      res.render("mes_demandes", {
+        data: dataArray,
+        activePage: "mes_demandes",
+      });
+    }
+  );
 });
+
 
 app.get("/ajouter_produit", (req, res) => {
   res.render("ajouter_produit", { activePage: "ajouter_produit" });
@@ -72,50 +98,31 @@ app.get("/retour", (req, res) => {
   res.render("retour", { activePage: "retour" });
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//POST handlers 
+//POST handlers
 app.post("/ajouter_demande", (req, res) => {
-    const {
-        demande,
-        destinataire,
-        telephone,
-        email,
-        ville,
-        adresse,
-        typeClient,
-        source,
-        etape,
-        etatClient,
-        facture,
-        produit,
-        prix,
-        quantite,
-        paiement,
-        description,
-        remarque,
-    } = req.body;
+  const {
+    demande,
+    destinataire,
+    telephone,
+    email,
+    ville,
+    adresse,
+    typeClient,
+    source,
+    etape,
+    etatClient,
+    facture,
+    produit,
+    prix,
+    quantite,
+    paiement,
+    description,
+    remarque,
+  } = req.body;
 
-    // Use the extracted form data to insert into the database
-    const insertQuery = `
+
+  // Use the extracted form data to insert into the database
+  const insertQuery = `
         INSERT INTO demande (
             numDemande,
             nomClient,
@@ -137,47 +144,42 @@ app.post("/ajouter_demande", (req, res) => {
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
-    // Get the next available numDemande from the request body
-    const nextNumDemande = req.body.nextNumDemande;
+  // Get the next available numDemande from the request body
+  const nextNumDemande = req.body.nextNumDemande;
 
-    const values = [
-        nextNumDemande,
-        destinataire,
-        telephone,
-        email,
-        ville,
-        adresse,
-        typeClient,
-        source,
-        etape,
-        etatClient,
-        facture,
-        produit,
-        prix,
-        quantite,
-        paiement,
-        description,
-        remarque,
-    ];
+  const values = [
+    nextNumDemande,
+    destinataire,
+    telephone,
+    email,
+    ville,
+    adresse,
+    typeClient,
+    source,
+    etape,
+    etatClient,
+    facture,
+    produit,
+    prix,
+    quantite,
+    paiement,
+    description,
+    remarque,
+  ];
 
-    db.query(insertQuery, values, (err, result) => {
-        if (err) {
-            console.error("Error inserting data into the database: " + err);
-            return res.status(500).send("Internal Server Error");
-        }
 
-        console.log("Data inserted into the database successfully!");
-        // Redirect to a success page or handle as needed
-        return res.redirect('/success');
-    });
+
+  db.query(insertQuery, values, (err, result) => {
+    if (err) {
+      console.error("Error inserting data into the database: " + err);
+      return res.status(500).send("Internal Server Error");
+    }
+
+    console.log("Data inserted into the database successfully!");
+    // Redirect to a success page or handle as needed
+    return res.redirect("/mes_demandes");
+  });
 });
-
-
-app.get("/success", (req, res) => {
-  res.send("Form submitted successfully!");
-});
-
-
 
 app.listen(PORT, () => {
   console.log("Server up and running on Port " + PORT);

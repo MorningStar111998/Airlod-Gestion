@@ -16,7 +16,9 @@
       </select>
     </div>
     <div class="filtre-3 mes-demandes-search-button">
-      <button id="search-button" type="" class=""><i class="bx bx-search"></i></button>
+      <button id="search-button" type="" class="">
+        <i class="bx bx-search"></i>
+      </button>
     </div>
     <div class="span-2 filtre-4">
       <label for="type-de-client">Type de client</label>
@@ -24,12 +26,11 @@
         <option disabled selected value="">
           -- Sélectionner une option --
         </option>
-        <option value="search-presse">Client pressé</option>
-        <option value="search-instruit">Instruit</option>
-        <option value="search-indecis">Indécis</option>
-        <option value="search-agressif">Agressif</option>
-        <option value="search-negociateur">Négociateur</option>
-
+        <option value="Pressé">Client pressé</option>
+        <option value="Instruit">Instruit</option>
+        <option value="Indecis">Indécis</option>
+        <option value="Agressif">Agressif</option>
+        <option value="Négociateur">Négociateur</option>
       </select>
     </div>
     <div class="span-2 filtre-5">
@@ -38,25 +39,43 @@
         <option disabled selected value="">
           -- Sélectionner une option --
         </option>
-        <option value="decouvre">Découvre ses besoins</option>
-        <option value="search-conception">Conception</option>
-        <option value="search-validation">Validation</option>
-        <option value="search-production">Production</option>
-        <option value="search-livraison">Livraison</option>
+        <option value="Découvre ses besoins">Découvre ses besoins</option>
+        <option value="Conception">Conception</option>
+        <option value="Validation">Validation</option>
+        <option value="Production">Production</option>
+        <option value="Livraison">Livraison</option>
       </select>
     </div>
     <div class="span-2 filtre-6">
       <label for="">Source</label>
-      <select name="" id="">
+      <select name="filtreSource" id="filtreSource">
         <option disabled selected value="">
           -- Sélectionner une option --
         </option>
-        <option value="search-whatsapp">Whatsapp</option>
-        <option value="search-messebger">Messenger</option>
-        <option value="search-instagram">Instagram</option>
-        <option value="search-landing">Landing Page</option>
-        <option value="search-site">Site</option>
-        <option value="search-bouche_a_oreil">Bouche à Oreil</option>
+        <option value="Whatsapp">Whatsapp</option>
+        <option value="Messenger">Messenger</option>
+        <option value="Instagram">Instagram</option>
+        <option value="Landing">Landing Page</option>
+        <option value="Site">Site</option>
+        <option value="Bouche à oreil">Bouche à Oreil</option>
+      </select>
+    </div>
+    <div class="span-2 filtre-7">
+      <label for="etat-client">Etat du client</label>
+      <select name="etat-client" required>
+        <option disabled selected value="">
+          -- Sélectionner une option --
+        </option>
+        <option value="En Discussion">En Discussion</option>
+        <option value="Intéressé">Intéressé</option>
+        <option value="Attente Logo">Attente de Logo</option>
+        <option value="Design en Cours">Design En Cours</option>
+        <option value="Design Valide">Design Validé</option>
+        <option value="Attente Confirmation">Attente de Confirmation</option>
+        <option value="Attente Ramassage">Attente de Ramassage</option>
+        <option value="Envoyé">Envoyé</option>
+        <option value="Pas de Réponse">Pas de Réponse</option>
+        <option value="Non Intéressé">Non Intéressé</option>
       </select>
     </div>
   </div>
@@ -77,16 +96,36 @@
     </colgroup>
     <thead>
       <tr id="table-demande-header">
-        <th>N° Demande</th>
-        <th>Nom du Client</th>
-        <th>Telephone</th>
-        <th>Type de Client</th>
-        <th>Etape Actuelle</th>
-        <th>Produit</th>
-        <th>Quantité</th>
-        <th>Email</th>
-        <th>Source</th>
-        <th>N° Facture</th>
+        <th data-column="numDemande" data-order="DESC">
+          N° Demande <span class="arrow arrow-numDemande">&#9660;</span>
+        </th>
+        <th data-column="nomClient" data-order="DESC">
+          Nom du Client <span class="arrow arrow-nomClient">&#9660;</span>
+        </th>
+        <th data-column="numTelephone" data-order="DESC">
+          Telephone <span class="arrow arrow-numTelephone">&#9660;</span>
+        </th>
+        <th data-column="typeClient" data-order="DESC">
+          Type de Client <span class="arrow arrow-typeClient">&#9660;</span>
+        </th>
+        <th data-column="etapeActuelle" data-order="DESC">
+          Etape Actuelle <span class="arrow arrow-etapeActuelle">&#9660;</span>
+        </th>
+        <th data-column="produit" data-order="DESC">
+          Produit <span class="arrow arrow-produit">&#9660;</span>
+        </th>
+        <th data-column="quantite" data-order="DESC">
+          Quantité <span class="arrow arrow-quantite">&#9660;</span>
+        </th>
+        <th data-column="email" data-order="DESC">
+          Email <span class="arrow arrow-email">&#9660;</span>
+        </th>
+        <th data-column="source" data-order="DESC">
+          Source <span class="arrow arrow-source">&#9660;</span>
+        </th>
+        <th data-column="numFacture" data-order="DESC">
+          N° Facture <span class="arrow arrow-numFacture">&#9660;</span>
+        </th>
       </tr>
     </thead>
     <tbody>
@@ -102,7 +141,7 @@
         <td><%= row.quantite %></td>
         <td><%= row.email %></td>
         <td><%= row.source %></td>
-        <td><%= row.numfacture %></td>
+        <td><%= row.numFacture %></td>
       </tr>
       <% }); %>
     </tbody>

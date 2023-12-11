@@ -1,26 +1,19 @@
-document.addEventListener("DOMContentLoaded", function () {
-  // Attach change event listener to the 'Type de Client' select tag
-  document
-    .getElementById("type-de-client")
-    .addEventListener("change", filterRows);
+// Add this in your client-side script
+$("#sourceFilter").on("change", function () {
+  // Get the selected source
+  const selectedSource = $(this).val();
+
+  // Make an AJAX request to the server with the selected source
+  $.ajax({
+    url: "/mes_demandes/filter", // Your server endpoint for handling filters
+    type: "POST",
+    data: { source: selectedSource },
+    success: function (data) {
+      // Update the table with the received data
+      updateTable(data);
+    },
+    error: function (error) {
+      console.error("Error filtering data: ", error);
+    },
+  });
 });
-
-function filterRows() {
-  var rows = document.getElementsByClassName("table-row");
-  var typeClientFilter = document
-    .getElementById("type-de-client")
-    .value.toUpperCase();
-
-  for (var i = 0; i < rows.length; i++) {
-    var typeClient =
-      rows[i].querySelector(".type-client").innerText.toUpperCase() ||
-      rows[i].querySelector(".type-client").textContent.toUpperCase();
-
-    // Toggle row display based on selected option in 'Type de Client' (case-insensitive)
-    if (typeClient === typeClientFilter || typeClientFilter === "") {
-      rows[i].style.display = "";
-    } else {
-      rows[i].style.display = "none";
-    }
-  }
-}

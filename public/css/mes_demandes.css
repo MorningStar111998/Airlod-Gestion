@@ -1,6 +1,6 @@
 .mes-demandes-header {
   padding: 30px;
-   display: flex;
+  display: flex;
   flex-direction: row;
   align-items: flex-start;
 }
@@ -8,42 +8,41 @@
 .mes-demandes-header a {
   border-radius: 50%;
   margin: 10px 10px 10px 10px;
- 
 }
 
 .mes-demandes-header a:hover {
   background-color: #eaedf1;
 }
 
-.mes-demandes-filters{
+.mes-demandes-filters {
   display: grid;
-  grid-template-columns: repeat(8, 1fr);;
-  grid-template-rows: repeat(2, 1fr);;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(2, 1fr);
   flex: 1;
   gap: 10px;
-  padding: 0px 60px 0px 60px ;
+  padding: 0px 60px 0px 60px;
 }
 
-.filtre-1{
-    grid-column: span 5;
+.filtre-1 {
+  grid-column: span 5;
 }
-.filtre-2{
-    grid-column: span 2;
-}
-
-.filtre-3{
-    grid-column: span 1;
+.filtre-2 {
+  grid-column: span 2;
 }
 
-.mes-demandes-search-button button{
-    width: 100%;
-    height: 50%;
-    margin: auto;
-    margin-top: 4%;
-    color: white;
-    background-color: #2f353e;
-    border-radius: 30px;
-    font-size: 26px;
+.filtre-3 {
+  grid-column: span 1;
+}
+
+.mes-demandes-search-button button {
+  width: 100%;
+  height: 50%;
+  margin: auto;
+  margin-top: 4%;
+  color: white;
+  background-color: #2f353e;
+  border-radius: 30px;
+  font-size: 26px;
 }
 
 .mes-demandes-filters label {
@@ -63,37 +62,39 @@
   color: #94a3b8;
 }
 
-
 .table-demande-container table {
-  width: 100%;
+  width: 99%;
   border-collapse: collapse;
   margin-top: 20px;
+  margin-left: 0.9%;
   background-color: white;
-  overflow-x: scroll;
+  /* overflow-x: scroll; */
+  box-sizing: content-box;
 }
 
 .table-demande-container th,
 .table-demande-container td {
+  position: relative;
   border: 1px solid #94a3b8;
-  border-left: none;
-  border-right: none;
+  /* border-left: none;
+  border-right: none; */
   padding: 8px;
   text-align: left;
   overflow: hidden;
   
-
 }
 
 .table-demande-container th {
   background-color: #e2e8f0;
-  
+
+}
+.table-demande-container th:hover {
+  cursor: pointer;
 }
 
-.first-column{
+.first-column {
   max-width: 50px;
-
 }
-
 
 .mes-demandes-footer {
   width: 100%;
@@ -111,4 +112,11 @@
   font-size: 30px;
 }
 
+/****************************Arrows Table*/
 
+.arrow{
+  font-size: 8px;
+  position: absolute;
+  padding-top: 5px;
+  padding-left: 6px;
+}
