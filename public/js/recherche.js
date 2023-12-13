@@ -1,4 +1,4 @@
-$("#rechercheInput, #rechercheCategorie").on("input change", function (){
+$("#rechercheInput, #rechercheCategorie").on("input change", function () {
   // Get the input text and topic
   const textSearchInput = $(this).val();
   const searchSelectedTopic = $("#rechercheCategorie").val();
@@ -9,7 +9,7 @@ $("#rechercheInput, #rechercheCategorie").on("input change", function (){
     type: "POST",
     data: {
       searchInput: textSearchInput,
-      searchCategorie: searchSelectedTopic
+      searchCategorie: searchSelectedTopic,
     },
     success: function (data) {
       // Update the table with the received data

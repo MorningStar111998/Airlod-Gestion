@@ -25,7 +25,6 @@ app.get("/", async (req, res) => {
     const nullSourcesRows = await resultatsRapports.assignNullSourceRows();
 
 
-    console.log(whatsappRows);
 
     res.render("accueil", {
       totalRows: totalRows,
@@ -139,6 +138,22 @@ app.get("/factures", (req, res) => {
 app.get("/retour", (req, res) => {
   res.render("retour", { activePage: "retour" });
 });
+
+app.get("/mes_demandes/whatsappRowCount", (req, res) => {
+  const getCountQuery =
+    "SELECT COUNT(*) AS whatsappRowCount FROM demande WHERE source = 'Whatsapp'";
+
+  db.query(getCountQuery, (err, result) => {
+    if (err) {
+      console.error("Error fetching row count: " + err);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+
+    const whatsappRowCount = result[0].whatsappRowCount;
+    res.json({ whatsappRowCount });
+  });
+});
+
 
 //POST handlers
 app.post("/ajouter_demande", (req, res) => {
