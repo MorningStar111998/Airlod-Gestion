@@ -5,16 +5,24 @@
   </h1>
   <div class="mes-demandes-filters">
     <div class="filtre-1 mes-demandes-search-bar">
-      <input id="search-bar-text" type="text" class="search-bar-text" />
+      <input id="rechercheInput" type="text" class="search-bar-text" />
     </div>
     <div class="filtre-2 mes-demandes-search-category">
-      <select name="search-bar-option" id="search-bar-option">
+      <select name="search-bar-option" id="rechercheCategorie">
+        <option value="nomClient">Nom du Client</option>
+        <option value="numTelephone">Numéro de Téléphone</option>
+        <option value="email">E-mail</option>
+        <option value="produit">Produit</option>
+      </select>
+    </div>
+    <!-- <div class="filtre-2 mes-demandes-search-category">
+      <select name="search-bar-option" id="rechercheCategorie">
         <option value="search-nomClient">Nom du Client</option>
         <option value="search-tel">Numéro de Téléphone</option>
         <option value="search-email">E-mail</option>
         <option value="search-produit">Produit</option>
       </select>
-    </div>
+    </div> -->
     <div class="filtre-3 mes-demandes-search-button">
       <button id="search-button" type="" class="">
         <i class="bx bx-search"></i>
@@ -22,7 +30,7 @@
     </div>
     <div class="span-2 filtre-4">
       <label for="type-de-client">Type de client</label>
-      <select name="type-de-client" id="type-de-client">
+      <select name="type-de-client" id="typeClientFilter">
         <option disabled selected value="">
           -- Sélectionner une option --
         </option>
@@ -35,7 +43,7 @@
     </div>
     <div class="span-2 filtre-5">
       <label for="etape-actuelle">Etape Actuelle</label>
-      <select name="etape-actuelle" id="etape-actuelle">
+      <select name="etape-actuelle" id="etapeActuelle">
         <option disabled selected value="">
           -- Sélectionner une option --
         </option>
@@ -62,7 +70,7 @@
     </div>
     <div class="span-2 filtre-7">
       <label for="etat-client">Etat du client</label>
-      <select name="etat-client" required>
+      <select name="etat-client" id="etatClient" required>
         <option disabled selected value="">
           -- Sélectionner une option --
         </option>
@@ -146,14 +154,16 @@
       <% }); %>
     </tbody>
   </table>
-  <div class="mes-demandes-footer">
+  <!-- <div class="mes-demandes-footer">
     <div class="footer-page-control">
       <div class="first-page"><i class="bx bx-skip-previous"></i></div>
       <div class="previous"><i class="bx bxs-left-arrow"></i></div>
       <div class="next"><i class="bx bxs-right-arrow"></i></div>
       <div class="last-page"><i class="bx bx-skip-next"></i></div>
     </div>
-  </div>
+  </div> -->
+  
 </div>
+
 
 <%- include("partials/footer") -%>

@@ -287,28 +287,6 @@ body {
   left: 240px;
 }
 
-.header-bar {
-  display: flex;
-  justify-content: right;
-  align-items: center;
-  padding: 20px 20px;
-  box-shadow: 0px 5px 4px rgba(0, 0, 0, 0.1);
-  font-family: "Roboto Mono", monospace;
-  font-size: 2rem;
-}
-
-.header-bar #solde{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 2px;
-}
-
-.header-bar #solde span {
-  font-weight: bold;
-  
-}
-
 
 .active-page{
   background-color: #2c3344;
