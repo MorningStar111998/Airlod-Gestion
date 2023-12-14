@@ -1,31 +1,24 @@
 <%- include("partials/header") -%>
 <div class="body-accueil">
   <div class="logo-accueil">
+    <a href="/">
+      <img id="logo-dashboard" src="/images/FULL LOGO.png" alt="logo Airlod" />
+    </a>
     <img id="dashboard-icon" src="/images/ICON .png" alt="icône Airlod" />
-    <img id="logo-dashboard" src="/images/FULL LOGO.png" alt="logo Airlod" />
   </div>
   <div class="button-container">
+    <h1>Tableau de Bord</h1>
+    <p>Bienvenue sur le Tableau de Bord, <%= firstName %></p>
     <button id="afficherRapports">Afficher les Rapports</button>
   </div>
   <div class="accueil">
-    <div  id="main" class="accueil-kpi kpi-1">
-    </div>
-    <div class="accueil-kpi kpi-2">
+    <div class="accueil-kpi kpi-1">
       <canvas id="sourceChart"></canvas>
     </div>
-    <div class="accueil-kpi kpi-3">
-      <img src="" alt="" />
-      <!-- <canvas id="etapeChart"></canvas> -->
+    <div id="main" class="accueil-kpi kpi-2">
+      
     </div>
+    <div id="main2"  class="accueil-kpi kpi-3"></div>
   </div>
 </div>
-
-<p><%= totalRows %></p>
-<p><%= whatsappRows %></p>
-<p><%= instagramRows %></p>
-<p><%= messengerRows %></p>
-<p><%= landingRows %></p>
-<p><%= siteRows %></p>
-<p><%= baORows %></p>
-<p><%= nullRows %></p>
 <%- include("partials/footer") -%>

@@ -56,7 +56,7 @@
       <hr />
       <ul class="menu">
         <li>
-          <a class="<%=activePage === 'accueil' ? 'active-page' : '' %>" href="/"
+          <a class="<%=activePage === 'accueil' ? 'active-page' : '' %>" href="/accueil"
             ><i class="bx bxs-home"></i>
             <span class="link_name">Accueil</span></a
           >
@@ -129,9 +129,10 @@
       <div class="profile">
         <div class="profile-content">
           <img src="/images/petite-fille.png" alt="photo de profile" />
-          <div class="name">Imane</div>
+          <div id="profile-name"><%= firstName %></div>
         </div>
-        <i class="bx bx-log-out" id="log-out"></i>
+        <a href="/logout" id="log-out"><i class="bx bx-log-out" ></i></a>
+        
       </div>
     </nav>
     

@@ -256,19 +256,24 @@ body {
   width: 25px;
 }
 
+.sidebar.active .profile .profile-content #profile-name{
+  margin-left: 4px;
+}
+
 .sidebar .profile #log-out {
   font-size: 3rem;
   color: red;
   position: absolute;
-  right: 25px;
-  bottom: 0px;
+  right: 12px;
+  bottom: -6px;
   cursor: pointer;
 }
 
 .sidebar.active .profile #log-out {
   position: absolute;
   right: 10px;
-  bottom: 0px;
+  bottom: -6px;
+
 }
 
 

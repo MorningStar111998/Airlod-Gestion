@@ -1,52 +1,10 @@
 const express = require("express");
 const ejs = require("ejs");
+const session = require("express-session");
 const db = require("./utils/database");
 const resultatsRapports = require("./utils/resultats_rapports");
-const fs = require("fs");
-const { ChartJSNodeCanvas } = require("chartjs-node-canvas");
-
-const width = 400; //px
-const height = 400; //px
-const backgroundColour = "white"; 
-const chartJSNodeCanvas = new ChartJSNodeCanvas({
-  width,
-  height,
-  backgroundColour,
-});
-
-const configuration = {
-  type: "line", 
-  data: {
-    labels: [2018, 2019, 2020, 2021],
-    datasets: [
-      {
-        label: "Sample 1",
-        data: [10, 15, -20, 15],
-        fill: false,
-        borderColor: ["rgb(51, 204, 204)"],
-        borderWidth: 1,
-        xAxisID: "xAxis1", 
-      },
-      {
-        label: "Sample 2",
-        data: [10, 30, 20, 10],
-        fill: false,
-        borderColor: ["rgb(255, 102, 255)"],
-        borderWidth: 1,
-        xAxisID: "xAxis1",
-      },
-    ],
-  },
-  options: {
-    scales: {
-      y: {
-        suggestedMin: 0,
-      },
-    },
-  },
-};
-
-const PORT = 3309;
+const passport = require("passport");
+const PORT = process.env.PORT || 3309;
 
 const app = express();
 
@@ -54,39 +12,93 @@ app.set("view engine", "ejs");
 
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
+app.use(
+  session({ secret: "your-secret-key", resave: true, saveUninitialized: true })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 
-app.get("/", async (req, res) => {
-  try {
-    const totalRows = await resultatsRapports.assignTotalRows();
-    const whatsappRows = await resultatsRapports.assignWhatsappRows();
-    const messengerRows = await resultatsRapports.assignMessengerRows();
-    const instagramRows = await resultatsRapports.assignInstagramRows();
-    const siteRows = await resultatsRapports.assignSiteRows();
-    const landingRows = await resultatsRapports.assignLandingRows();
-    const baORows = await resultatsRapports.assignBaORows();
-    const nullSourcesRows = await resultatsRapports.assignNullSourceRows();
+// Hardcoded users
+const users = [
+  {
+    id: 1,
+    username: "imane2023",
+    firstName: "Imane",
+    lastName: "Doe",
+    email: "john.doe@example.com",
+    password: "password1",
+  },
+  {
+    id: 2,
+    username: "user2",
+    firstName: "Mohamed",
+    lastName: "Mokhtari",
+    email: "jane.doe@example.com",
+    password: "password2",
+  },
+  {
+    id: 3,
+    username: "user3",
+    firstName: "Bob",
+    lastName: "Smith",
+    email: "bob.smith@example.com",
+    password: "password3",
+  },
+  {
+    id: 4,
+    username: "Administrator",
+    firstName: "Regis",
+    lastName: "TOUGOURI",
+    email: "reigs@example.com",
+    password: "itPassword",
+  },
+];
 
-    res.render("accueil", {
-      totalRows: totalRows,
-      whatsappRows: whatsappRows,
-      instagramRows: instagramRows,
-      messengerRows: messengerRows,
-      landingRows: landingRows,
-      siteRows: siteRows,
-      baORows: baORows,
-      nullRows: nullSourcesRows,
-      activePage: "accueil",
-    });
-  } catch (err) {
-    console.error("Error fetching data: " + err);
-    res.status(500).send("Internal Server Error");
+// Authentication middleware
+const isAuthenticated = (req, res, next) => {
+  if (req.session.userId && req.session.userFirstName) {
+    return next();
   }
+  res.redirect("/");
+};
+
+// Routes
+app.get("/", (req, res) => {
+  res.render("login"); // Render the login.ejs file
+});
+
+app.post("/login",  (req, res) => {
+  const { username, password } = req.body;
+
+  const user = users.find(
+    (u) => u.username === username && u.password === password
+  );
+
+  if (user) {
+    req.session.userId = user.id;
+    req.session.userFirstName = user.firstName;
+
+    res.redirect("/accueil");
+  } else {
+    res.redirect("/");
+  }
+});
+
+app.get("/logout", (req, res) => {
+  req.logout();
+  res.redirect("/");
 });
 
 
 
+app.get("/accueil", isAuthenticated, (req, res) => {
+  res.render("accueil", {
+    activePage: "accueil",
+    firstName: req.session.userFirstName,
+  });
+});
+
 app.get("/ajouter_demande", (req, res) => {
-  // Query the database to get the next available numDemande
   const getMaxNumDemandeQuery =
     "SELECT MAX(numDemande) AS maxNumDemande FROM demande";
   db.query(getMaxNumDemandeQuery, (err, result) => {
@@ -101,9 +113,38 @@ app.get("/ajouter_demande", (req, res) => {
     // Render the form and pass the numDemande to EJS
     res.render("ajouter_demande", {
       activePage: "ajouter_demande",
+      firstName: req.session.userFirstName,
       nextNumDemande: numDemande,
     });
   });
+});
+
+app.get("/combinedDataSources", async (req, res) => {
+  try {
+    const totalRows = await resultatsRapports.assignTotalRows();
+    const whatsappRows = await resultatsRapports.assignWhatsappRows();
+    const messengerRows = await resultatsRapports.assignMessengerRows();
+    const instagramRows = await resultatsRapports.assignInstagramRows();
+    const siteRows = await resultatsRapports.assignSiteRows();
+    const landingRows = await resultatsRapports.assignLandingRows();
+    const baORows = await resultatsRapports.assignBaORows();
+    const nullSourcesRows = await resultatsRapports.assignNullSourceRows();
+
+    const combinedData = {
+      whatsappData: whatsappRows,
+      instagramData: instagramRows, 
+      messengerData: messengerRows,
+      siteData: siteRows,
+      landingData: landingRows,
+      baOData: baORows,
+      nullSourcesData : nullSourcesRows,
+    };
+    console.log(combinedData);
+    res.json(combinedData);
+  } catch (err) {
+    console.error("Error fetching data: " + err);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 app.get("/mes_demandes", (req, res) => {
@@ -133,142 +174,60 @@ app.get("/mes_demandes", (req, res) => {
         };
       });
 
-      console.log(dataArray);
+      // console.log(dataArray);
 
       res.render("mes_demandes", {
         data: dataArray,
         activePage: "mes_demandes",
+        firstName: req.session.userFirstName,
       });
     }
   );
 });
 
 app.get("/ajouter_produit", (req, res) => {
-  res.render("ajouter_produit", { activePage: "ajouter_produit" });
+  res.render("ajouter_produit", {
+    activePage: "ajouter_produit",
+    firstName: req.session.userFirstName,
+  });
 });
 
 app.get("/mon_stock", (req, res) => {
-  res.render("mon_stock", { activePage: "mon_stock" });
+  res.render("mon_stock", {
+    activePage: "mon_stock",
+    firstName: req.session.userFirstName,
+  });
 });
 
 app.get("/ramassage", (req, res) => {
-  res.render("ramassage", { activePage: "ramassage" });
+  res.render("ramassage", {
+    activePage: "ramassage",
+    firstName: req.session.userFirstName,
+  });
 });
 
 app.get("/reclamation", (req, res) => {
-  res.render("reclamation", { activePage: "reclamation" });
+  res.render("reclamation", {
+    activePage: "reclamation",
+    firstName: req.session.userFirstName,
+  });
 });
 
 app.get("/factures", (req, res) => {
-  res.render("factures", { activePage: "factures" });
+  res.render("factures", {
+    activePage: "factures",
+    firstName: req.session.userFirstName,
+  });
 });
 
 app.get("/retour", (req, res) => {
-  res.render("retour", { activePage: "retour" });
-});
-
-//Rapports
-app.get("/mes_demandes/whatsappRowCount", (req, res) => {
-  const getCountQuery =
-    "SELECT COUNT(*) AS whatsappRowCount FROM demande WHERE source = 'Whatsapp'";
-
-  db.query(getCountQuery, (err, result) => {
-    if (err) {
-      console.error("Error fetching row count: " + err);
-      return res.status(500).json({ error: "Internal Server Error" });
-    }
-
-    const whatsappRowCount = result[0].whatsappRowCount;
-    res.json({ whatsappRowCount });
+  res.render("retour", {
+    activePage: "retour",
+    firstName: req.session.userFirstName,
   });
 });
 
-app.get("/mes_demandes/instagramRowCount", (req, res) => {
-  const getCountQuery =
-    "SELECT COUNT(*) AS instagramRowCount FROM demande WHERE source = 'Instagram'";
 
-  db.query(getCountQuery, (err, result) => {
-    if (err) {
-      console.error("Error fetching row count: " + err);
-      return res.status(500).json({ error: "Internal Server Error" });
-    }
-
-    const instagramRowCount = result[0].instagramRowCount;
-    res.json({ instagramRowCount });
-  });
-});
-
-app.get("/mes_demandes/messengerRowCount", (req, res) => {
-  const getCountQuery =
-    "SELECT COUNT(*) AS messengerRowCount FROM demande WHERE source = 'Messenger'";
-
-  db.query(getCountQuery, (err, result) => {
-    if (err) {
-      console.error("Error fetching row count: " + err);
-      return res.status(500).json({ error: "Internal Server Error" });
-    }
-
-    const messengerRowCount = result[0].messengerRowCount;
-    console.log("messenger : "+messengerRowCount);
-    res.json({ messengerRowCount });
-  });
-});
-app.get("/mes_demandes/ndRowCount", (req, res) => {
-  const getCountQuery =
-    "SELECT COUNT(*) AS ndRowCount FROM demande WHERE source is NULL";
-
-  db.query(getCountQuery, (err, result) => {
-    if (err) {
-      console.error("Error fetching row count: " + err);
-      return res.status(500).json({ error: "Internal Server Error" });
-    }
-
-    const ndRowCount = result[0].ndRowCount;
-    res.json({ ndRowCount });
-  });
-});
-app.get("/mes_demandes/siteRowCount", (req, res) => {
-  const getCountQuery =
-    "SELECT COUNT(*) AS siteRowCount FROM demande WHERE source = 'site'";
-
-  db.query(getCountQuery, (err, result) => {
-    if (err) {
-      console.error("Error fetching row count: " + err);
-      return res.status(500).json({ error: "Internal Server Error" });
-    }
-
-    const siteRowCount = result[0].siteRowCount;
-    res.json({ siteRowCount });
-  });
-});
-app.get("/mes_demandes/landingRowCount", (req, res) => {
-  const getCountQuery =
-    "SELECT COUNT(*) AS landingRowCount FROM demande WHERE source = 'landing'";
-
-  db.query(getCountQuery, (err, result) => {
-    if (err) {
-      console.error("Error fetching row count: " + err);
-      return res.status(500).json({ error: "Internal Server Error" });
-    }
-
-    const landingRowCount = result[0].landingRowCount;
-    res.json({ landingRowCount });
-  });
-});
-app.get("/mes_demandes/baORowCount", (req, res) => {
-  const getCountQuery =
-    "SELECT COUNT(*) AS baORowCount FROM demande WHERE source = 'Bouche à Oreil'";
-
-  db.query(getCountQuery, (err, result) => {
-    if (err) {
-      console.error("Error fetching row count: " + err);
-      return res.status(500).json({ error: "Internal Server Error" });
-    }
-
-    const baORowCount = result[0].baORowCount;
-    res.json({ baORowCount });
-  });
-});
 
 //POST handlers
 app.post("/ajouter_demande", (req, res) => {
@@ -350,84 +309,84 @@ app.post("/ajouter_demande", (req, res) => {
   });
 });
 
-app.post("/ajouter_demande", (req, res) => {
-  const {
-    demande,
-    destinataire,
-    telephone,
-    email,
-    ville,
-    adresse,
-    typeClient,
-    source,
-    etape,
-    etatClient,
-    facture,
-    produit,
-    prix,
-    quantite,
-    paiement,
-    description,
-    remarque,
-  } = req.body;
+// app.post("/ajouter_demande", (req, res) => {
+//   const {
+//     demande,
+//     destinataire,
+//     telephone,
+//     email,
+//     ville,
+//     adresse,
+//     typeClient,
+//     source,
+//     etape,
+//     etatClient,
+//     facture,
+//     produit,
+//     prix,
+//     quantite,
+//     paiement,
+//     description,
+//     remarque,
+//   } = req.body;
 
-  // Use the extracted form data to insert into the database
-  const insertQuery = `
-        INSERT INTO demande (
-            numDemande,
-            nomClient,
-            numTelephone,
-            email,
-            ville,
-            adresse,
-            typeClient,
-            source,
-            etapeActuelle,
-            etatClient,
-            numFacture,
-            produit,
-            prix,
-            quantite,
-            typePaiement,
-            description,
-            remarque
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `;
+//   // Use the extracted form data to insert into the database
+//   const insertQuery = `
+//         INSERT INTO demande (
+//             numDemande,
+//             nomClient,
+//             numTelephone,
+//             email,
+//             ville,
+//             adresse,
+//             typeClient,
+//             source,
+//             etapeActuelle,
+//             etatClient,
+//             numFacture,
+//             produit,
+//             prix,
+//             quantite,
+//             typePaiement,
+//             description,
+//             remarque
+//         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+//     `;
 
-  // Get the next available numDemande from the request body
-  const nextNumDemande = req.body.nextNumDemande;
+//   // Get the next available numDemande from the request body
+//   const nextNumDemande = req.body.nextNumDemande;
 
-  const values = [
-    nextNumDemande,
-    destinataire,
-    telephone,
-    email,
-    ville,
-    adresse,
-    typeClient,
-    source,
-    etape,
-    etatClient,
-    facture,
-    produit,
-    prix,
-    quantite,
-    paiement,
-    description,
-    remarque,
-  ];
+//   const values = [
+//     nextNumDemande,
+//     destinataire,
+//     telephone,
+//     email,
+//     ville,
+//     adresse,
+//     typeClient,
+//     source,
+//     etape,
+//     etatClient,
+//     facture,
+//     produit,
+//     prix,
+//     quantite,
+//     paiement,
+//     description,
+//     remarque,
+//   ];
 
-  db.query(insertQuery, values, (err, result) => {
-    if (err) {
-      console.error("Error inserting data into the database: " + err);
-      return res.status(500).send("Internal Server Error");
-    }
+//   db.query(insertQuery, values, (err, result) => {
+//     if (err) {
+//       console.error("Error inserting data into the database: " + err);
+//       return res.status(500).send("Internal Server Error");
+//     }
 
-    console.log("Data inserted into the database successfully!");
-    // Redirect to a success page or handle as needed
-    return res.redirect("/mes_demandes");
-  });
-});
+//     console.log("Data inserted into the database successfully!");
+//     // Redirect to a success page or handle as needed
+//     return res.redirect("/mes_demandes");
+//   });
+// });
 
 // Updated route to handle typeClient filter
 app.post("/mes_demandes/filterTypeClient", (req, res) => {
