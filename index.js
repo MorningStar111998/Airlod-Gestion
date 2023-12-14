@@ -2,6 +2,49 @@ const express = require("express");
 const ejs = require("ejs");
 const db = require("./utils/database");
 const resultatsRapports = require("./utils/resultats_rapports");
+const fs = require("fs");
+const { ChartJSNodeCanvas } = require("chartjs-node-canvas");
+
+const width = 400; //px
+const height = 400; //px
+const backgroundColour = "white"; 
+const chartJSNodeCanvas = new ChartJSNodeCanvas({
+  width,
+  height,
+  backgroundColour,
+});
+
+const configuration = {
+  type: "line", 
+  data: {
+    labels: [2018, 2019, 2020, 2021],
+    datasets: [
+      {
+        label: "Sample 1",
+        data: [10, 15, -20, 15],
+        fill: false,
+        borderColor: ["rgb(51, 204, 204)"],
+        borderWidth: 1,
+        xAxisID: "xAxis1", 
+      },
+      {
+        label: "Sample 2",
+        data: [10, 30, 20, 10],
+        fill: false,
+        borderColor: ["rgb(255, 102, 255)"],
+        borderWidth: 1,
+        xAxisID: "xAxis1",
+      },
+    ],
+  },
+  options: {
+    scales: {
+      y: {
+        suggestedMin: 0,
+      },
+    },
+  },
+};
 
 const PORT = 3309;
 
@@ -14,7 +57,6 @@ app.use(express.urlencoded({ extended: true }));
 
 app.get("/", async (req, res) => {
   try {
-    // Call functions from the imported module "resultatsRapports" to get the results
     const totalRows = await resultatsRapports.assignTotalRows();
     const whatsappRows = await resultatsRapports.assignWhatsappRows();
     const messengerRows = await resultatsRapports.assignMessengerRows();
@@ -23,8 +65,6 @@ app.get("/", async (req, res) => {
     const landingRows = await resultatsRapports.assignLandingRows();
     const baORows = await resultatsRapports.assignBaORows();
     const nullSourcesRows = await resultatsRapports.assignNullSourceRows();
-
-
 
     res.render("accueil", {
       totalRows: totalRows,
@@ -37,25 +77,13 @@ app.get("/", async (req, res) => {
       nullRows: nullSourcesRows,
       activePage: "accueil",
     });
-
   } catch (err) {
     console.error("Error fetching data: " + err);
     res.status(500).send("Internal Server Error");
   }
 });
 
-// app.get("/", (req, res) => {
-//   const getTotalRowsQuery = "SELECT COUNT(*) AS totalRows FROM demande";
-//   db.query(getTotalRowsQuery, (err, totalRowsResult) => {
-//     if (err) {
-//       console.error("Error fetching total rows: " + err);
-//       return res.status(500).send("Internal Server Error");
-//     }
 
-//     const totalRows = totalRowsResult[0].totalRows;
-//     res.render("accueil", { activePage: "accueil",totalRows:totalRows });
-//   });
-// });
 
 app.get("/ajouter_demande", (req, res) => {
   // Query the database to get the next available numDemande
@@ -139,6 +167,7 @@ app.get("/retour", (req, res) => {
   res.render("retour", { activePage: "retour" });
 });
 
+//Rapports
 app.get("/mes_demandes/whatsappRowCount", (req, res) => {
   const getCountQuery =
     "SELECT COUNT(*) AS whatsappRowCount FROM demande WHERE source = 'Whatsapp'";
@@ -154,6 +183,92 @@ app.get("/mes_demandes/whatsappRowCount", (req, res) => {
   });
 });
 
+app.get("/mes_demandes/instagramRowCount", (req, res) => {
+  const getCountQuery =
+    "SELECT COUNT(*) AS instagramRowCount FROM demande WHERE source = 'Instagram'";
+
+  db.query(getCountQuery, (err, result) => {
+    if (err) {
+      console.error("Error fetching row count: " + err);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+
+    const instagramRowCount = result[0].instagramRowCount;
+    res.json({ instagramRowCount });
+  });
+});
+
+app.get("/mes_demandes/messengerRowCount", (req, res) => {
+  const getCountQuery =
+    "SELECT COUNT(*) AS messengerRowCount FROM demande WHERE source = 'Messenger'";
+
+  db.query(getCountQuery, (err, result) => {
+    if (err) {
+      console.error("Error fetching row count: " + err);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+
+    const messengerRowCount = result[0].messengerRowCount;
+    console.log("messenger : "+messengerRowCount);
+    res.json({ messengerRowCount });
+  });
+});
+app.get("/mes_demandes/ndRowCount", (req, res) => {
+  const getCountQuery =
+    "SELECT COUNT(*) AS ndRowCount FROM demande WHERE source is NULL";
+
+  db.query(getCountQuery, (err, result) => {
+    if (err) {
+      console.error("Error fetching row count: " + err);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+
+    const ndRowCount = result[0].ndRowCount;
+    res.json({ ndRowCount });
+  });
+});
+app.get("/mes_demandes/siteRowCount", (req, res) => {
+  const getCountQuery =
+    "SELECT COUNT(*) AS siteRowCount FROM demande WHERE source = 'site'";
+
+  db.query(getCountQuery, (err, result) => {
+    if (err) {
+      console.error("Error fetching row count: " + err);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+
+    const siteRowCount = result[0].siteRowCount;
+    res.json({ siteRowCount });
+  });
+});
+app.get("/mes_demandes/landingRowCount", (req, res) => {
+  const getCountQuery =
+    "SELECT COUNT(*) AS landingRowCount FROM demande WHERE source = 'landing'";
+
+  db.query(getCountQuery, (err, result) => {
+    if (err) {
+      console.error("Error fetching row count: " + err);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+
+    const landingRowCount = result[0].landingRowCount;
+    res.json({ landingRowCount });
+  });
+});
+app.get("/mes_demandes/baORowCount", (req, res) => {
+  const getCountQuery =
+    "SELECT COUNT(*) AS baORowCount FROM demande WHERE source = 'Bouche à Oreil'";
+
+  db.query(getCountQuery, (err, result) => {
+    if (err) {
+      console.error("Error fetching row count: " + err);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+
+    const baORowCount = result[0].baORowCount;
+    res.json({ baORowCount });
+  });
+});
 
 //POST handlers
 app.post("/ajouter_demande", (req, res) => {
