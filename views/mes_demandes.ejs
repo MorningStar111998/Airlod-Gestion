@@ -82,8 +82,8 @@
   </div>
 </div>
 <div class="table-container">
-  <table id="table">
-    <colgroup>
+  <table class="table-resize" id="table">
+    <!-- <colgroup>
       <col class="demande" span="1" style="width: 9%" />
       <col class="nom-client" span="1" style="width: 10%" />
       <col class="telephone" span="1" style="width: 10%" />
@@ -94,7 +94,7 @@
       <col class="email" span="1" style="width: 16%" />
       <col class="source" span="1" style="width: 10%" />
       <col class="num-facture" span="1" style="width: 8%" />
-    </colgroup>
+    </colgroup> -->
     <thead>
       <tr id="table-header">
         <th class="demandeTableHeader" data-column="numDemande" data-order="DESC">
@@ -124,6 +124,21 @@
         <th class="demandeTableHeader" data-column="source" data-order="DESC">
           Source <span class="arrow arrow-source">&#9660;</span>
         </th>
+        <th class="demandeTableHeader" data-column="etatClient" data-order="DESC">
+          Etat Client <span class="arrow arrow-etatClient">&#9660;</span>
+        </th>
+        <th class="demandeTableHeader" data-column="ville" data-order="DESC">
+          Ville <span class="arrow arrow-ville">&#9660;</span>
+        </th>
+        <th class="demandeTableHeader" data-column="adresse" data-order="DESC">
+          Adresse <span class="arrow arrow-adresse">&#9660;</span>
+        </th>
+        <th class="demandeTableHeader" data-column="prix" data-order="DESC">
+          Prix<span class="arrow arrow-prix">&#9660;</span>
+        </th>
+        <th class="demandeTableHeader" data-column="typePaiement" data-order="DESC">
+          Type de Paiement<span class="arrow arrow-typePaiement">&#9660;</span>
+        </th>
         <th class="demandeTableHeader" data-column="numFacture" data-order="DESC">
           N° Facture <span class="arrow arrow-numFacture">&#9660;</span>
         </th>
@@ -142,6 +157,11 @@
         <td><%= row.quantite %></td>
         <td><%= row.email %></td>
         <td><%= row.source %></td>
+        <td><%= row.etatClient %></td>
+        <td><%= row.ville %></td>
+        <td><%= row.adresse %></td>
+        <td><%= row.prix %></td>
+        <td><%= row.typePaiement %></td>
         <td><%= row.numFacture %></td>
       </tr>
       <% }); %>

@@ -21,7 +21,7 @@
 </div>
 
 <div class="table-container">
-  <table id="table">
+  <table class="table-resize" id="table">
     <colgroup>
       <col class="num-facture" span="1" style="width: 12.5%" />
       <col class="prix" span="1" style="width: 12.5%" />
@@ -61,7 +61,6 @@
       </tr>
     </thead>
     <tbody>
-      <!-- Add your data rows here -->
       <% data.forEach(function(row) { %>
       <tr class="table-row">
         <td><%= row.numFacture %></td>
@@ -79,3 +78,11 @@
 </div>
 
 <%- include("partials/footer") -%>
+
+
+<table>
+    <thead>
+        <th></th>
+    </thead>
+    <tbody></tbody>
+</table>

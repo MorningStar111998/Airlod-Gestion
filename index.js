@@ -56,10 +56,22 @@ const users = [
     email: process.env.USER_4_EMAIL,
     password: process.env.USER_4_PASSWORD,
   },
+  {
+    id: 5,
+    username: process.env.USER_5_USERNAME,
+    firstName: process.env.USER_5_FIRSTNAME,
+    lastName: process.env.USER_5_LASTNAME,
+    email: process.env.USER_5_EMAIL,
+    password: process.env.USER_5_PASSWORD,
+  },
 ];
 
 const isAuthenticated = (req, res, next) => {
-  if (req.session.userId && req.session.userFirstName) {
+  if (
+    req.session.userId &&
+    req.session.userFirstName &&
+    req.session.userLastName
+  ) {
     return next();
   }
   res.redirect("/");
@@ -80,6 +92,7 @@ app.post("/login", (req, res) => {
   if (user) {
     req.session.userId = user.id;
     req.session.userFirstName = user.firstName;
+    req.session.userLastName = user.lastName;
 
     res.redirect("/accueil");
   } else {
@@ -100,6 +113,7 @@ app.get("/accueil", isAuthenticated, (req, res) => {
   res.render("accueil", {
     activePage: "accueil",
     firstName: req.session.userFirstName,
+    lastName: req.session.userLastName,
   });
 });
 
@@ -118,6 +132,7 @@ app.get("/ajouter_demande", isAuthenticated, (req, res) => {
     res.render("ajouter_demande", {
       activePage: "ajouter_demande",
       firstName: req.session.userFirstName,
+      lastName: req.session.userLastName,
       nextNumDemande: numDemande,
     });
   });
@@ -144,6 +159,11 @@ app.get("/mes_demandes", isAuthenticated, (req, res) => {
           quantite: row.quantite,
           email: row.email,
           source: row.source,
+          etatClient: row.etatClient,
+          ville: row.ville,
+          adresse: row.adresse,
+          prix: row.prix,
+          typePaiement: row.typePaiement,
           numFacture: row.numFacture,
           dateEnregistrement: row.dateEnregistrement,
         };
@@ -153,6 +173,7 @@ app.get("/mes_demandes", isAuthenticated, (req, res) => {
         data: dataArray,
         activePage: "mes_demandes",
         firstName: req.session.userFirstName,
+        lastName: req.session.userLastName,
       });
     }
   );
@@ -162,6 +183,7 @@ app.get("/ajouter_facture", isAuthenticated, (req, res) => {
   res.render("ajouter_facture", {
     activePage: "ajouter_facture",
     firstName: req.session.userFirstName,
+    lastName: req.session.userLastName,
   });
 });
 
@@ -193,6 +215,7 @@ app.get("/mes_factures", isAuthenticated, (req, res) => {
         data: dataArray,
         activePage: "mes_factures",
         firstName: req.session.userFirstName,
+        lastName: req.session.userLastName,
       });
     }
   );
@@ -329,6 +352,7 @@ app.get("/modifier_demande", isAuthenticated, (req, res) => {
   res.render("modifier_demande", {
     activePage: "nd",
     firstName: req.session.userFirstName,
+    lastName: req.session.userLastName,
   });
 });
 
