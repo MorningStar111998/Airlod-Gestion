@@ -1,3 +1,17 @@
+body{
+    background: linear-gradient(
+    -90deg,
+    #000000 0%,
+    #474241 10%,
+    #e4e1e0 25%,
+    #e5cee9 45%,
+    #e1b2db 60%,
+    #e5a2d4 75%,
+    #e282bb 85%,
+    #ee1212 100%
+  );
+}
+
 .login-form {
     width: 340px;
     margin: 100px auto;
@@ -19,4 +33,8 @@
 .btn {        
     font-size: 15px;
     font-weight: bold;
+}
+
+#login-logo{
+    width: 100%;
 }

@@ -1,3 +1,6 @@
+const dotenv = require("dotenv");
+dotenv.config();
+
 const { createConnection } = require("mysql");
 
 const mysql = createConnection({
@@ -5,7 +8,7 @@ const mysql = createConnection({
   user: "root",
   password: "",
   database: "airlod_livraison_test",
-  port: 3325, 
+  port: 3325,
 });
 
 mysql.connect((err) => {
@@ -15,7 +18,6 @@ mysql.connect((err) => {
   }
 
   console.log("Connected to MySQL database as id " + mysql.threadId);
-  
 });
 
 module.exports = mysql;

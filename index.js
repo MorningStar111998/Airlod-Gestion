@@ -5,7 +5,11 @@ const db = require("./utils/database");
 const resultatsRapports = require("./utils/resultats_rapports");
 const passport = require("passport");
 const PORT = process.env.PORT || 3309;
-require("dotenv").config();
+const dotenv = require("dotenv");
+
+const sessionSecret = process.env.SESSION_SECRET || "defaultSecretKey";
+
+dotenv.config();
 
 const app = express();
 
@@ -14,7 +18,7 @@ app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(
-  session({ secret: "your-secret-key", resave: true, saveUninitialized: true })
+  session({ secret: sessionSecret, resave: true, saveUninitialized: true })
 );
 app.use(passport.initialize());
 app.use(passport.session());
@@ -22,35 +26,35 @@ app.use(passport.session());
 const users = [
   {
     id: 1,
-    username: "imane2023",
-    firstName: "Imane",
-    lastName: "Doe",
-    email: "john.doe@example.com",
-    password: "password1",
+    username: process.env.USER_1_USERNAME,
+    firstName: process.env.USER_1_FIRSTNAME,
+    lastName: process.env.USER_1_LASTNAME,
+    email: process.env.USER_1_EMAIL,
+    password: process.env.USER_1_PASSWORD,
   },
   {
     id: 2,
-    username: "mohamed",
-    firstName: "Mohamed",
-    lastName: "Mokhtari",
-    email: "jane.doe@example.com",
-    password: "password2",
+    username: process.env.USER_2_USERNAME,
+    firstName: process.env.USER_2_FIRSTNAME,
+    lastName: process.env.USER_2_LASTNAME,
+    email: process.env.USER_2_EMAIL,
+    password: process.env.USER_2_PASSWORD,
   },
   {
     id: 3,
-    username: "tahamokhalif",
-    firstName: "Taha",
-    lastName: "Mokhalif",
-    email: "aminemokhalif@example.com",
-    password: "password3",
+    username: process.env.USER_3_USERNAME,
+    firstName: process.env.USER_3_FIRSTNAME,
+    lastName: process.env.USER_3_LASTNAME,
+    email: process.env.USER_3_EMAIL,
+    password: process.env.USER_3_PASSWORD,
   },
   {
     id: 4,
-    username: "Administrator",
-    firstName: "Regis",
-    lastName: "TOUGOURI",
-    email: "registougouri@gmail.com",
-    password: "itPassword",
+    username: process.env.USER_4_USERNAME,
+    firstName: process.env.USER_4_FIRSTNAME,
+    lastName: process.env.USER_4_LASTNAME,
+    email: process.env.USER_4_EMAIL,
+    password: process.env.USER_4_PASSWORD,
   },
 ];
 
@@ -155,22 +159,9 @@ app.get("/mes_demandes", isAuthenticated, (req, res) => {
 });
 
 app.get("/ajouter_facture", isAuthenticated, (req, res) => {
-  const getMaxNumFacture =
-    "SELECT MAX(numFacture) AS maxNumFacture FROM facture";
-  db.query(getMaxNumFacture, (err, result) => {
-    if (err) {
-      console.error("Error fetching max numFacture from the database: " + err);
-      return res.status(500).send("Internal Server Error");
-    }
-
-    const numFacture =
-      result[0].maxNumFacture !== null ? result[0].maxNumFacture + 1 : 1;
-
-    res.render("ajouter_facture", {
-      activePage: "ajouter_facture",
-      firstName: req.session.userFirstName,
-      nextNumFacture: numFacture,
-    });
+  res.render("ajouter_facture", {
+    activePage: "ajouter_facture",
+    firstName: req.session.userFirstName,
   });
 });
 
@@ -363,7 +354,6 @@ app.get("/combinedDataSources", async (req, res) => {
       baOData: baORows,
       nullSourcesData: nullSourcesRows,
     };
-    console.log(combinedData);
     res.json(combinedData);
   } catch (err) {
     console.error("Error fetching data: " + err);
@@ -380,7 +370,6 @@ app.get("/combinedDataEtatClient", async (req, res) => {
       await resultatsRapports.assignAttenteDeConfirmationRows();
     const pasDeReponseRows = await resultatsRapports.assignPasDeReponseRows();
     const nonInteresseRows = await resultatsRapports.assignNonInteresseRows();
-    console.log(interesseRows);
     const combinedData = {
       clientInteresseData: interesseRows,
       enDiscussionData: enDiscussionRows,
@@ -389,7 +378,6 @@ app.get("/combinedDataEtatClient", async (req, res) => {
       pasDeReponseData: pasDeReponseRows,
       nonInteresseData: nonInteresseRows,
     };
-    console.log(combinedData);
     res.json(combinedData);
   } catch (err) {
     console.error("Error fetching data: " + err);
