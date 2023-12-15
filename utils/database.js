@@ -24,7 +24,7 @@ mysql.connect((err) => {
 
 module.exports = mysql;
 
-const { createConnection } = require("mysql");
+//const { createConnection } = require("mysql");
 
 // const mysql = createConnection({
 //   host: "localhost",
