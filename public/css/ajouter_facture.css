@@ -1,0 +1,116 @@
+.ajouter-facture-formulaire h3 {
+  font-weight: bold;
+  padding-left: 10px;
+  text-align: center;
+
+}
+
+.ajouter-facture-formulaire p {
+  color: rgb(108, 108, 108);
+  padding-left: 10px;
+  text-align: center;
+
+}
+
+.ajouter-facture {
+  padding: 20px;
+}
+
+.ajouter-facture-formulaire {
+  background-color: white;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  width: 40%;
+  margin: auto;
+}
+
+
+
+
+.ajouter-facture-formulaire .form {
+  position: relative;
+  min-height: 480px;
+}
+
+.ajouter-facture-formulaire .input-fields-container {
+  padding: 30px;
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+}
+
+@media (max-width: 13in) {
+  .ajouter-facture-formulaire .input-fields-container {
+    flex-direction: column;
+    padding: 30px 10% 30px 10%;
+  }
+  .ajouter-facture-formulaire .form {
+    min-height: 600px;
+  }
+
+}
+
+
+.ajouter-facture-formulaire .facture-col{
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  grid-template-rows: repeat(2,1fr);
+  row-gap: 10px;
+  column-gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+
+.ajouter-facture-formulaire label {
+  display: block;
+  font-size: 11px;
+  margin: 4px 0px 4px 4px;
+}
+
+.ajouter-facture-formulaire select,
+.ajouter-facture-formulaire input,
+.ajouter-facture-formulaire textarea {
+  width: 100%;
+  padding: 14px;
+  border: solid rgb(199, 199, 199) 1px;
+  border-radius: 4px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  color: black;
+}
+
+
+.ajouter-facture-formulaire input:focus {
+  outline-color: rgb(28, 28, 255);
+}
+
+.ajouter-facture-formulaire input:focus:required:invalid,
+select:focus:required:invalid {
+  outline-color: rgb(255, 0, 0);
+}
+
+.ajouter-facture-formulaire input:required:valid:focus,
+select:required:valid:focus {
+  outline-color: greenyellow;
+}
+
+.required-field::after {
+  content: " *";
+  color: rgb(167, 0, 0);
+  margin-right: 5px;
+}
+
+
+.facture-form-button {
+  position: absolute;
+  right: 30px;
+  bottom: 30px;
+  background-color: #2f353e;
+  width: 120px;
+  border-radius: 20px;
+  padding: 10px;
+  font-weight: bold;
+  color: white;
+}

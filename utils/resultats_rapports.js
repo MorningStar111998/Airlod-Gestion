@@ -1,4 +1,4 @@
-//Source
+//*******************   Source   ******************//
 const db = require("./database");
 
 async function getTotalRows() {
@@ -210,7 +210,181 @@ async function assignNullSourceRows() {
 }
 
 
+
+
+
+
+
+
+
+//************************Etat Client */
+
+
+async function getClientInteresseRows() {
+  return new Promise((resolve, reject) => {
+    const getClientInteresseQuery =
+      "SELECT COUNT(*) AS clientInteresseRows FROM demande WHERE etatClient ='Intéressé'";
+
+    db.query(getClientInteresseQuery, (err, clientInteresseRowsResult) => {
+      if (err) {
+        console.error("Error fetching NULL etatClient rows: " + err);
+        return reject(err);
+      }
+
+      const clientInteresseRows = clientInteresseRowsResult[0].clientInteresseRows;
+      resolve(clientInteresseRows);
+    });
+  });
+}
+
+async function assignClientInteresseRows() {
+  try {
+    const clientInteresseRows = await getClientInteresseRows();
+    return clientInteresseRows;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
+async function getEnDiscussionRows() {
+  return new Promise((resolve, reject) => {
+    const getEnDiscussionQuery =
+      "SELECT COUNT(*) AS enDiscussionRows FROM demande WHERE etatClient ='En Discussion'";
+
+    db.query(getEnDiscussionQuery, (err, enDiscussionRowsResult) => {
+      if (err) {
+        console.error("Error fetching NULL etatClient rows: " + err);
+        return reject(err);
+      }
+
+      const enDiscussionRows = enDiscussionRowsResult[0].enDiscussionRows;
+      resolve(enDiscussionRows);
+    });
+  });
+}
+
+async function assignEnDiscussionRows() {
+  try {
+    const enDiscussionRows = await getEnDiscussionRows();
+    return enDiscussionRows;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
+
+async function getAttenteDeLogoRows() {
+  return new Promise((resolve, reject) => {
+    const getAttenteDeLogoQuery =
+      "SELECT COUNT(*) AS attenteDeLogoRows FROM demande WHERE etatClient ='Attente Logo'";
+
+    db.query(getAttenteDeLogoQuery, (err, attenteDeLogoRowsResult) => {
+      if (err) {
+        console.error("Error fetching NULL etatClient rows: " + err);
+        return reject(err);
+      }
+
+      const attenteDeLogoRows = attenteDeLogoRowsResult[0].attenteDeLogoRows;
+      resolve(attenteDeLogoRows);
+    });
+  });
+}
+
+async function assignAttenteDeLogoRows() {
+  try {
+    const attenteDeLogoRows = await getAttenteDeLogoRows();
+    return attenteDeLogoRows;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
+
+async function getAttenteDeConfirmationRows() {
+  return new Promise((resolve, reject) => {
+    const getAttenteDeConfirmationQuery =
+      "SELECT COUNT(*) AS attenteDeConfirmationRows FROM demande WHERE etatClient ='Attente Confirmation'";
+
+    db.query(getAttenteDeConfirmationQuery, (err, attenteDeConfirmationRowsResult) => {
+      if (err) {
+        console.error("Error fetching NULL etatClient rows: " + err);
+        return reject(err);
+      }
+
+      const attenteDeConfirmationRows = attenteDeConfirmationRowsResult[0].attenteDeConfirmationRows;
+      resolve(attenteDeConfirmationRows);
+    });
+  });
+}
+
+async function assignAttenteDeConfirmationRows() {
+  try {
+    const attenteDeConfirmationRows = await getAttenteDeConfirmationRows();
+    return attenteDeConfirmationRows;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
+
+
+async function getPasDeReponseRows() {
+  return new Promise((resolve, reject) => {
+    const getPasDeReponseQuery =
+      "SELECT COUNT(*) AS pasDeReponseRows FROM demande WHERE etatClient ='Pas de Réponse'";
+
+    db.query(getPasDeReponseQuery, (err, pasDeReponseRowsResult) => {
+      if (err) {
+        console.error("Error fetching NULL etatClient rows: " + err);
+        return reject(err);
+      }
+
+      const pasDeReponseRows = pasDeReponseRowsResult[0].pasDeReponseRows;
+      resolve(pasDeReponseRows);
+    });
+  });
+}
+
+async function assignPasDeReponseRows() {
+  try {
+    const pasDeReponseRows = await getPasDeReponseRows();
+    return pasDeReponseRows;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
+
+
+async function getNonInteresseRows() {
+  return new Promise((resolve, reject) => {
+    const getNonInteresseQuery =
+      "SELECT COUNT(*) AS nonInteresseRows FROM demande WHERE etatClient ='Non Intéressé'";
+
+    db.query(getNonInteresseQuery, (err, nonInteresseRowsResult) => {
+      if (err) {
+        console.error("Error fetching NULL etatClient rows: " + err);
+        return reject(err);
+      }
+
+      const nonInteresseRows = nonInteresseRowsResult[0].nonInteresseRows;
+      resolve(nonInteresseRows);
+    });
+  });
+}
+
+async function assignNonInteresseRows() {
+  try {
+    const nonInteresseRows = await getNonInteresseRows();
+    return nonInteresseRows;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
+
 module.exports = {
+  // Export fontions Sources
   assignWhatsappRows,
   assignMessengerRows,
   assignTotalRows,
@@ -219,5 +393,13 @@ module.exports = {
   assignSiteRows,
   assignBaORows,
   assignNullSourceRows,
-  // Export other functions...
+  // Export fontions Etat Client
+  assignClientInteresseRows,
+  assignEnDiscussionRows,
+  assignAttenteDeLogoRows,
+  assignAttenteDeConfirmationRows,
+  assignPasDeReponseRows,
+  assignNonInteresseRows,
 };
+
+

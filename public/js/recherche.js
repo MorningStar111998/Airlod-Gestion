@@ -5,7 +5,7 @@ $("#rechercheInput, #rechercheCategorie").on("input change", function () {
 
   // Make an AJAX request to the server with the search and selected categorie
   $.ajax({
-    url: "/mes_demandes/recherche",
+    url: "/mes_demandes/rechercheFacture",
     type: "POST",
     data: {
       searchInput: textSearchInput,
@@ -14,6 +14,28 @@ $("#rechercheInput, #rechercheCategorie").on("input change", function () {
     success: function (data) {
       // Update the table with the received data
       updateTable(data);
+    },
+    error: function (error) {
+      console.error("Error filtering data: ", error);
+    },
+  });
+});
+
+
+$("#rechercheFactureInput").on("input", function () {
+  // Get the input text and topic
+  const textSearchInput = $(this).val();
+
+  // Make an AJAX request to the server with the search and selected categorie
+  $.ajax({
+    url: "/mes_demandes/rechercheFacture",
+    type: "POST",
+    data: {
+      searchInput: textSearchInput,
+    },
+    success: function (data) {
+      // Update the table with the received data
+      updateTableFactures(data);
     },
     error: function (error) {
       console.error("Error filtering data: ", error);

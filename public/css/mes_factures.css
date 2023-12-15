@@ -1,0 +1,14 @@
+#list-header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#list-filters{
+    display: flex;
+    
+}
+
+#list-filters input{
+    width: 300px;
+}

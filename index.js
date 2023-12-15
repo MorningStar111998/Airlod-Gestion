@@ -5,6 +5,7 @@ const db = require("./utils/database");
 const resultatsRapports = require("./utils/resultats_rapports");
 const passport = require("passport");
 const PORT = process.env.PORT || 3309;
+require("dotenv").config();
 
 const app = express();
 
@@ -18,7 +19,6 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Hardcoded users
 const users = [
   {
     id: 1,
@@ -30,7 +30,7 @@ const users = [
   },
   {
     id: 2,
-    username: "user2",
+    username: "mohamed",
     firstName: "Mohamed",
     lastName: "Mokhtari",
     email: "jane.doe@example.com",
@@ -38,10 +38,10 @@ const users = [
   },
   {
     id: 3,
-    username: "user3",
-    firstName: "Bob",
-    lastName: "Smith",
-    email: "bob.smith@example.com",
+    username: "tahamokhalif",
+    firstName: "Taha",
+    lastName: "Mokhalif",
+    email: "aminemokhalif@example.com",
     password: "password3",
   },
   {
@@ -49,12 +49,11 @@ const users = [
     username: "Administrator",
     firstName: "Regis",
     lastName: "TOUGOURI",
-    email: "reigs@example.com",
+    email: "registougouri@gmail.com",
     password: "itPassword",
   },
 ];
 
-// Authentication middleware
 const isAuthenticated = (req, res, next) => {
   if (req.session.userId && req.session.userFirstName) {
     return next();
@@ -62,12 +61,12 @@ const isAuthenticated = (req, res, next) => {
   res.redirect("/");
 };
 
-// Routes
+//************************ Route Handlers *************//
 app.get("/", (req, res) => {
-  res.render("login"); // Render the login.ejs file
+  res.render("login");
 });
 
-app.post("/login",  (req, res) => {
+app.post("/login", (req, res) => {
   const { username, password } = req.body;
 
   const user = users.find(
@@ -84,12 +83,14 @@ app.post("/login",  (req, res) => {
   }
 });
 
-app.get("/logout", (req, res) => {
-  req.logout();
-  res.redirect("/");
+app.get("/logout", function (req, res, next) {
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/");
+  });
 });
-
-
 
 app.get("/accueil", isAuthenticated, (req, res) => {
   res.render("accueil", {
@@ -98,7 +99,7 @@ app.get("/accueil", isAuthenticated, (req, res) => {
   });
 });
 
-app.get("/ajouter_demande", (req, res) => {
+app.get("/ajouter_demande", isAuthenticated, (req, res) => {
   const getMaxNumDemandeQuery =
     "SELECT MAX(numDemande) AS maxNumDemande FROM demande";
   db.query(getMaxNumDemandeQuery, (err, result) => {
@@ -110,7 +111,6 @@ app.get("/ajouter_demande", (req, res) => {
     const numDemande =
       result[0].maxNumDemande !== null ? result[0].maxNumDemande + 1 : 1;
 
-    // Render the form and pass the numDemande to EJS
     res.render("ajouter_demande", {
       activePage: "ajouter_demande",
       firstName: req.session.userFirstName,
@@ -119,35 +119,7 @@ app.get("/ajouter_demande", (req, res) => {
   });
 });
 
-app.get("/combinedDataSources", async (req, res) => {
-  try {
-    const totalRows = await resultatsRapports.assignTotalRows();
-    const whatsappRows = await resultatsRapports.assignWhatsappRows();
-    const messengerRows = await resultatsRapports.assignMessengerRows();
-    const instagramRows = await resultatsRapports.assignInstagramRows();
-    const siteRows = await resultatsRapports.assignSiteRows();
-    const landingRows = await resultatsRapports.assignLandingRows();
-    const baORows = await resultatsRapports.assignBaORows();
-    const nullSourcesRows = await resultatsRapports.assignNullSourceRows();
-
-    const combinedData = {
-      whatsappData: whatsappRows,
-      instagramData: instagramRows, 
-      messengerData: messengerRows,
-      siteData: siteRows,
-      landingData: landingRows,
-      baOData: baORows,
-      nullSourcesData : nullSourcesRows,
-    };
-    console.log(combinedData);
-    res.json(combinedData);
-  } catch (err) {
-    console.error("Error fetching data: " + err);
-    res.status(500).send("Internal Server Error");
-  }
-});
-
-app.get("/mes_demandes", (req, res) => {
+app.get("/mes_demandes", isAuthenticated, (req, res) => {
   db.query(
     "SELECT * FROM demande ORDER BY dateEnregistrement DESC",
     (err, results) => {
@@ -157,7 +129,6 @@ app.get("/mes_demandes", (req, res) => {
         return;
       }
 
-      // Convert the database results to a JavaScript array
       const dataArray = results.map((row) => {
         return {
           numDemande: row.numDemande,
@@ -174,8 +145,6 @@ app.get("/mes_demandes", (req, res) => {
         };
       });
 
-      // console.log(dataArray);
-
       res.render("mes_demandes", {
         data: dataArray,
         activePage: "mes_demandes",
@@ -185,51 +154,61 @@ app.get("/mes_demandes", (req, res) => {
   );
 });
 
-app.get("/ajouter_produit", (req, res) => {
-  res.render("ajouter_produit", {
-    activePage: "ajouter_produit",
-    firstName: req.session.userFirstName,
+app.get("/ajouter_facture", isAuthenticated, (req, res) => {
+  const getMaxNumFacture =
+    "SELECT MAX(numFacture) AS maxNumFacture FROM facture";
+  db.query(getMaxNumFacture, (err, result) => {
+    if (err) {
+      console.error("Error fetching max numFacture from the database: " + err);
+      return res.status(500).send("Internal Server Error");
+    }
+
+    const numFacture =
+      result[0].maxNumFacture !== null ? result[0].maxNumFacture + 1 : 1;
+
+    res.render("ajouter_facture", {
+      activePage: "ajouter_facture",
+      firstName: req.session.userFirstName,
+      nextNumFacture: numFacture,
+    });
   });
 });
 
-app.get("/mon_stock", (req, res) => {
-  res.render("mon_stock", {
-    activePage: "mon_stock",
-    firstName: req.session.userFirstName,
-  });
+app.get("/mes_factures", isAuthenticated, (req, res) => {
+  db.query(
+    "SELECT * FROM facture ORDER BY dateEnregistrement DESC",
+    (err, results) => {
+      if (err) {
+        console.error("Error fetching data from the database: " + err.stack);
+        res.status(500).send("Internal Server Error");
+        return;
+      }
+
+      const dataArray = results.map((row) => {
+        return {
+          numFacture: row.numFacture,
+          prix: row.prix,
+          quantite: row.quantite,
+          produit: row.produit,
+          nomClient: row.nomClient,
+          numTelephone: row.numTelephone,
+          adresse: row.adresse,
+          typePaiement: row.typePaiement,
+          dateEnregistrement: row.dateEnregistrement,
+        };
+      });
+
+      res.render("mes_factures", {
+        data: dataArray,
+        activePage: "mes_factures",
+        firstName: req.session.userFirstName,
+      });
+    }
+  );
 });
 
-app.get("/ramassage", (req, res) => {
-  res.render("ramassage", {
-    activePage: "ramassage",
-    firstName: req.session.userFirstName,
-  });
-});
+//************************ POST forms Handlers *************//
 
-app.get("/reclamation", (req, res) => {
-  res.render("reclamation", {
-    activePage: "reclamation",
-    firstName: req.session.userFirstName,
-  });
-});
-
-app.get("/factures", (req, res) => {
-  res.render("factures", {
-    activePage: "factures",
-    firstName: req.session.userFirstName,
-  });
-});
-
-app.get("/retour", (req, res) => {
-  res.render("retour", {
-    activePage: "retour",
-    firstName: req.session.userFirstName,
-  });
-});
-
-
-
-//POST handlers
 app.post("/ajouter_demande", (req, res) => {
   const {
     demande,
@@ -251,7 +230,6 @@ app.post("/ajouter_demande", (req, res) => {
     remarque,
   } = req.body;
 
-  // Use the extracted form data to insert into the database
   const insertQuery = `
         INSERT INTO demande (
             numDemande,
@@ -274,7 +252,6 @@ app.post("/ajouter_demande", (req, res) => {
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
-  // Get the next available numDemande from the request body
   const nextNumDemande = req.body.nextNumDemande;
 
   const values = [
@@ -304,95 +281,125 @@ app.post("/ajouter_demande", (req, res) => {
     }
 
     console.log("Data inserted into the database successfully!");
-    // Redirect to a success page or handle as needed
     return res.redirect("/mes_demandes");
   });
 });
 
-// app.post("/ajouter_demande", (req, res) => {
-//   const {
-//     demande,
-//     destinataire,
-//     telephone,
-//     email,
-//     ville,
-//     adresse,
-//     typeClient,
-//     source,
-//     etape,
-//     etatClient,
-//     facture,
-//     produit,
-//     prix,
-//     quantite,
-//     paiement,
-//     description,
-//     remarque,
-//   } = req.body;
+app.post("/ajouter_facture", (req, res) => {
+  const {
+    facture,
+    prix,
+    quantite,
+    produit,
+    nomClient,
+    telephone,
+    adresse,
+    paiement,
+  } = req.body;
 
-//   // Use the extracted form data to insert into the database
-//   const insertQuery = `
-//         INSERT INTO demande (
-//             numDemande,
-//             nomClient,
-//             numTelephone,
-//             email,
-//             ville,
-//             adresse,
-//             typeClient,
-//             source,
-//             etapeActuelle,
-//             etatClient,
-//             numFacture,
-//             produit,
-//             prix,
-//             quantite,
-//             typePaiement,
-//             description,
-//             remarque
-//         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-//     `;
+  const insertQuery = `
+        INSERT INTO facture (
+            numFacture,
+            prix,
+            quantite,
+            produit,
+            nomClient,
+            numTelephone,
+            adresse,
+            typePaiement
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `;
 
-//   // Get the next available numDemande from the request body
-//   const nextNumDemande = req.body.nextNumDemande;
+  const nextNumFacture = req.body.facture;
 
-//   const values = [
-//     nextNumDemande,
-//     destinataire,
-//     telephone,
-//     email,
-//     ville,
-//     adresse,
-//     typeClient,
-//     source,
-//     etape,
-//     etatClient,
-//     facture,
-//     produit,
-//     prix,
-//     quantite,
-//     paiement,
-//     description,
-//     remarque,
-//   ];
+  const values = [
+    nextNumFacture,
+    prix,
+    quantite,
+    produit,
+    nomClient,
+    telephone,
+    adresse,
+    paiement,
+  ];
 
-//   db.query(insertQuery, values, (err, result) => {
-//     if (err) {
-//       console.error("Error inserting data into the database: " + err);
-//       return res.status(500).send("Internal Server Error");
-//     }
+  db.query(insertQuery, values, (err, result) => {
+    if (err) {
+      console.error("Error inserting data into the database: " + err);
+      return res.status(500).send("Internal Server Error");
+    }
 
-//     console.log("Data inserted into the database successfully!");
-//     // Redirect to a success page or handle as needed
-//     return res.redirect("/mes_demandes");
-//   });
-// });
+    console.log("Data inserted into the database successfully!");
+    return res.redirect("/mes_factures");
+  });
+});
 
-// Updated route to handle typeClient filter
+app.get("/modifier_demande", isAuthenticated, (req, res) => {
+  res.render("modifier_demande", {
+    activePage: "nd",
+    firstName: req.session.userFirstName,
+  });
+});
+
+//************************ Ajax Requests Handlers *************//
+
+app.get("/combinedDataSources", async (req, res) => {
+  try {
+    const totalRows = await resultatsRapports.assignTotalRows();
+    const whatsappRows = await resultatsRapports.assignWhatsappRows();
+    const messengerRows = await resultatsRapports.assignMessengerRows();
+    const instagramRows = await resultatsRapports.assignInstagramRows();
+    const siteRows = await resultatsRapports.assignSiteRows();
+    const landingRows = await resultatsRapports.assignLandingRows();
+    const baORows = await resultatsRapports.assignBaORows();
+    const nullSourcesRows = await resultatsRapports.assignNullSourceRows();
+
+    const combinedData = {
+      whatsappData: whatsappRows,
+      instagramData: instagramRows,
+      messengerData: messengerRows,
+      siteData: siteRows,
+      landingData: landingRows,
+      baOData: baORows,
+      nullSourcesData: nullSourcesRows,
+    };
+    console.log(combinedData);
+    res.json(combinedData);
+  } catch (err) {
+    console.error("Error fetching data: " + err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+app.get("/combinedDataEtatClient", async (req, res) => {
+  try {
+    const interesseRows = await resultatsRapports.assignClientInteresseRows();
+    const enDiscussionRows = await resultatsRapports.assignEnDiscussionRows();
+    const attenteDeLogoRows = await resultatsRapports.assignAttenteDeLogoRows();
+    const attenteDeConfirmationRows =
+      await resultatsRapports.assignAttenteDeConfirmationRows();
+    const pasDeReponseRows = await resultatsRapports.assignPasDeReponseRows();
+    const nonInteresseRows = await resultatsRapports.assignNonInteresseRows();
+    console.log(interesseRows);
+    const combinedData = {
+      clientInteresseData: interesseRows,
+      enDiscussionData: enDiscussionRows,
+      attenteDeLogoData: attenteDeLogoRows,
+      attenteDeConfirmationData: attenteDeConfirmationRows,
+      pasDeReponseData: pasDeReponseRows,
+      nonInteresseData: nonInteresseRows,
+    };
+    console.log(combinedData);
+    res.json(combinedData);
+  } catch (err) {
+    console.error("Error fetching data: " + err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 app.post("/mes_demandes/filterTypeClient", (req, res) => {
   const selectedTypeClient = req.body.typeClient;
 
-  // Modify your database query to filter by typeClient
   const query =
     "SELECT * FROM demande WHERE typeClient = ? ORDER BY dateEnregistrement DESC";
 
@@ -411,7 +418,6 @@ app.post("/mes_demandes/filterTypeClient", (req, res) => {
 app.post("/mes_demandes/filterEtapeActuelle", (req, res) => {
   const selectedEtapeActuelle = req.body.etapeActuelle;
 
-  // Modify your database query to filter by EtapeActuelle
   const query =
     "SELECT * FROM demande WHERE etapeActuelle = ? ORDER BY dateEnregistrement DESC";
 
@@ -430,7 +436,6 @@ app.post("/mes_demandes/filterEtapeActuelle", (req, res) => {
 app.post("/mes_demandes/filterSource", (req, res) => {
   const selectedSource = req.body.source;
 
-  // Modify your database query to filter by source
   const query =
     "SELECT * FROM demande WHERE source = ? ORDER BY dateEnregistrement DESC";
 
@@ -449,7 +454,6 @@ app.post("/mes_demandes/filterSource", (req, res) => {
 app.post("/mes_demandes/filterEtatClient", (req, res) => {
   const selectedEtatClient = req.body.etatClient;
 
-  // Modify your database query to filter by etatClient
   const query =
     "SELECT * FROM demande WHERE etatClient = ? ORDER BY dateEnregistrement DESC";
 
@@ -473,7 +477,6 @@ app.post("/mes_demandes/recherche", (req, res) => {
   const allowedCategories = ["nomClient", "numTelephone", "email", "produit"];
 
   if (!allowedCategories.includes(searchCategorie)) {
-    // Handle invalid input, possibly return an error response
     res.status(400).send("Invalid search category");
     return;
   }
@@ -482,6 +485,24 @@ app.post("/mes_demandes/recherche", (req, res) => {
     "SELECT * FROM demande WHERE ?? LIKE ? ORDER BY dateEnregistrement DESC";
 
   db.query(query, [searchCategorie, `%${searchInput}%`], (err, results) => {
+    if (err) {
+      console.error(
+        "Error fetching filtered data from the database: " + err.stack
+      );
+      res.status(500).send("Internal Server Error");
+      return;
+    }
+
+    res.json(results);
+  });
+});
+app.post("/mes_demandes/rechercheFacture", (req, res) => {
+  const searchInput = req.body.searchInput;
+
+  const query =
+    "SELECT * FROM facture WHERE nomClient LIKE ? ORDER BY dateEnregistrement DESC";
+
+  db.query(query, [`%${searchInput}%`], (err, results) => {
     if (err) {
       console.error(
         "Error fetching filtered data from the database: " + err.stack

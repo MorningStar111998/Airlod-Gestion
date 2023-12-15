@@ -1,31 +1,24 @@
 <%- include("partials/header") -%>
-<div class="mes-demandes-header">
-  <h1 class="mes-demandes-title">
+<div class="list-header">
+  <h1 class="list-title">
     Demande<a href="/ajouter_demande"><i class="bx bx-plus"></i></a>
   </h1>
-  <div class="mes-demandes-filters">
-    <div class="filtre-1 mes-demandes-search-bar">
-      <input id="rechercheInput" type="text" class="search-bar-text" />
+  <div class="list-filters">
+    <div class="filtre-1 list-search-bar">
+      <input id="rechercheFactureInputInput" type="text" class="search-bar-text" />
     </div>
-    <div class="filtre-2 mes-demandes-search-category">
-      <select name="search-bar-option" id="rechercheCategorie">
+    <div class="filtre-2 list-search-category">
+      <select name="search-bar-option" id="rechercheFactureCategorie">
         <option value="nomClient">Nom du Client</option>
         <option value="numTelephone">Numéro de Téléphone</option>
         <option value="email">E-mail</option>
         <option value="produit">Produit</option>
       </select>
     </div>
-    <!-- <div class="filtre-2 mes-demandes-search-category">
-      <select name="search-bar-option" id="rechercheCategorie">
-        <option value="search-nomClient">Nom du Client</option>
-        <option value="search-tel">Numéro de Téléphone</option>
-        <option value="search-email">E-mail</option>
-        <option value="search-produit">Produit</option>
-      </select>
-    </div> -->
-    <div class="filtre-3 mes-demandes-search-button">
-      <button id="search-button" type="" class="">
-        <i class="bx bx-search"></i>
+    
+    <div class="filtre-3 list-search-button">
+      <button type="" class="reloadButton">
+        <i class="bx bx-refresh"></i>
       </button>
     </div>
     <div class="span-2 filtre-4">
@@ -88,8 +81,8 @@
     </div>
   </div>
 </div>
-<div class="table-demande-container">
-  <table id="table-demande">
+<div class="table-container">
+  <table id="table">
     <colgroup>
       <col class="demande" span="1" style="width: 9%" />
       <col class="nom-client" span="1" style="width: 10%" />
@@ -103,35 +96,35 @@
       <col class="num-facture" span="1" style="width: 8%" />
     </colgroup>
     <thead>
-      <tr id="table-demande-header">
-        <th data-column="numDemande" data-order="DESC">
+      <tr id="table-header">
+        <th class="demandeTableHeader" data-column="numDemande" data-order="DESC">
           N° Demande <span class="arrow arrow-numDemande">&#9660;</span>
         </th>
-        <th data-column="nomClient" data-order="DESC">
+        <th class="demandeTableHeader" data-column="nomClient" data-order="DESC">
           Nom du Client <span class="arrow arrow-nomClient">&#9660;</span>
         </th>
-        <th data-column="numTelephone" data-order="DESC">
+        <th class="demandeTableHeader" data-column="numTelephone" data-order="DESC">
           Telephone <span class="arrow arrow-numTelephone">&#9660;</span>
         </th>
-        <th data-column="typeClient" data-order="DESC">
+        <th class="demandeTableHeader" data-column="typeClient" data-order="DESC">
           Type de Client <span class="arrow arrow-typeClient">&#9660;</span>
         </th>
-        <th data-column="etapeActuelle" data-order="DESC">
+        <th class="demandeTableHeader" data-column="etapeActuelle" data-order="DESC">
           Etape Actuelle <span class="arrow arrow-etapeActuelle">&#9660;</span>
         </th>
-        <th data-column="produit" data-order="DESC">
+        <th class="demandeTableHeader" data-column="produit" data-order="DESC">
           Produit <span class="arrow arrow-produit">&#9660;</span>
         </th>
-        <th data-column="quantite" data-order="DESC">
+        <th class="demandeTableHeader" data-column="quantite" data-order="DESC">
           Quantité <span class="arrow arrow-quantite">&#9660;</span>
         </th>
-        <th data-column="email" data-order="DESC">
+        <th class="demandeTableHeader" data-column="email" data-order="DESC">
           Email <span class="arrow arrow-email">&#9660;</span>
         </th>
-        <th data-column="source" data-order="DESC">
+        <th class="demandeTableHeader" data-column="source" data-order="DESC">
           Source <span class="arrow arrow-source">&#9660;</span>
         </th>
-        <th data-column="numFacture" data-order="DESC">
+        <th class="demandeTableHeader" data-column="numFacture" data-order="DESC">
           N° Facture <span class="arrow arrow-numFacture">&#9660;</span>
         </th>
       </tr>
@@ -154,14 +147,7 @@
       <% }); %>
     </tbody>
   </table>
-  <!-- <div class="mes-demandes-footer">
-    <div class="footer-page-control">
-      <div class="first-page"><i class="bx bx-skip-previous"></i></div>
-      <div class="previous"><i class="bx bxs-left-arrow"></i></div>
-      <div class="next"><i class="bx bxs-right-arrow"></i></div>
-      <div class="last-page"><i class="bx bx-skip-next"></i></div>
-    </div>
-  </div> -->
+
   
 </div>
 

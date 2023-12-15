@@ -22,10 +22,11 @@ $("#afficherRapports").on("click", function () {
             "Site",
             "Landing Page",
             "Bouche à Oreil",
+            "Non Défini",
           ],
           datasets: [
             {
-              label: "# of Votes",
+              label: "Origine des Clients",
               data: [
                 whatsappNumb,
                 messengerNumb,
@@ -34,6 +35,15 @@ $("#afficherRapports").on("click", function () {
                 landingNumb,
                 baONumb,
                 nullSourcesNumb,
+              ],
+              backgroundColor: [
+                "#65B741",
+                "#009ef7",
+                "#f27a1d",
+                "#000000",
+                "#a1313c",
+                "#f3f1f4",
+                "#7c7c7c",
               ],
               borderWidth: 1,
             },

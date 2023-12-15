@@ -1,0 +1,81 @@
+<%- include("partials/header") -%>
+<div id="list-header" class="list-header">
+  <h1 class="list-title">
+    Facture<a href="/ajouter_facture"><i class="bx bx-plus"></i></a>
+  </h1>
+  <div id="list-filters" class="list-filters">
+    <div class="filtre-1 list-search-bar">
+      <input
+        id="rechercheFactureInput"
+        type="text"
+        class="search-bar-text"
+        placeholder="Nom du Client"
+      />
+    </div>
+    <div class="filtre-3 list-search-button">
+      <button type="" class="reloadButton">
+        <i class="bx bx-refresh"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="table-container">
+  <table id="table">
+    <colgroup>
+      <col class="num-facture" span="1" style="width: 12.5%" />
+      <col class="prix" span="1" style="width: 12.5%" />
+      <col class="quantite" span="1" style="width: 12.5%" />
+      <col class="produit" span="1" style="width: 12.5%" />
+      <col class="nom-client" span="1" style="width: 12.5%" />
+      <col class="telephone" span="1" style="width: 12.5%" />
+      <col class="adresse" span="1" style="width: 12.5%" />
+      <col class="typePaiement" span="1" style="width: 12.5%" />
+    </colgroup>
+    <thead>
+      <tr id="table-header">
+        <th class="tableFactureHeader" data-column="numFacture" data-order="DESC">
+          N° Facture <span class="arrow arrow-numFacture">&#9660;</span>
+        </th>
+        <th class="tableFactureHeader" data-column="prix" data-order="DESC">
+          Prix <span class="arrow arrow-prix">&#9660;</span>
+        </th>
+        <th class="tableFactureHeader" data-column="quantite" data-order="DESC">
+          Quantité <span class="arrow arrow-quantite">&#9660;</span>
+        </th>
+        <th class="tableFactureHeader" data-column="produit" data-order="DESC">
+          Produit <span class="arrow arrow-produit">&#9660;</span>
+        </th>
+        <th class="tableFactureHeader" data-column="nomClient" data-order="DESC">
+          Nom du Client <span class="arrow arrow-nomClient">&#9660;</span>
+        </th>
+        <th class="tableFactureHeader" data-column="numTelephone" data-order="DESC">
+          Telephone <span class="arrow arrow-numTelephone">&#9660;</span>
+        </th>
+        <th class="tableFactureHeader" data-column="adresse" data-order="DESC">
+          Adresse <span class="arrow arrow-adresse">&#9660;</span>
+        </th>
+        <th class="tableFactureHeader" data-column="typePaiement" data-order="DESC">
+          Type de Paiement <span class="arrow arrow-typePaiement">&#9660;</span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Add your data rows here -->
+      <% data.forEach(function(row) { %>
+      <tr class="table-row">
+        <td><%= row.numFacture %></td>
+        <td><%= row.prix %></td>
+        <td><%= row.quantite %></td>
+        <td><%= row.produit %></td>
+        <td><%= row.nomClient %></td>
+        <td><%= row.numTelephone %></td>
+        <td><%= row.adresse %></td>
+        <td><%= row.typePaiement %></td>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</div>
+
+<%- include("partials/footer") -%>

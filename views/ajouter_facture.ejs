@@ -1,0 +1,72 @@
+<%- include("partials/header") -%>
+
+<section class="ajouter-facture">
+  <div class="ajouter-facture-header">
+    <h3>Nouvelle Facture <i class="bx bx-plus"></i></h3>
+    <p>Veuillez remplir tous les champs obligatoire et cliquer sur ajouter !</p>
+  </div>
+  <div class="ajouter-facture-formulaire">
+    <form action="/ajouter_facture" method="POST" class="form">
+      <div class="input-fields-container">
+        <div class="facture-col">
+          <div class="input-box span-1">
+            <label for="facture">N° Facture</label>
+            <input
+              type="number"
+              name="facture"
+              value="<%= nextNumFacture %>"
+              required
+            />
+          </div>
+          <div class="input-box span-1">
+            <label for="prix">Prix</label>
+            <input type="number" name="prix" placeholder="Dhs" />
+          </div>
+          <div class="input-box span-1">
+            <label for="quantite">Quantité</label>
+            <input type="number" name="quantite" />
+          </div>
+          <div class="input-box span-1">
+            <label for="produit">Produit</label>
+            <input type="text" name="produit" required />
+          </div>
+        </div>
+
+        <div class="facture-col">
+          <div class="input-box span-1">
+            <label class="required-field" for="nomClient"
+              >Nom du Client</label
+            >
+            <input type="text" name="nomClient" required />
+          </div>
+          <div class="input-box span-1">
+            <label class="required-field" for="telephone"
+              >Numéro de Téléphone</label
+            >
+            <input type="tel" name="telephone" required />
+          </div>
+          <div class="input-box span-1">
+            <label for="adresse">Adresse</label>
+            <input type="text" name="adresse" required />
+          </div>
+          <div class="input-box span-1">
+            <label for="paiement">Type de Paiement</label>
+            <select name="paiement" id="paiement">
+              <option disabled selected value="">
+                -- Sélectionner une option --
+              </option>
+              <option value="virement">Viremement</option>
+              <option value="livraison">A la Livraison</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <hr />
+
+      <button class="facture-form-button" type="submit">Ajouter</button>
+    </form>
+  </div>
+</section>
+
+<%- include("partials/footer") -%>
+

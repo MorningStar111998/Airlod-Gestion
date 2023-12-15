@@ -10,7 +10,7 @@
 
 #dashboard-icon{
     position: absolute;
-    /* width: 20%; */
+   
     right: 10px;
     top: 0;
     opacity: 0.1;
@@ -48,8 +48,7 @@
 
 .accueil-kpi{
     background-color: white;
-    /* height: 400px;
-    width: 500px; */
+
     border-radius: 10px;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
     padding: 20px;
@@ -59,14 +58,18 @@
 
 
 .kpi-1{
+    grid-column: span 2;
+
 }
 
-.kpi-2{
-    /* min-height: 600px; */
+.kpi-1 canvas {
+    margin: 0 auto;
+    width: 80%;
 }
+
+
 
 .kpi-3{
-    grid-column: span 2;
     background-color: #1e293b;
 
 

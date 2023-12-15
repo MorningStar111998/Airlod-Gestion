@@ -1,20 +1,20 @@
-.mes-demandes-header {
+.list-header {
   padding: 30px;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
 }
 
-.mes-demandes-header a {
+.list-header a {
   border-radius: 50%;
   margin: 10px 10px 10px 10px;
 }
 
-.mes-demandes-header a:hover {
+.list-header a:hover {
   background-color: #eaedf1;
 }
 
-.mes-demandes-filters {
+.list-filters {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   grid-template-rows: repeat(2, 1fr);
@@ -34,25 +34,26 @@
   grid-column: span 1;
 }
 
-.mes-demandes-search-button button {
-  width: 100%;
+.list-search-button button {
+  width: 50%;
   height: 50%;
   margin: auto;
   margin-top: 4%;
-  color: white;
-  background-color: #2f353e;
+  /* color: white; */
+  color: #2f353e;
   border-radius: 30px;
   font-size: 26px;
+  border: none;
 }
 
-.mes-demandes-filters label {
+.list-filters label {
   display: block;
   font-size: 11px;
   margin: 4px 0px 4px 4px;
 }
 
-.mes-demandes-filters select,
-.mes-demandes-filters input {
+.list-filters select,
+.list-filters input {
   width: 100%;
   padding: 14px;
   border: solid #94a3b8 1px;
@@ -62,33 +63,32 @@
   color: #94a3b8;
 }
 
-.table-demande-container table {
+.table-container table {
   width: 99%;
   border-collapse: collapse;
   margin-top: 20px;
   margin-left: 0.9%;
   background-color: white;
-  /* overflow-x: scroll; */
+
   box-sizing: content-box;
 }
 
-.table-demande-container th,
-.table-demande-container td {
+.table-container th,
+.table-container td {
   position: relative;
   border: 1px solid #94a3b8;
-  /* border-left: none;
-  border-right: none; */
+
   padding: 8px;
   text-align: left;
   overflow: hidden;
   
 }
 
-.table-demande-container th {
+.table-container th {
   background-color: #e2e8f0;
 
 }
-.table-demande-container th:hover {
+.table-container th:hover {
   cursor: pointer;
 }
 
@@ -96,7 +96,7 @@
   max-width: 50px;
 }
 
-.mes-demandes-footer {
+.list-footer {
   width: 100%;
 }
 
@@ -112,7 +112,7 @@
   font-size: 30px;
 }
 
-/****************************Arrows Table*/
+/****************************Arrows Table***********/
 
 .arrow{
   font-size: 8px;
