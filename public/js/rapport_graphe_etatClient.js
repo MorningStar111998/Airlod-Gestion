@@ -3,7 +3,7 @@ $("#afficherRapports").on("click", function () {
     url: "/combinedDataEtatClient",
     type: "GET",
     success: function (data) {
-      const clientInteresseNumb = data.clientInteresseData;
+      const clientInteresseNumb = data.interesseData;
         const enDiscussionNumb = data.enDiscussionData;
         const attenteDeLogoNumb = data.attenteDeLogoData;
         const attenteDeConfirmationNumb = data.attenteDeConfirmationData;

@@ -1,7 +1,7 @@
 const express = require("express");
 const ejs = require("ejs");
 const session = require("express-session");
-const db = require("./utils/database");
+const pool = require("./utils/database");
 const resultatsRapports = require("./utils/resultats_rapports");
 const passport = require("passport");
 const PORT = process.env.PORT || 3309;
@@ -39,14 +39,6 @@ const users = [
     lastName: process.env.USER_2_LASTNAME,
     email: process.env.USER_2_EMAIL,
     password: process.env.USER_2_PASSWORD,
-  },
-  {
-    id: 3,
-    username: process.env.USER_3_USERNAME,
-    firstName: process.env.USER_3_FIRSTNAME,
-    lastName: process.env.USER_3_LASTNAME,
-    email: process.env.USER_3_EMAIL,
-    password: process.env.USER_3_PASSWORD,
   },
   {
     id: 4,
@@ -120,63 +112,42 @@ app.get("/accueil", isAuthenticated, (req, res) => {
 app.get("/ajouter_demande", isAuthenticated, (req, res) => {
   const getMaxNumDemandeQuery =
     "SELECT MAX(numDemande) AS maxNumDemande FROM demande";
-  db.query(getMaxNumDemandeQuery, (err, result) => {
+  pool.getConnection((err, connection) => {
     if (err) {
-      console.error("Error fetching max numDemande from the database: " + err);
+      console.error("Error getting connection from pool :", err);
       return res.status(500).send("Internal Server Error");
     }
+    connection.query(getMaxNumDemandeQuery, (err, result) => {
+      connection.release(); // Release the connection back to the pool
 
-    const numDemande =
-      result[0].maxNumDemande !== null ? result[0].maxNumDemande + 1 : 1;
+      if (err) {
+        console.error(
+          "Error fetching max numDemande from the database: " + err
+        );
+        return res.status(500).send("Internal Server Error");
+      }
 
-    res.render("ajouter_demande", {
-      activePage: "ajouter_demande",
-      firstName: req.session.userFirstName,
-      lastName: req.session.userLastName,
-      nextNumDemande: numDemande,
+      const numDemande =
+        result[0].maxNumDemande !== null ? result[0].maxNumDemande + 1 : 1;
+
+      res.render("ajouter_demande", {
+        activePage: "ajouter_demande",
+        firstName: req.session.userFirstName,
+        lastName: req.session.userLastName,
+        nextNumDemande: numDemande,
+      });
     });
   });
 });
 
+
+
 app.get("/mes_demandes", isAuthenticated, (req, res) => {
-  db.query(
-    "SELECT * FROM demande ORDER BY dateEnregistrement DESC",
-    (err, results) => {
-      if (err) {
-        console.error("Error fetching data from the database: " + err.stack);
-        res.status(500).send("Internal Server Error");
-        return;
-      }
-
-      const dataArray = results.map((row) => {
-        return {
-          numDemande: row.numDemande,
-          nomClient: row.nomClient,
-          numTelephone: row.numTelephone,
-          typeClient: row.typeClient,
-          etapeActuelle: row.etapeActuelle,
-          produit: row.produit,
-          quantite: row.quantite,
-          email: row.email,
-          source: row.source,
-          etatClient: row.etatClient,
-          ville: row.ville,
-          adresse: row.adresse,
-          prix: row.prix,
-          typePaiement: row.typePaiement,
-          numFacture: row.numFacture,
-          dateEnregistrement: row.dateEnregistrement,
-        };
-      });
-
-      res.render("mes_demandes", {
-        data: dataArray,
-        activePage: "mes_demandes",
-        firstName: req.session.userFirstName,
-        lastName: req.session.userLastName,
-      });
-    }
-  );
+  res.render("mes_demandes", {
+    activePage: "mes_demandes",
+    firstName: req.session.userFirstName,
+    lastName: req.session.userLastName,
+  });
 });
 
 app.get("/ajouter_facture", isAuthenticated, (req, res) => {
@@ -187,38 +158,14 @@ app.get("/ajouter_facture", isAuthenticated, (req, res) => {
   });
 });
 
+
+
 app.get("/mes_factures", isAuthenticated, (req, res) => {
-  db.query(
-    "SELECT * FROM facture ORDER BY dateEnregistrement DESC",
-    (err, results) => {
-      if (err) {
-        console.error("Error fetching data from the database: " + err.stack);
-        res.status(500).send("Internal Server Error");
-        return;
-      }
-
-      const dataArray = results.map((row) => {
-        return {
-          numFacture: row.numFacture,
-          prix: row.prix,
-          quantite: row.quantite,
-          produit: row.produit,
-          nomClient: row.nomClient,
-          numTelephone: row.numTelephone,
-          adresse: row.adresse,
-          typePaiement: row.typePaiement,
-          dateEnregistrement: row.dateEnregistrement,
-        };
-      });
-
-      res.render("mes_factures", {
-        data: dataArray,
-        activePage: "mes_factures",
-        firstName: req.session.userFirstName,
-        lastName: req.session.userLastName,
-      });
-    }
-  );
+  res.render("mes_factures", {
+    activePage: "mes_factures",
+    firstName: req.session.userFirstName,
+    lastName: req.session.userLastName,
+  });
 });
 
 //************************ POST forms Handlers *************//
@@ -287,15 +234,22 @@ app.post("/ajouter_demande", (req, res) => {
     description,
     remarque,
   ];
-
-  db.query(insertQuery, values, (err, result) => {
+  pool.getConnection((err, connection) => {
     if (err) {
-      console.error("Error inserting data into the database: " + err);
+      console.error("Error getting connection from pool :", err);
       return res.status(500).send("Internal Server Error");
     }
+    connection.query(insertQuery, values, (err, result) => {
+      connection.release(); // Release the connection back to the pool
 
-    console.log("Data inserted into the database successfully!");
-    return res.redirect("/mes_demandes");
+      if (err) {
+        console.error("Error inserting data into the database: " + err);
+        return res.status(500).send("Internal Server Error");
+      }
+
+      console.log("Data inserted into the database successfully!");
+      return res.redirect("/mes_demandes");
+    });
   });
 });
 
@@ -336,15 +290,22 @@ app.post("/ajouter_facture", (req, res) => {
     adresse,
     paiement,
   ];
-
-  db.query(insertQuery, values, (err, result) => {
+  pool.getConnection((err, connection) => {
     if (err) {
-      console.error("Error inserting data into the database: " + err);
+      console.error("Error getting connection from pool :", err);
       return res.status(500).send("Internal Server Error");
     }
+    connection.query(insertQuery, values, (err, result) => {
+      connection.release(); // Release the connection back to the pool
 
-    console.log("Data inserted into the database successfully!");
-    return res.redirect("/mes_factures");
+      if (err) {
+        console.error("Error inserting data into the database: " + err);
+        return res.status(500).send("Internal Server Error");
+      }
+
+      console.log("Data inserted into the database successfully!");
+      return res.redirect("/mes_factures");
+    });
   });
 });
 
@@ -360,23 +321,24 @@ app.get("/modifier_demande", isAuthenticated, (req, res) => {
 
 app.get("/combinedDataSources", async (req, res) => {
   try {
-    const totalRows = await resultatsRapports.assignTotalRows();
-    const whatsappRows = await resultatsRapports.assignWhatsappRows();
-    const messengerRows = await resultatsRapports.assignMessengerRows();
-    const instagramRows = await resultatsRapports.assignInstagramRows();
-    const siteRows = await resultatsRapports.assignSiteRows();
-    const landingRows = await resultatsRapports.assignLandingRows();
-    const baORows = await resultatsRapports.assignBaORows();
-    const nullSourcesRows = await resultatsRapports.assignNullSourceRows();
-
+    const rowsCount = await resultatsRapports.assignSourcesRows();
+    const {
+      whatsappRows: whatsappData,
+      instagramRows: instagramData,
+      messengerRows: messengerData,
+      siteRows: siteData,
+      landingRows: landingData,
+      baORows: baOData,
+      nullSourcesRows: nullSourcesData,
+    } = rowsCount;
     const combinedData = {
-      whatsappData: whatsappRows,
-      instagramData: instagramRows,
-      messengerData: messengerRows,
-      siteData: siteRows,
-      landingData: landingRows,
-      baOData: baORows,
-      nullSourcesData: nullSourcesRows,
+      whatsappData,
+      instagramData,
+      messengerData,
+      siteData,
+      landingData,
+      baOData,
+      nullSourcesData,
     };
     res.json(combinedData);
   } catch (err) {
@@ -387,20 +349,24 @@ app.get("/combinedDataSources", async (req, res) => {
 
 app.get("/combinedDataEtatClient", async (req, res) => {
   try {
-    const interesseRows = await resultatsRapports.assignClientInteresseRows();
-    const enDiscussionRows = await resultatsRapports.assignEnDiscussionRows();
-    const attenteDeLogoRows = await resultatsRapports.assignAttenteDeLogoRows();
-    const attenteDeConfirmationRows =
-      await resultatsRapports.assignAttenteDeConfirmationRows();
-    const pasDeReponseRows = await resultatsRapports.assignPasDeReponseRows();
-    const nonInteresseRows = await resultatsRapports.assignNonInteresseRows();
+    const rowsCount = await resultatsRapports.assignEtatClientRows();
+
+    const {
+      interesseRows: interesseData,
+      enDiscussionRows: enDiscussionData,
+      attenteDeLogoRows: attenteDeLogoData,
+      attenteDeConfirmationRows: attenteDeConfirmationData,
+      pasDeReponseRows: pasDeReponseData,
+      nonInteresseRows: nonInteresseData,
+    } = rowsCount;
+
     const combinedData = {
-      clientInteresseData: interesseRows,
-      enDiscussionData: enDiscussionRows,
-      attenteDeLogoData: attenteDeLogoRows,
-      attenteDeConfirmationData: attenteDeConfirmationRows,
-      pasDeReponseData: pasDeReponseRows,
-      nonInteresseData: nonInteresseRows,
+      interesseData,
+      enDiscussionData,
+      attenteDeLogoData,
+      attenteDeConfirmationData,
+      pasDeReponseData,
+      nonInteresseData,
     };
     res.json(combinedData);
   } catch (err) {
@@ -409,121 +375,51 @@ app.get("/combinedDataEtatClient", async (req, res) => {
   }
 });
 
-app.post("/mes_demandes/filterTypeClient", (req, res) => {
-  const selectedTypeClient = req.body.typeClient;
 
-  const query =
-    "SELECT * FROM demande WHERE typeClient = ? ORDER BY dateEnregistrement DESC";
-
-  db.query(query, [selectedTypeClient], (err, results) => {
+app.get("/mes_demandes/table", (req, res) => {
+  pool.getConnection((err, connection) => {
     if (err) {
-      console.error(
-        "Error fetching filtered data from the database: " + err.stack
-      );
+      console.error("Error getting connection from pool:", err);
       res.status(500).send("Internal Server Error");
       return;
     }
 
-    res.json(results);
-  });
-});
-app.post("/mes_demandes/filterEtapeActuelle", (req, res) => {
-  const selectedEtapeActuelle = req.body.etapeActuelle;
+    connection.query(
+      "SELECT * FROM demande ORDER BY dateEnregistrement DESC",
+      (queryErr, results) => {
+        connection.release(); // Release the connection back to the pool
 
-  const query =
-    "SELECT * FROM demande WHERE etapeActuelle = ? ORDER BY dateEnregistrement DESC";
-
-  db.query(query, [selectedEtapeActuelle], (err, results) => {
-    if (err) {
-      console.error(
-        "Error fetching filtered data from the database: " + err.stack
-      );
-      res.status(500).send("Internal Server Error");
-      return;
-    }
-
-    res.json(results);
-  });
-});
-app.post("/mes_demandes/filterSource", (req, res) => {
-  const selectedSource = req.body.source;
-
-  const query =
-    "SELECT * FROM demande WHERE source = ? ORDER BY dateEnregistrement DESC";
-
-  db.query(query, [selectedSource], (err, results) => {
-    if (err) {
-      console.error(
-        "Error fetching filtered data from the database: " + err.stack
-      );
-      res.status(500).send("Internal Server Error");
-      return;
-    }
-
-    res.json(results);
-  });
-});
-app.post("/mes_demandes/filterEtatClient", (req, res) => {
-  const selectedEtatClient = req.body.etatClient;
-
-  const query =
-    "SELECT * FROM demande WHERE etatClient = ? ORDER BY dateEnregistrement DESC";
-
-  db.query(query, [selectedEtatClient], (err, results) => {
-    if (err) {
-      console.error(
-        "Error fetching filtered data from the database: " + err.stack
-      );
-      res.status(500).send("Internal Server Error");
-      return;
-    }
-
-    res.json(results);
+        if (queryErr) {
+          console.error("Error fetching data from the database:", queryErr);
+          res.status(500).send("Internal Server Error");
+          return;
+        }
+        res.json(results);
+      }
+    );
+    
   });
 });
 
-app.post("/mes_demandes/recherche", (req, res) => {
-  const searchInput = req.body.searchInput;
-  const searchCategorie = req.body.searchCategorie;
-
-  const allowedCategories = ["nomClient", "numTelephone", "email", "produit"];
-
-  if (!allowedCategories.includes(searchCategorie)) {
-    res.status(400).send("Invalid search category");
-    return;
-  }
-
-  const query =
-    "SELECT * FROM demande WHERE ?? LIKE ? ORDER BY dateEnregistrement DESC";
-
-  db.query(query, [searchCategorie, `%${searchInput}%`], (err, results) => {
+app.get("/mes_factures/table", (req, res) => {
+  pool.getConnection((err, connection) => {
     if (err) {
-      console.error(
-        "Error fetching filtered data from the database: " + err.stack
-      );
-      res.status(500).send("Internal Server Error");
-      return;
+      console.error("Error getting connection from pool :", err);
+      return res.status(500).send("Internal Server Error");
     }
+    connection.query(
+      "SELECT * FROM facture ORDER BY dateEnregistrement",
+      (err, results) => {
+        connection.release(); // Release the connection back to the pool
 
-    res.json(results);
-  });
-});
-app.post("/mes_demandes/rechercheFacture", (req, res) => {
-  const searchInput = req.body.searchInput;
-
-  const query =
-    "SELECT * FROM facture WHERE nomClient LIKE ? ORDER BY dateEnregistrement DESC";
-
-  db.query(query, [`%${searchInput}%`], (err, results) => {
-    if (err) {
-      console.error(
-        "Error fetching filtered data from the database: " + err.stack
-      );
-      res.status(500).send("Internal Server Error");
-      return;
-    }
-
-    res.json(results);
+        if (err) {
+          console.error("Error fetching data from the database: " + err.stack);
+          res.status(500).send("Internal Server Error");
+          return;
+        }
+        res.json(results);
+      }
+    );
   });
 });
 
