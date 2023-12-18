@@ -3,30 +3,14 @@
   <h1 class="list-title">
     Demande<a href="/ajouter_demande"><i class="bx bx-plus"></i></a>
   </h1>
-  <div class="list-filters">
-    <div class="filtre-1 list-search-bar">
-      <input id="rechercheFactureInputInput" type="text" class="search-bar-text" />
-    </div>
-    <div class="filtre-2 list-search-category">
-      <select name="search-bar-option" id="rechercheFactureCategorie">
-        <option value="nomClient">Nom du Client</option>
-        <option value="numTelephone">Numéro de Téléphone</option>
-        <option value="email">E-mail</option>
-        <option value="produit">Produit</option>
-      </select>
-    </div>
-    
-    <div class="filtre-3 list-search-button">
-      <button type="" class="reloadButton">
-        <i class="bx bx-refresh"></i>
-      </button>
-    </div>
-    
+  <div id="list-search-button">
+    <button type="" class="reloadButton">
+      <i class="bx bx-refresh"></i>
+    </button>
   </div>
 </div>
 <div class="table-container">
-    <div id="tableDemandes"></div>
+  <div id="tableDemandes"></div>
 </div>
-
 
 <%- include("partials/footer") -%>

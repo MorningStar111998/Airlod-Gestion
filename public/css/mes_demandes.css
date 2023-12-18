@@ -3,6 +3,7 @@
   display: flex;
   flex-direction: row;
   align-items: flex-start;
+  justify-content: center;
 }
 
 .list-header a {
@@ -13,57 +14,14 @@
 .list-header a:hover {
   background-color: #eaedf1;
 }
-
-.list-filters {
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  flex: 1;
-  gap: 10px;
-  padding: 0px 60px 0px 60px;
-}
-
-.filtre-1 {
-  grid-column: span 5;
-}
-.filtre-2 {
-  grid-column: span 2;
-}
-
-.filtre-3 {
-  grid-column: span 1;
-}
-
-.list-search-button button {
-  width: 50%;
+#list-search-button button {
+  width: 40px;
   height: 50%;
-  margin: auto;
-  margin-top: 4%;
-  /* color: white; */
   color: #2f353e;
   border-radius: 30px;
   font-size: 26px;
   border: none;
   background: none;
-}
-
-
-
-.list-filters label {
-  display: block;
-  font-size: 11px;
-  margin: 4px 0px 4px 4px;
-}
-
-.list-filters select,
-.list-filters input {
-  width: 100%;
-  padding: 14px;
-  border: solid #94a3b8 1px;
-  border-radius: 8px;
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
-  height: 50px;
-  color: #94a3b8;
 }
 .table-container{
   overflow: scroll;
@@ -71,84 +29,6 @@
   height: 500px;
 }
 
-
-.table-container table {
-  width: 100%;
-  /* border-collapse: collapse; */
-  margin-top: 20px;
-  margin-left: 0.9%;
-  background-color: white;
-
-  box-sizing: content-box;
-}
-
-.table-resize
-
-.table-container th,
-.table-container td {
-  position: relative;
-  border: 1px solid #94a3b8;
-
-  padding: 8px;
-  text-align: left;
-  overflow: hidden;
-}
-
-th{
-  min-width: 160px;
-  padding: 10px 8px;
-  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.1), 0px -3px 5px rgba(0, 0, 0, 0.1);
-  border: none;
-}
-
-td{
-  border-top: none;
-}
-
-.table-container th {
-  background-color: #e2e8f0;
-}
-#table{
-  margin-top: 0px;
-  margin-left: 0px;
-}
-#table td {
-  padding-left: auto 4px !important;
-}
-
-.table-container th:hover {
-  cursor: pointer;
-}
-.table-container th:hover .arrow {
-  opacity: 1;
-}
-
-.first-column {
-  max-width: 50px;
-}
-
-.list-footer {
-  width: 100%;
-}
-
-.footer-page-control {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 15px;
-}
-
-.first-page,
-.last-page {
-  font-size: 30px;
-}
-
-/****************************Arrows Table***********/
-
-.arrow {
-  font-size: 8px;
-  position: absolute;
-  padding-top: 5px;
-  padding-left: 6px;
-  opacity: 0;
+.tabulator-header{
+  background-color: rgb(23, 61, 48);
 }
