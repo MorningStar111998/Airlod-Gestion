@@ -52,3 +52,13 @@ body {
 #login-logo {
   width: 100%;
 }
+
+#login-footer{
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  text-align: center;
+  color: black;
+  background-color: white;
+  padding-top: 10px;
+}

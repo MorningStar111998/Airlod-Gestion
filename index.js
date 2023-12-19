@@ -140,8 +140,6 @@ app.get("/ajouter_demande", isAuthenticated, (req, res) => {
   });
 });
 
-
-
 app.get("/mes_demandes", isAuthenticated, (req, res) => {
   res.render("mes_demandes", {
     activePage: "mes_demandes",
@@ -157,8 +155,6 @@ app.get("/ajouter_facture", isAuthenticated, (req, res) => {
     lastName: req.session.userLastName,
   });
 });
-
-
 
 app.get("/mes_factures", isAuthenticated, (req, res) => {
   res.render("mes_factures", {
@@ -375,7 +371,6 @@ app.get("/combinedDataEtatClient", async (req, res) => {
   }
 });
 
-
 app.get("/mes_demandes/table", (req, res) => {
   pool.getConnection((err, connection) => {
     if (err) {
@@ -385,7 +380,7 @@ app.get("/mes_demandes/table", (req, res) => {
     }
 
     connection.query(
-      "SELECT * FROM demande ORDER BY dateEnregistrement DESC",
+      "SELECT numDemande, nomClient, numTelephone, email, typeClient, etapeActuelle, produit, quantite, prix, etatClient, ville, adresse, source, typePaiement, numFacture, dateEnregistrement FROM demande ORDER BY dateEnregistrement DESC",
       (queryErr, results) => {
         connection.release(); // Release the connection back to the pool
 
@@ -397,7 +392,6 @@ app.get("/mes_demandes/table", (req, res) => {
         res.json(results);
       }
     );
-    
   });
 });
 
@@ -408,7 +402,7 @@ app.get("/mes_factures/table", (req, res) => {
       return res.status(500).send("Internal Server Error");
     }
     connection.query(
-      "SELECT * FROM facture ORDER BY dateEnregistrement",
+      "SELECT numFacture, nomClient, numTelephone, produit, quantite, prix, adresse, typePaiement, dateEnregistrement FROM facture ORDER BY dateEnregistrement",
       (err, results) => {
         connection.release(); // Release the connection back to the pool
 

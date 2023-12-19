@@ -14,7 +14,7 @@
 .list-header a:hover {
   background-color: #eaedf1;
 }
-#list-search-button button {
+.list-search-button button {
   width: 40px;
   height: 50%;
   color: #2f353e;
@@ -28,7 +28,30 @@
   width: 100%;
   height: 500px;
 }
+.table-container thead{
+  background-color: #8264fd;
+  color: white;
+}
+.table-container thead tr th{
+  min-width: 80px;
+}
 
 .tabulator-header{
   background-color: rgb(23, 61, 48);
+}
+
+.dataTables_length{
+  margin-left: 20px;
+}
+
+.dataTables_filter{
+  margin-right: 20px;
+}
+
+.even{
+  background-color: #ffffff;
+}
+
+.odd{
+  background-color: #f2f2f2;
 }
