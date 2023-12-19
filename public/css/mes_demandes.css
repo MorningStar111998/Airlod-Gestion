@@ -29,6 +29,14 @@
   height: 500px;
 }
 
-.tabulator-header{
-  background-color: rgb(23, 61, 48);
+#tableFactures .tabulator-headers .tabulator-col.tabulator-sortable.tabulator-col-sorter-element{
+  background-color: #4a73e4;
 }
+
+.tabulator-col-title{
+  color: white;
+}
+#tableDemandes .tabulator-headers .tabulator-col.tabulator-sortable.tabulator-col-sorter-element{
+  background-color: #4a73e4;
+}
+

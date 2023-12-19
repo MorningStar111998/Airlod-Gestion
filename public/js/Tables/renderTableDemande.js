@@ -11,12 +11,13 @@ $.ajax({
         });
       },
       data: tabledata, //load row data from array
+      selectable: true,
       layout: "fitDataTable", //fit columns to width of table
       responsiveLayout: "true", //hide columns that don't fit on the table
       addRowPos: "top", //when adding a new row, add it to the top of the table
       history: true, //allow undo and redo actions on the table
       pagination: "local", //paginate the data
-      paginationSize: 15, //allow 7 rows per page of data
+      paginationSize: 14, //allow 7 rows per page of data
       paginationCounter: "rows", //display count of paginated rows in footer
       movableColumns: false, //allow column order to be changed
       initialSort: [
@@ -27,6 +28,8 @@ $.ajax({
         tooltip: true, //show tool tips on cells
       },
       columns: [
+        { title: "" },
+
         { title: "N° Demande", field: "numDemande", editor: false },
         { title: "Nom Client", field: "nomClient", editor: false },
         { title: "Numéro Téléphone", field: "numTelephone", editor: false },
@@ -46,16 +49,75 @@ $.ajax({
             ],
           },
         },
-        { title: "Étape Actuelle", field: "etapeActuelle", editor: false },
+        {
+          title: "Étape Actuelle",
+          field: "etapeActuelle",
+          editor: false,
+          headerFilter: "select",
+          headerFilterParams: {
+            values: [
+              "",
+              "Découvre ses besoins",
+              "Conception",
+              "Validation",
+              "Production",
+              "Livraison",
+            ],
+          },
+        },
         { title: "Produit", field: "produit", editor: false },
         { title: "Quantité", field: "quantite", editor: false },
         { title: "Email", field: "email", editor: false },
-        { title: "Source", field: "source", editor: false },
-        { title: "État Client", field: "etatClient", editor: false },
+        {
+          title: "Source",
+          field: "source",
+          editor: false,
+          headerFilter: "select",
+          headerFilterParams: {
+            values: [
+              "",
+              "Whatsapp",
+              "Messenger",
+              "Instagram",
+              "Landing Page",
+              "Site",
+              "Bouche à Oreil",
+            ],
+          },
+        },
+        {
+          title: "État Client",
+          field: "etatClient",
+          editor: false,
+          headerFilter: "select",
+          headerFilterParams: {
+            values: [
+              "",
+              "Intéressé",
+              "En Discussion",
+              "Attente Logo",
+              "Attente Confirmation",
+              "Pas de Réponse",
+              "Non Intéressé",
+              "Design en Cours",
+              "Design Validé",
+              "Attente Ramassage",
+              "Envoyé",
+            ],
+          },
+        },
         { title: "Ville", field: "ville", editor: false },
         { title: "Adresse", field: "adresse", width: 100, editor: false },
         { title: "Prix", field: "prix", editor: false },
-        { title: "Type Paiement", field: "typePaiement", editor: false },
+        {
+          title: "Type Paiement",
+          field: "typePaiement",
+          editor: false,
+          headerFilter: "select",
+          headerFilterParams: {
+            values: ["", "Virement", "A la Livraison"],
+          },
+        },
         { title: "N° Facture", field: "numFacture", editor: false },
         {
           title: "Date Enregistrement",
@@ -65,5 +127,6 @@ $.ajax({
         // Add more columns as needed
       ],
     });
+    //functions
   },
 });

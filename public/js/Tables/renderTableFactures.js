@@ -23,6 +23,7 @@ $(document).ready(function () {
           tooltip: true, //show tool tips on cells
         },
         columns: [
+          { title: "" },
           //define the table columns
           { title: "N° Facture", field: "numFacture", editor: false },
           {
@@ -78,5 +79,4 @@ $(document).ready(function () {
       });
     },
   });
-
 });
