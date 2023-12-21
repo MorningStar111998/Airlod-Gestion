@@ -140,17 +140,25 @@ app.get("/ajouter_demande", (req, res) => {
   });
 });
 
-app.get("/mes_demandes", (req, res) => {
-  const numDemande = queryResponses.maxNumDemande;
-  const numFacture = queryResponses.maxNumFacture;
+app.get("/mes_demandes",async (req, res) => {
+  try {
+    const numDemande = await queryResponses.maxNumDemande();
+    
+    const numFacture = await queryResponses.maxNumFacture();
 
-  res.render("mes_demandes", {
-    activePage: "mes_demandes",
-    firstName: req.session.userFirstName,
-    lastName: req.session.userLastName,
-    nextNumDemande: numDemande,
-    maxNumFacture: numFacture,
-  });
+    res.render("mes_demandes", {
+      activePage: "mes_demandes",
+      firstName: req.session.userFirstName,
+      lastName: req.session.userLastName,
+      nextNumDemande: numDemande+1,
+      maxNumFacture: numFacture+1,
+    });
+   } catch (err) {
+    console.error("Error fetching data: " + err);
+    res.status(500).send("Internal Server Error");
+  }
+  
+
 });
 
 app.get("/modifier_demande", (req, res) => {
@@ -161,15 +169,21 @@ app.get("/modifier_demande", (req, res) => {
   });
 });
 
-app.get("/ajouter_facture", (req, res) => {
-  const numDemande = queryResponses.maxNumDemande;
-  const numFacture = queryResponses.maxNumFacture;
-  res.render("ajouter_facture", {
-    activePage: "ajouter_facture",
-    firstName: req.session.userFirstName,
-    lastName: req.session.userLastName,
-    maxNumFacture: numFacture,
-  });
+app.get("/ajouter_facture",async (req, res) => {
+  try {
+    const numFacture = await queryResponses.maxNumFacture();
+
+    res.render("ajouter_facture", {
+      activePage: "ajouter_facture",
+      firstName: req.session.userFirstName,
+      lastName: req.session.userLastName,
+      maxNumFacture: numFacture+1,
+    });
+  } catch (err) {
+    console.error("Error fetching data: " + err);
+    res.status(500).send("Internal Server Error");
+  }
+  
 });
 
 app.get("/mes_factures", (req, res) => {
@@ -335,20 +349,7 @@ app.post("/ajouter_facture", (req, res) => {
     demande,
   } = req.body;
 
-  const insertQuery = `
-        INSERT INTO facture (
-            numFacture,
-            prix,
-            quantite,
-            produit,
-            nomClient,
-            numTelephone,
-            adresse,
-            typePaiement,
-            numDemande
-
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    `;
+  const insertQuery = `INSERT INTO facture ( numFacture, prix, quantite, produit, nomClient, numTelephone, adresse, typePaiement, numDemande) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`;
 
   const nextNumFacture = req.body.facture;
 
@@ -361,6 +362,7 @@ app.post("/ajouter_facture", (req, res) => {
     telephone,
     adresse,
     paiement,
+    demande,
   ];
   pool.getConnection((err, connection) => {
     if (err) {
@@ -389,7 +391,7 @@ app.get("/combinedDataSources", async (req, res) => {
     const numbDemandes = await queryResponses.assignNumDemandesRows();
     const numbFactures = await queryResponses.assignNumFacturesRows();
     const numbEnvoyes = await queryResponses.numEnvoyesRows();
-    console.log(numbEnvoyes);
+    
     const {
       whatsappRows: whatsappData,
       instagramRows: instagramData,

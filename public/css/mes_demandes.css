@@ -23,25 +23,45 @@
   border: none;
   background: none;
 }
+
+.table-components {
+  background-color: white;
+  width: 98%;
+  margin: auto;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  padding-top: 5px;
+  padding-bottom: 10px;
+}
 .table-container {
   overflow: scroll;
   width: 100%;
-  height: 500px;
+  overflow: auto;
+  height: 67vh;
 }
 
-#tableFactures
-  .tabulator-headers
-  .tabulator-col.tabulator-sortable.tabulator-col-sorter-element {
-  background-color: #f8fafc;
+#tableFactures .tabulator-headers .tabulator-col,
+#tableDemandes .tabulator-headers .tabulator-col {
+  background-color: #f2f8ff;
+  padding: 8px;
+  border:none;
+}
+
+#tableDemandes .tabulator-cell{
+  padding: 8px;
+  height: 60px;
+  border: none;
+}
+
+#tableDemandes{
+  border: none;
+}
+#tableDemandes .tabulator-row-even{
+  background-color: #fffcf1;
 }
 
 .tabulator-col-title {
   color: #4e5155;
-}
-#tableDemandes
-  .tabulator-headers
-  .tabulator-col.tabulator-sortable.tabulator-col-sorter-element {
-  background-color: #f8fafc;
 }
 
 #testButton {
@@ -53,19 +73,21 @@
   padding: auto 15px;
 }
 
-.table-features{
+.table-features {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-left:  50px;
-  padding-right:  50px;
+  padding-left: 20px;
+  padding-right: 50px;
+  padding-top: 5px;
+  padding-bottom: 10px;
 }
-.table-dowload-button h4 {
-  text-align: center;
+.table-dowload-button {
+  
 }
+
 .table-dowload-button button {
-  padding: 10px;
-  margin: 10px;
+  padding: 4px;
   border: none;
   background: none;
 }
@@ -75,20 +97,14 @@
 }
 
 #ajouter-demande-form-button {
-  
   background-color: #1d4ed8;
   color: white;
   border-radius: 10px;
   padding: 5px;
 }
 
-.table-dowload-button{
+.table-dowload-button {
   width: 25%;
-  /* display: grid;
-  justify-content: center;
-  align-items: center;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, 1fr); */
   position: relative;
 }
 
@@ -102,12 +118,10 @@
   right: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5); 
+  background: rgba(0, 0, 0, 0.5);
   border-radius: 0;
   overflow: scroll;
-
 }
-
 
 #modifier-demande-form {
   display: none;
@@ -118,10 +132,9 @@
   right: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5); 
+  background: rgba(0, 0, 0, 0.5);
   border-radius: 0;
   overflow: scroll;
-
 }
 
 #modalContent {
@@ -135,7 +148,6 @@
   border-radius: 8px;
 }
 
-
 #ajouter-facture-form {
   display: none;
   position: fixed;
@@ -145,12 +157,10 @@
   right: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5); 
+  background: rgba(0, 0, 0, 0.5);
   border-radius: 0;
   overflow: scroll;
-
 }
-
 
 #modalContentFactures {
   position: absolute;
@@ -162,4 +172,3 @@
   padding: 20px;
   border-radius: 8px;
 }
-

@@ -1,5 +1,3 @@
-
-
 $.ajax({
   url: "/mes_demandes/table",
   type: "GET",
@@ -11,7 +9,11 @@ $.ajax({
     };
 
     var table = new Tabulator("#tableDemandes", {
+      rowFormatter: function (row) {
+        row.getElement().classList.add(); //mark rows with age greater than or equal to 18 as successful;
+      },
       downloadConfig: {
+        rowHeight:60,
         height: "100%",
         columnHeaders: true, //do not include column headers in downloaded table
         columnGroups: true, //do not include column groups in column headers for downloaded table
@@ -20,13 +22,13 @@ $.ajax({
         dataTree: true, //do not include data tree in downloaded table
       },
       data: tabledata, //load row data from array
-      selectable: true,
+      // selectable: true,
       layout: "fitDataTable", //fit columns to width of table
-      responsiveLayout: "true", //hide columns that don't fit on the table
+      responsiveLayout: false, //hide columns that don't fit on the table
       addRowPos: "top", //when adding a new row, add it to the top of the table
       history: true, //allow undo and redo actions on the table
-      pagination: "local", //paginate the data
-      paginationSize: 13, //allow 7 rows per page of data
+      pagination: true, //paginate the data
+      paginationSize: 12, //allow 7 rows per page of data
       paginationCounter: "rows", //display count of paginated rows in footer
       movableColumns: false, //allow column order to be changed
       initialSort: [
@@ -50,13 +52,23 @@ $.ajax({
         {
           title: "Générer Facture",
           formatter: billIcon,
+          download: false,
+
           // width: 40,
           hozAlign: "center",
 
           cellClick: function (e, cell) {
             var curDemande = cell.getRow().getData();
-            $("#fk_numDemande").val(curDemande.numDemande);
-            console.log(curDemande.numDemande);
+
+            Object.entries(curDemande).forEach((field) => {
+              var element = document.getElementById(field[0] + "Facture");
+              console.log(field[1]);
+              if (element) {
+                element.value = field[1];
+              }
+            });
+
+            // console.log(curDemande);
 
             $("#ajouter-facture-form").fadeIn();
             $(".form").css("margin-top", 20);
@@ -78,6 +90,7 @@ $.ajax({
         {
           title: "Nom Client",
           field: "nomClient",
+
           formatter: function (cell, formatterParams) {
             var value = cell.getValue();
             return (
@@ -95,10 +108,9 @@ $.ajax({
               var element = document.getElementById(field[0]);
               if (element) {
                 element.value = field[1];
-                console.log(field);
+                // console.log(field);
               }
             });
-            console.log(curDemande);
 
             $("#modifier-demande-form").fadeIn();
             $(".form").css("margin-top", 20);
@@ -218,7 +230,6 @@ $.ajax({
     $("#testButton").on("click", function () {
       let selectedData = table.getSelectedData(); // Get array of currently selected data.
       const lengthData = selectedData.length;
-      console.log(selectedData.length);
       let dataIds = [];
 
       for (var i = 0; i < lengthData; i++) {
@@ -227,7 +238,6 @@ $.ajax({
 
       // Now, dataIds contains the values from the 'numDemande' property of selectedData.
       if (confirm("Êtes vous sûr de vouloir supprimer ces demandes ?")) {
-        console.log(dataIds);
         $.ajax({
           url: "/mes_demandes/supprimer_demandes",
           type: "DELETE",

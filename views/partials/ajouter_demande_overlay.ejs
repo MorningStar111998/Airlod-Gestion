@@ -1,17 +1,12 @@
-<%- include("partials/header") -%>
+<div id="ajouter-demande-form" class="ajouter-demande-formulaire">
+  <div class="modalContent">
 
-<section class="ajouter-demande">
-  <div class="ajouter-demande-header">
-    <h3><i class="bx bx-plus"></i> Nouvelle Demande</h3>
-    <p>Veuillez remplir tous les champs obligatoire et cliquer sur ajouter !</p>
-  </div>
-  <div class="ajouter-demande-formulaire">
     <form action="/ajouter_demande" method="POST" class="form">
       <div class="input-fields-container">
         <div class="column-1">
           <div class="input-box">
             <label for="demande">N° Demande</label>
-            <input id="numDemande" type="number" name="demande" value="<%= nextNumDemande %>" readonly />
+            <input type="number" name="demande" value="<%= nextNumDemande %>" readonly />
             
           </div>
           <div class="input-box input-box-2">
@@ -59,8 +54,6 @@
               </select>
             </div>
 
-            
-
             <div class="input-box flex-1">
               <label class="required-field" for="source">Source</label>
               <select name="source" required>
@@ -76,9 +69,6 @@
               </select>
             </div>
           </div>
-
-
-
           <div class="input-box span-2">
             <label class="required-field" for="etape">Etape Actuelle</label>
             <select name="etape" required>
@@ -138,7 +128,7 @@
 
           <div class="input-box span-4">
             <label for="description">Description</label>
-            <textarea name="description"  rows="5"></textarea>
+            <textarea name="description" rows="5"></textarea>
           </div>
           <div class="input-box span-4">
             <label for="remarque">Remarque (NB)</label>
@@ -151,7 +141,5 @@
       <button class="demande-form-button" type="submit">Ajouter</button>
     </form>
   </div>
-</section>
 
-
-<%- include("partials/footer") -%>
+  </div>

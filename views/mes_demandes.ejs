@@ -8,172 +8,31 @@
       <i class="bx bx-refresh"></i>
     </button>
   </div>
-  <button id="testButton">Supprimer</button>
+  <!-- <button id="testButton">Supprimer</button> -->
 </div>
-<div class="table-features">
-  <div class="table-dowload-button">
-    <h4 class="span-3">
-      Exporter : 
+<div class="table-components">
+
+  <div class="table-features">
+    <div class="table-dowload-button">
+      <h5 class="span-3">
+        Exporter format 
+      </h5>
+      <!-- <br> -->
       <button id="download-csv"><img class="download-symbols" src="/images/csv.png" alt=""></button>
       <button id="download-xlsx"><img class="download-symbols" src="/images/xls.png" alt=""></button>
       <button id="download-pdf"><img class="download-symbols" src="/images/pdf.png" alt=""></button>
-    </h4>
-
+      
+    </div>
+    <button id="ajouter-demande-form-button"><i class="bx bx-plus"></i> Ajouter Demande </button>
   </div>
-  <button id="ajouter-demande-form-button"><i class="bx bx-plus"></i> Ajouter Demande </button>
+
+  <div class="table-container">
+    <div id="tableDemandes"></div>
+  </div>
 </div>
-<div class="table-container">
-  <div id="tableDemandes"></div>
-</div>
 
 
-<!-- formulaire -->
-<div id="ajouter-demande-form" class="ajouter-demande-formulaire">
-  <div class="modalContent">
-
-    <form action="/ajouter_demande" method="POST" class="form">
-      <div class="input-fields-container">
-        <div class="column-1">
-          <div class="input-box">
-            <label for="demande">N° Demande</label>
-            <input type="number" name="demande" value="<%= nextNumDemande %>" readonly />
-            
-          </div>
-          <div class="input-box input-box-2">
-            <label class="required-field" for="destinataire"
-              >Nom du Client</label
-            >
-            <input type="text" name="destinataire" required />
-          </div>
-          <div class="input-box span-2">
-            <label class="required-field" for="telephone"
-              >Numéro de Téléphone</label
-            >
-            <input type="tel" name="telephone" required />
-          </div>
-          <div class="input-box span-2">
-            <label for="email">E-mail</label>
-            <input type="email" name="email" placeholder="exemple@gmail.com"/>
-          </div>
-
-          <div class="input-box span-2">
-            <label class="required-field" for="ville">Ville</label>
-            <input type="text" id="villeInput"  name="ville" list="villes" required />
-            <datalist id="villes">
-
-            </datalist>
-          </div>
-          <div class="input-box span-2">
-            <label for="adresse">Adresse</label>
-            <input type="text" name="adresse" required />
-          </div>
-          <div class="grid-row">
-            <div class="input-box flex-1">
-              <label class="required-field" for="typeClient"
-                >Type de Client</label
-              >
-              <select name="typeClient" required>
-                <option disabled selected value="">
-                  -- Sélectionner une option --
-                </option>
-                <option value="Pressé">Client pressé</option>
-                <option value="Instruit">Instruit</option>
-                <option value="Indecis">Indécis</option>
-                <option value="Agressif">Agressif</option>
-                <option value="Négociateur">Négociateur</option>
-              </select>
-            </div>
-
-            <div class="input-box flex-1">
-              <label class="required-field" for="source">Source</label>
-              <select name="source" required>
-                <option disabled selected value="">
-                  -- Sélectionner une option --
-                </option>
-                <option value="Whatsapp">Whatsapp</option>
-                <option value="Messenger">Messenger</option>
-                <option value="Instagram">Instagram</option>
-                <option value="Landing">Landing Page</option>
-                <option value="Site">Site</option>
-                <option value="Bouche à oreil">Bouche à Oreil</option>
-              </select>
-            </div>
-          </div>
-          <div class="input-box span-2">
-            <label class="required-field" for="etape">Etape Actuelle</label>
-            <select name="etape" required>
-              <option disabled selected value="">
-                -- Sélectionner une option --
-              </option>
-              <option value="Découvre ses besoins">Découvre ses besoins</option>
-              <option value="Conception">Conception</option>
-              <option value="Validation">Validation</option>
-              <option value="Production">Production</option>
-              <option value="Livraison">Livraison</option>
-            </select>
-          </div>
-          <div class="input-box span-4">
-            <label class="required-field" for="etatClient">Etat du client</label>
-            <select name="etatClient" required>
-              <option disabled selected value="">
-                -- Sélectionner une option --
-              </option>
-              <option value="Intéressé">Intéressé</option>
-              <option value="En Discussion">En Discussion</option>
-              <option value="Attente Logo">Attente de Logo</option>
-              <option value="Attente Confirmation">Attente de Confirmation</option>
-              <option value="Pas de Réponse">Pas de Réponse</option>
-              <option value="Non Intéressé">Non Intéressé</option>
-              <option value="Design en Cours">Design En Cours</option>
-              <option value="Design Validé">Design Validé</option>
-              <option value="Attente Ramassage">Attente de Ramassage</option>
-              <option value="Envoyé">Envoyé</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="column-2">
-          <div class="input-box span-4">
-            <label for="produit">Produit</label>
-            <input type="text" name="produit" required />
-          </div>
-          <div class="input-box span-1">
-            <label for="prix">Prix</label>
-            <input type="number" name="prix" placeholder="Dhs"/>
-          </div>
-          <div class="input-box span-1">
-            <label for="quantite">Quantité</label>
-            <input type="number" name="quantite" />
-          </div>
-          <div class="input-box span-2">
-            <label for="paiement">Type de Paiement</label>
-            <select name="paiement" id="paiement">
-              <option disabled selected value="">
-                -- Sélectionner une option --
-              </option>
-              <option value="Virement">Viremement</option>
-              <option value="A la Livraison">A la Livraison</option>
-            </select>
-          </div>
-
-          <div class="input-box span-4">
-            <label for="description">Description</label>
-            <textarea name="description" rows="5"></textarea>
-          </div>
-          <div class="input-box span-4">
-            <label for="remarque">Remarque (NB)</label>
-            <textarea name="remarque"  rows="5"></textarea>
-          </div>
-        </div>
-      </div>
-      <hr />
-
-      <button class="demande-form-button" type="submit">Ajouter</button>
-    </form>
-  </div>
-
-  </div>
-<%- include("partials/modifier_demande") -%>
-<%- include("partials/ajouter_facture") -%>
-
-<%- include("partials/footer") -%>
+  <%- include("partials/ajouter_demande_overlay") -%>
+  <%- include("partials/modifier_demande") -%>
+  <%- include("partials/ajouter_facture_overlay") -%>
+  <%- include("partials/footer") -%>
