@@ -23,20 +23,143 @@
   border: none;
   background: none;
 }
-.table-container{
+.table-container {
   overflow: scroll;
   width: 100%;
   height: 500px;
 }
 
-#tableFactures .tabulator-headers .tabulator-col.tabulator-sortable.tabulator-col-sorter-element{
-  background-color: #4a73e4;
+#tableFactures
+  .tabulator-headers
+  .tabulator-col.tabulator-sortable.tabulator-col-sorter-element {
+  background-color: #f8fafc;
 }
 
-.tabulator-col-title{
-  color: white;
+.tabulator-col-title {
+  color: #4e5155;
 }
-#tableDemandes .tabulator-headers .tabulator-col.tabulator-sortable.tabulator-col-sorter-element{
-  background-color: #4a73e4;
+#tableDemandes
+  .tabulator-headers
+  .tabulator-col.tabulator-sortable.tabulator-col-sorter-element {
+  background-color: #f8fafc;
+}
+
+#testButton {
+  background-color: red;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  /* border: none; */
+  padding: auto 15px;
+}
+
+.table-features{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left:  50px;
+  padding-right:  50px;
+}
+.table-dowload-button h4 {
+  text-align: center;
+}
+.table-dowload-button button {
+  padding: 10px;
+  margin: 10px;
+  border: none;
+  background: none;
+}
+
+.download-symbols {
+  width: 24px;
+}
+
+#ajouter-demande-form-button {
+  
+  background-color: #1d4ed8;
+  color: white;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+.table-dowload-button{
+  width: 25%;
+  /* display: grid;
+  justify-content: center;
+  align-items: center;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr); */
+  position: relative;
+}
+
+/* Style for the form modal overlay */
+#ajouter-demande-form {
+  display: none;
+  position: fixed;
+  padding-left: 20%;
+  padding-right: 5%;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); 
+  border-radius: 0;
+  overflow: scroll;
+
+}
+
+
+#modifier-demande-form {
+  display: none;
+  position: fixed;
+  padding-left: 20%;
+  padding-right: 5%;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); 
+  border-radius: 0;
+  overflow: scroll;
+
+}
+
+#modalContent {
+  position: absolute;
+  max-width: 80%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+
+#ajouter-facture-form {
+  display: none;
+  position: fixed;
+  padding-left: 20%;
+  padding-right: 5%;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); 
+  border-radius: 0;
+  overflow: scroll;
+
+}
+
+
+#modalContentFactures {
+  position: absolute;
+  max-width: 80%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
 }
 

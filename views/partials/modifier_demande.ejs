@@ -1,0 +1,160 @@
+<div id="modifier-demande-form" class="ajouter-demande-formulaire">
+    <div class="modalContent">
+      <form action="/modifier_demande" method="POST" class="form">
+        <div class="input-fields-container">
+          <div class="column-1">
+            <div class="input-box">
+              <label for="demande">N° Demande</label>
+              <input id="numDemande" type="number" name="demande" value="<%= nextNumDemande %>"  readonly />
+            </div>
+            <div class="input-box input-box-2">
+              <label class="required-field" for="destinataire"
+                >Nom du Client</label
+              >
+              <input id="nomClient" type="text" name="destinataire" required />
+            </div>
+            <div class="input-box span-2">
+              <label class="required-field" for="telephone"
+                >Numéro de Téléphone</label
+              >
+              <input id="numTelephone" type="tel" name="telephone"  required />
+            </div>
+            <div class="input-box span-2">
+              <label for="email">E-mail</label>
+              <input
+              id="email"
+                type="email"
+                name="email"
+                placeholder="exemple@gmail.com"
+              />
+            </div>
+
+            <div class="input-box span-2">
+              <label class="required-field" for="ville">Ville</label>
+              <input
+                type="text"
+                id="ville"
+                name="ville"
+                list="villes"
+                required
+              />
+              <datalist id="villes"> </datalist>
+            </div>
+            <div class="input-box span-2">
+              <label for="adresse">Adresse</label>
+              <input id="adresse" type="text" name="adresse" required />
+            </div>
+            <div class="grid-row">
+              <div class="input-box flex-1">
+                <label class="required-field" for="typeClient"
+                  >Type de Client</label
+                >
+                <select id="typeClient" name="typeClient" required>
+                  <option disabled selected value="">
+                    -- Sélectionner une option --
+                  </option>
+                  <option value="Pressé">Client pressé</option>
+                  <option value="Instruit">Instruit</option>
+                  <option value="Indecis">Indécis</option>
+                  <option value="Agressif">Agressif</option>
+                  <option value="Négociateur">Négociateur</option>
+                </select>
+              </div>
+
+              <div class="input-box flex-1">
+                <label class="required-field" for="source">Source</label>
+                <select id="source" name="source" required>
+                  <option disabled selected value="">
+                    -- Sélectionner une option --
+                  </option>
+                  <option value="Whatsapp">Whatsapp</option>
+                  <option value="Messenger">Messenger</option>
+                  <option value="Instagram">Instagram</option>
+                  <option value="Landing">Landing Page</option>
+                  <option value="Site">Site</option>
+                  <option value="Bouche à oreil">Bouche à Oreil</option>
+                </select>
+              </div>
+            </div>
+            <div class="input-box span-2">
+              <label class="required-field" for="etape">Etape Actuelle</label>
+              <select id="etapeActuelle" name="etape" required>
+                <option disabled selected value="">
+                  -- Sélectionner une option --
+                </option>
+                <option value="Découvre ses besoins">
+                  Découvre ses besoins
+                </option>
+                <option value="Conception">Conception</option>
+                <option value="Validation">Validation</option>
+                <option value="Production">Production</option>
+                <option value="Livraison">Livraison</option>
+              </select>
+            </div>
+            <div class="input-box span-4">
+              <label class="required-field" for="etatClient"
+                >Etat du client</label
+              >
+              <select id="etatClient" name="etatClient" required>
+                <option disabled selected value="">
+                  -- Sélectionner une option --
+                </option>
+                <option value="Intéressé">Intéressé</option>
+                <option value="En Discussion">En Discussion</option>
+                <option value="Attente Logo">Attente de Logo</option>
+                <option value="Attente Confirmation">
+                  Attente de Confirmation
+                </option>
+                <option value="Pas de Réponse">Pas de Réponse</option>
+                <option value="Non Intéressé">Non Intéressé</option>
+                <option value="Design en Cours">Design En Cours</option>
+                <option value="Design Validé">Design Validé</option>
+                <option value="Attente Ramassage">Attente de Ramassage</option>
+                <option value="Envoyé">Envoyé</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="column-2">
+            
+            <div class="input-box span-4">
+              <label for="produit">Produit</label>
+              <input id="produit" type="text" name="produit" required />
+            </div>
+            <div class="input-box span-1">
+              <label for="prix">Prix</label>
+              <input id="prix" type="number" name="prix" placeholder="Dhs" />
+            </div>
+            <div class="input-box span-1">
+              <label for="quantite">Quantité</label>
+              <input id="quantite" type="number" name="quantite" />
+            </div>
+            <div class="input-box span-2">
+              <label for="paiement">Type de Paiement</label>
+              <select id="typePaiement" name="paiement" id="paiement">
+                <option disabled selected value="">
+                  -- Sélectionner une option --
+                </option>
+                <option value="virement">Viremement</option>
+                <option value="livraison">A la Livraison</option>
+              </select>
+            </div>
+
+            <div class="input-box span-4">
+              <label for="description">Description</label>
+              <textarea id="description" name="description" id="description" rows="5"></textarea>
+            </div>
+            <div class="input-box span-4">
+              <label for="remarque">Remarque (NB)</label>
+              <textarea id="remarque" name="remarque" id="remarque" rows="5"></textarea>
+            </div>
+          </div>
+        </div>
+        <hr />
+
+        <button class="demande-form-button" type="submit">Enregistrer</button>
+      </form>
+    </div>
+  </div>
+
+

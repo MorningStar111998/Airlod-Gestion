@@ -1,14 +1,23 @@
+
+
 $.ajax({
   url: "/mes_demandes/table",
   type: "GET",
   success: function (data) {
     var tabledata = data;
+    var billIcon = function (cell, formatterParams, onRendered) {
+      //plain text value
+      return "<i class='bx bx-money-withdraw'></i>";
+    };
 
     var table = new Tabulator("#tableDemandes", {
-      rowFormatter: function () {
-        $(document).ready(function () {
-          $(".tabulator-headers").css("background-color", "#23527c");
-        });
+      downloadConfig: {
+        height: "100%",
+        columnHeaders: true, //do not include column headers in downloaded table
+        columnGroups: true, //do not include column groups in column headers for downloaded table
+        rowGroups: true, //do not include row groups in downloaded table
+        columnCalcs: true, //do not include column calcs in downloaded table
+        dataTree: true, //do not include data tree in downloaded table
       },
       data: tabledata, //load row data from array
       selectable: true,
@@ -17,7 +26,7 @@ $.ajax({
       addRowPos: "top", //when adding a new row, add it to the top of the table
       history: true, //allow undo and redo actions on the table
       pagination: "local", //paginate the data
-      paginationSize: 14, //allow 7 rows per page of data
+      paginationSize: 13, //allow 7 rows per page of data
       paginationCounter: "rows", //display count of paginated rows in footer
       movableColumns: false, //allow column order to be changed
       initialSort: [
@@ -28,11 +37,85 @@ $.ajax({
         tooltip: true, //show tool tips on cells
       },
       columns: [
-        { title: "" },
+        {
+          formatter: "rowSelection",
+          titleFormatter: "rowSelection",
+          titleFormatterParams: {
+            rowRange: "active", //only toggle the values of the active filtered rows
+          },
+          hozAlign: "center",
+          headerSort: false,
+          download: false,
+        },
+        {
+          title: "Générer Facture",
+          formatter: billIcon,
+          // width: 40,
+          hozAlign: "center",
 
-        { title: "N° Demande", field: "numDemande", editor: false },
-        { title: "Nom Client", field: "nomClient", editor: false },
-        { title: "Numéro Téléphone", field: "numTelephone", editor: false },
+          cellClick: function (e, cell) {
+            var curDemande = cell.getRow().getData();
+            $("#fk_numDemande").val(curDemande.numDemande);
+            console.log(curDemande.numDemande);
+
+            $("#ajouter-facture-form").fadeIn();
+            $(".form").css("margin-top", 20);
+
+            $(document).mouseup(function (e) {
+              var modal = $(".form");
+              if (!modal.is(e.target) && modal.has(e.target).length === 0) {
+                $("#ajouter-facture-form").fadeOut();
+              }
+            });
+          },
+        },
+
+        {
+          title: "N° Demande",
+          field: "numDemande",
+          editor: false,
+        },
+        {
+          title: "Nom Client",
+          field: "nomClient",
+          formatter: function (cell, formatterParams) {
+            var value = cell.getValue();
+            return (
+              "<span style='color:#1d4ed8; font-weight:bold;'>" +
+              value +
+              "</span>"
+            );
+          },
+
+          editor: false,
+          cellClick: function (e, cell) {
+            var curDemande = cell.getRow().getData();
+
+            Object.entries(curDemande).forEach((field) => {
+              var element = document.getElementById(field[0]);
+              if (element) {
+                element.value = field[1];
+                console.log(field);
+              }
+            });
+            console.log(curDemande);
+
+            $("#modifier-demande-form").fadeIn();
+            $(".form").css("margin-top", 20);
+
+            $(document).mouseup(function (e) {
+              var modal = $(".form");
+              if (!modal.is(e.target) && modal.has(e.target).length === 0) {
+                $("#modifier-demande-form").fadeOut();
+              }
+            });
+          },
+        },
+        {
+          title: "Numéro Téléphone",
+          field: "numTelephone",
+          editor: false,
+        },
         {
           title: "Type Client",
           field: "typeClient",
@@ -47,6 +130,7 @@ $.ajax({
               "Agressif",
               "Négociateur",
             ],
+            download: false,
           },
         },
         {
@@ -67,7 +151,7 @@ $.ajax({
         },
         { title: "Produit", field: "produit", editor: false },
         { title: "Quantité", field: "quantite", editor: false },
-        { title: "Email", field: "email", editor: false },
+        { title: "Email", field: "email", editor: false, download: false },
         {
           title: "Source",
           field: "source",
@@ -104,10 +188,11 @@ $.ajax({
               "Attente Ramassage",
               "Envoyé",
             ],
+            download: false,
           },
         },
         { title: "Ville", field: "ville", editor: false },
-        { title: "Adresse", field: "adresse", width: 100, editor: false },
+        { title: "Adresse", field: "adresse", editor: false },
         { title: "Prix", field: "prix", editor: false },
         {
           title: "Type Paiement",
@@ -123,10 +208,49 @@ $.ajax({
           title: "Date Enregistrement",
           field: "dateEnregistrement",
           editor: false,
+          download: false,
         },
         // Add more columns as needed
       ],
     });
-    //functions
+
+    //functions about table
+    $("#testButton").on("click", function () {
+      let selectedData = table.getSelectedData(); // Get array of currently selected data.
+      const lengthData = selectedData.length;
+      console.log(selectedData.length);
+      let dataIds = [];
+
+      for (var i = 0; i < lengthData; i++) {
+        dataIds.push(selectedData[i].numDemande);
+      }
+
+      // Now, dataIds contains the values from the 'numDemande' property of selectedData.
+      if (confirm("Êtes vous sûr de vouloir supprimer ces demandes ?")) {
+        console.log(dataIds);
+        $.ajax({
+          url: "/mes_demandes/supprimer_demandes",
+          type: "DELETE",
+          success: function (response) {},
+        });
+      }
+    });
+
+    $("#download-csv").on("click", function () {
+      table.download("csv", "Liste des demandes.csv");
+    });
+
+    //trigger download of data.xlsx file
+    $("#download-xlsx").on("click", function () {
+      table.download("xlsx", "data.xlsx", { sheetName: "Liste des demandes" });
+    });
+
+    //trigger download of data.pdf file
+    $("#download-pdf").on("click", function () {
+      table.download("pdf", "data.pdf", {
+        orientation: "landscape", //set page orientation to portrait
+        title: "Liste des demandes", //add title to report
+      });
+    });
   },
 });

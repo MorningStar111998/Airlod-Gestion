@@ -12,14 +12,26 @@
     <button id="afficherRapports">Afficher les Rapports</button>
   </div>
   <div class="accueil">
-    <div class="accueil-kpi kpi-1">
+    <div class="kpi-container span-2">
+      <div class="kpiData">
+        <h3><i class='bx bxs-user-voice'></i> Demandes</h3>
+        <h4 class="kpi-data" id="kpi-data-1"></h4>
+      </div>
+      <div class="kpiData">
+        <h3>Commandes envoyées</h3>
+        <h4 class="kpi-data" id="kpi-data-2"></h4>
+      </div>
+      <div class="kpiData">
+        <h3><i class='bx bx-spreadsheet' ></i> Factures</h3>
+        <h4 class="kpi-data" id="kpi-data-3"></h4>
+      </div>
+      <div class="kpiData">
+        <canvas id="sourceChart"></canvas>
+      </div>
+    </div>
+    <div class="accueil-kpi kpi-1 span-2">
       <canvas id="etatClientChart"></canvas>
     </div>
-    <div id="main" class="accueil-kpi kpi-2">
-      <canvas id="sourceChart"></canvas>
-      
-    </div>
-    <!-- <div id="main2"  class="accueil-kpi kpi-3"></div> -->
   </div>
 </div>
 <%- include("partials/footer") -%>

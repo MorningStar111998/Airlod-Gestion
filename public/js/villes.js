@@ -32,7 +32,7 @@ const villeslist = [
 ];
 
 // Get the input and datalist elements
-const villeInput = document.getElementById("villeInput");
+const villeInput = document.getElementById("ville");
 const villes = document.getElementById("villes");
 
 // Dynamically populate the datalist options

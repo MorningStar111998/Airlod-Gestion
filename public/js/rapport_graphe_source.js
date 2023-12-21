@@ -10,6 +10,14 @@ $("#afficherRapports").on("click", function () {
       const landingNumb = data.landingData;
       const baONumb = data.baOData;
       const nullSourcesNumb = data.nullSourcesData;
+      const numbDemandes = data.numbDemandes;
+      const numbFactures = data.numbFactures;
+      const numbEnvoyes = data.numbEnvoyes;
+      $("#kpi-data-1").text(numbDemandes);
+      $("#kpi-data-2").text(numbEnvoyes);
+      $("#kpi-data-3").text(numbFactures);
+
+
       const ctx = document.getElementById("sourceChart");
 
       new Chart(ctx, {

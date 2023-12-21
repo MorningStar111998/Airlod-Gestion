@@ -2,7 +2,7 @@ const express = require("express");
 const ejs = require("ejs");
 const session = require("express-session");
 const pool = require("./utils/database");
-const resultatsRapports = require("./utils/resultats_rapports");
+const queryResponses = require("./utils/query_results");
 const passport = require("passport");
 const PORT = process.env.PORT || 3309;
 const dotenv = require("dotenv");
@@ -101,7 +101,7 @@ app.get("/logout", function (req, res, next) {
   });
 });
 
-app.get("/accueil", isAuthenticated, (req, res) => {
+app.get("/accueil", (req, res) => {
   res.render("accueil", {
     activePage: "accueil",
     firstName: req.session.userFirstName,
@@ -109,7 +109,7 @@ app.get("/accueil", isAuthenticated, (req, res) => {
   });
 });
 
-app.get("/ajouter_demande", isAuthenticated, (req, res) => {
+app.get("/ajouter_demande", (req, res) => {
   const getMaxNumDemandeQuery =
     "SELECT MAX(numDemande) AS maxNumDemande FROM demande";
   pool.getConnection((err, connection) => {
@@ -140,27 +140,39 @@ app.get("/ajouter_demande", isAuthenticated, (req, res) => {
   });
 });
 
+app.get("/mes_demandes", (req, res) => {
+  const numDemande = queryResponses.maxNumDemande;
+  const numFacture = queryResponses.maxNumFacture;
 
-
-app.get("/mes_demandes", isAuthenticated, (req, res) => {
   res.render("mes_demandes", {
     activePage: "mes_demandes",
     firstName: req.session.userFirstName,
     lastName: req.session.userLastName,
+    nextNumDemande: numDemande,
+    maxNumFacture: numFacture,
   });
 });
 
-app.get("/ajouter_facture", isAuthenticated, (req, res) => {
-  res.render("ajouter_facture", {
-    activePage: "ajouter_facture",
+app.get("/modifier_demande", (req, res) => {
+  res.render("modifier_demande", {
+    activePage: "nd",
     firstName: req.session.userFirstName,
     lastName: req.session.userLastName,
   });
 });
 
+app.get("/ajouter_facture", (req, res) => {
+  const numDemande = queryResponses.maxNumDemande;
+  const numFacture = queryResponses.maxNumFacture;
+  res.render("ajouter_facture", {
+    activePage: "ajouter_facture",
+    firstName: req.session.userFirstName,
+    lastName: req.session.userLastName,
+    maxNumFacture: numFacture,
+  });
+});
 
-
-app.get("/mes_factures", isAuthenticated, (req, res) => {
+app.get("/mes_factures", (req, res) => {
   res.render("mes_factures", {
     activePage: "mes_factures",
     firstName: req.session.userFirstName,
@@ -182,7 +194,6 @@ app.post("/ajouter_demande", (req, res) => {
     source,
     etape,
     etatClient,
-    facture,
     produit,
     prix,
     quantite,
@@ -192,26 +203,7 @@ app.post("/ajouter_demande", (req, res) => {
   } = req.body;
 
   const insertQuery = `
-        INSERT INTO demande (
-            numDemande,
-            nomClient,
-            numTelephone,
-            email,
-            ville,
-            adresse,
-            typeClient,
-            source,
-            etapeActuelle,
-            etatClient,
-            numFacture,
-            produit,
-            prix,
-            quantite,
-            typePaiement,
-            description,
-            remarque
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `;
+    INSERT INTO demande (numDemande, nomClient, numTelephone, email, ville, adresse, typeClient, source, etapeActuelle, etatClient, produit, prix, quantite, typePaiement, description, remarque) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
 
   const nextNumDemande = req.body.nextNumDemande;
 
@@ -226,7 +218,6 @@ app.post("/ajouter_demande", (req, res) => {
     source,
     etape,
     etatClient,
-    facture,
     produit,
     prix,
     quantite,
@@ -253,6 +244,84 @@ app.post("/ajouter_demande", (req, res) => {
   });
 });
 
+app.post("/modifier_demande", (req, res) => {
+  const {
+    demande,
+    destinataire,
+    telephone,
+    email,
+    ville,
+    adresse,
+    typeClient,
+    source,
+    etape,
+    etatClient,
+    produit,
+    prix,
+    quantite,
+    paiement,
+    description,
+    remarque,
+  } = req.body;
+
+  const updateQuery = `
+    UPDATE demande
+    SET
+        nomClient = ?,
+        numTelephone = ?,
+        email = ?,
+        ville = ?,
+        adresse = ?,
+        typeClient = ?,
+        source = ?,
+        etapeActuelle = ?,
+        etatClient = ?,
+        produit = ?,
+        prix = ?,
+        quantite = ?,
+        typePaiement = ?,
+        description = ?,
+        remarque = ?
+    WHERE numDemande = ?;
+`;
+
+  const values = [
+    destinataire,
+    telephone,
+    email,
+    ville,
+    adresse,
+    typeClient,
+    source,
+    etape,
+    etatClient,
+    produit,
+    prix,
+    quantite,
+    paiement,
+    description,
+    remarque,
+    demande,
+  ];
+  pool.getConnection((err, connection) => {
+    if (err) {
+      console.error("Error getting connection from pool :", err);
+      return res.status(500).send("Internal Server Error");
+    }
+    connection.query(updateQuery, values, (err, result) => {
+      connection.release(); // Release the connection back to the pool
+
+      if (err) {
+        console.error("Error inserting data into the database: " + err);
+        return res.status(500).send("Internal Server Error");
+      }
+
+      console.log("Data updatated into the database successfully!");
+      return res.redirect("/mes_demandes");
+    });
+  });
+});
+
 app.post("/ajouter_facture", (req, res) => {
   const {
     facture,
@@ -263,6 +332,7 @@ app.post("/ajouter_facture", (req, res) => {
     telephone,
     adresse,
     paiement,
+    demande,
   } = req.body;
 
   const insertQuery = `
@@ -274,7 +344,9 @@ app.post("/ajouter_facture", (req, res) => {
             nomClient,
             numTelephone,
             adresse,
-            typePaiement
+            typePaiement,
+            numDemande
+
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
@@ -309,19 +381,15 @@ app.post("/ajouter_facture", (req, res) => {
   });
 });
 
-app.get("/modifier_demande", isAuthenticated, (req, res) => {
-  res.render("modifier_demande", {
-    activePage: "nd",
-    firstName: req.session.userFirstName,
-    lastName: req.session.userLastName,
-  });
-});
-
 //************************ Ajax Requests Handlers *************//
 
 app.get("/combinedDataSources", async (req, res) => {
   try {
-    const rowsCount = await resultatsRapports.assignSourcesRows();
+    const rowsCount = await queryResponses.assignSourcesRows();
+    const numbDemandes = await queryResponses.assignNumDemandesRows();
+    const numbFactures = await queryResponses.assignNumFacturesRows();
+    const numbEnvoyes = await queryResponses.numEnvoyesRows();
+    console.log(numbEnvoyes);
     const {
       whatsappRows: whatsappData,
       instagramRows: instagramData,
@@ -339,6 +407,9 @@ app.get("/combinedDataSources", async (req, res) => {
       landingData,
       baOData,
       nullSourcesData,
+      numbDemandes,
+      numbFactures,
+      numbEnvoyes,
     };
     res.json(combinedData);
   } catch (err) {
@@ -349,7 +420,7 @@ app.get("/combinedDataSources", async (req, res) => {
 
 app.get("/combinedDataEtatClient", async (req, res) => {
   try {
-    const rowsCount = await resultatsRapports.assignEtatClientRows();
+    const rowsCount = await queryResponses.assignEtatClientRows();
 
     const {
       interesseRows: interesseData,
@@ -375,7 +446,6 @@ app.get("/combinedDataEtatClient", async (req, res) => {
   }
 });
 
-
 app.get("/mes_demandes/table", (req, res) => {
   pool.getConnection((err, connection) => {
     if (err) {
@@ -397,7 +467,6 @@ app.get("/mes_demandes/table", (req, res) => {
         res.json(results);
       }
     );
-    
   });
 });
 

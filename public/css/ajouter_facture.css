@@ -29,7 +29,7 @@
 
 .ajouter-facture-formulaire .form {
   position: relative;
-  min-height: 480px;
+  min-height: 540px;
 }
 
 .ajouter-facture-formulaire .input-fields-container {
@@ -106,7 +106,7 @@ select:required:valid:focus {
 .facture-form-button {
   position: absolute;
   right: 30px;
-  bottom: 30px;
+  bottom: 15px;
   background-color: #2f353e;
   width: 120px;
   border-radius: 20px;

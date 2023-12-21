@@ -302,7 +302,7 @@ body {
   width: calc(100% - 60px);
   transition: all 0.5s ease;
   overflow-y: scroll;
-  overflow-x: hidden;
+  overflow-x: scroll;
 }
 
 .sidebar.active ~ .main-content {

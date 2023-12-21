@@ -6,25 +6,35 @@ $(document).ready(function () {
       var tabledata = data;
 
       var table = new Tabulator("#tableFactures", {
-        data: tabledata, //load row data from array
-        layout: "fitDataStretch", //fit columns to width of table
-        responsiveLayout: "hide", //hide columns that don't fit on the table
-        addRowPos: "top", //when adding a new row, add it to the top of the table
-        history: true, //allow undo and redo actions on the table
-        pagination: "local", //paginate the data
-        paginationSize: 10, //allow 7 rows per page of data
-        paginationCounter: "rows", //display count of paginated rows in footer
-        movableColumns: false, //allow column order to be changed
+        data: tabledata, 
+        layout: "fitColumns", 
+        responsiveLayout: "hide",
+        addRowPos: "top",
+        history: true,
+        pagination: "local",
+        paginationSize: 10, 
+        paginationCounter: "rows", 
+        movableColumns: false,
         initialSort: [
-          //set the initial sort order of the data
+          
           { column: "name", dir: "asc" },
         ],
         columnDefaults: {
-          tooltip: true, //show tool tips on cells
+          tooltip: true, 
         },
         columns: [
-          { title: "" },
-          //define the table columns
+          {
+            formatter: "rowSelection",
+            titleFormatter: "rowSelection",
+            titleFormatterParams: {
+              rowRange: "active",
+            },
+            hozAlign: "center",
+            headerSort: false,
+            download: false,
+            maxWidth: 20,
+          },
+        
           { title: "N° Facture", field: "numFacture", editor: false },
           {
             title: "Prix",

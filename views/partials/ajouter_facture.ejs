@@ -1,17 +1,11 @@
-<%- include("partials/header") -%>
-
-<section class="ajouter-facture">
-  <div class="ajouter-facture-header">
-    <h3>Nouvelle Facture <i class="bx bx-plus"></i></h3>
-    <p>Veuillez remplir tous les champs obligatoire et cliquer sur ajouter !</p>
-  </div>
-  <div class="ajouter-facture-formulaire">
+<div id="ajouter-facture-form" class="ajouter-facture-formulaire">
+  <div id="modalContentFactures">
     <form action="/ajouter_facture" method="POST" class="form">
       <div class="input-fields-container">
         <div class="facture-col">
           <div class="input-box span-1">
             <label for="facture">N° Facture</label>
-            <input type="number" name="facture" value="<%= maxNumFacture %>" required />
+            <input type="number" name="facture" required />
           </div>
           <div class="input-box span-1">
             <label for="prix">Prix</label>
@@ -54,13 +48,7 @@
           </div>
           <div class="input-box span-1">
             <label for="demande">N° Demande</label>
-            <input
-              id="fk_numDemande"
-              type="number"
-              name="demande"
-              required
-              readonly
-            />
+            <input type="number" name="demande" required readonly />
           </div>
         </div>
       </div>
@@ -69,6 +57,4 @@
       <button class="facture-form-button" type="submit">Ajouter</button>
     </form>
   </div>
-</section>
-
-<%- include("partials/footer") -%>
+</div>

@@ -21,6 +21,7 @@ p {
 .form {
   position: relative;
   min-height: 650px;
+  background: white;
 }
 
 .input-fields-container {
