@@ -116,16 +116,20 @@ async function assignEtatClientRows() {
 //*****************Demandes du Jour */
 async function getNumDemandesRows() {
   return new Promise((resolve, reject) => {
-    const colName = "dateEnregistrement";
-    const getNumbDemandesQuery =
-      "SELECT COUNT(*) AS demandesAuj FROM demande WHERE DATE(dateEnregistrement) = CURDATE();";
+    const getNumbDemandesQuery = `SELECT 
+  SUM(DATE(dateEnregistrement) = CURDATE()) AS demandesAuj,
+  SUM(YEAR(dateEnregistrement) = YEAR(CURDATE()) AND MONTH(dateEnregistrement) = MONTH(CURDATE())) AS demandesThisMonth,
+  SUM(YEAR(dateEnregistrement) = YEAR(CURDATE())) AS demandesThisYear
+FROM demande;
+`;
+
     db.query(getNumbDemandesQuery, (err, numbDemandes) => {
       if (err) {
         console.error("Error fetching NULL etatClient rows: " + err);
         return reject(err);
       }
 
-      const numbDemandesAuj = numbDemandes[0].demandesAuj;
+      const numbDemandesAuj = numbDemandes[0];
 
       resolve(numbDemandesAuj);
     });
@@ -143,16 +147,20 @@ async function assignNumDemandesRows() {
 //*****************Factures du Jour */
 async function getNumFacturesRows() {
   return new Promise((resolve, reject) => {
-    const colName = "dateEnregistrement";
-    const getNumbFacturesQuery =
-      "SELECT COUNT(*) AS facturesAuj FROM facture WHERE DATE(dateEnregistrement) = CURDATE();";
+    const getNumbFacturesQuery = `SELECT 
+  SUM(DATE(dateEnregistrement) = CURDATE()) AS facturesAuj,
+  SUM(YEAR(dateEnregistrement) = YEAR(CURDATE()) AND MONTH(dateEnregistrement) = MONTH(CURDATE())) AS facturesThisMonth,
+  SUM(YEAR(dateEnregistrement) = YEAR(CURDATE())) AS facturesThisYear
+FROM facture;
+`;
+    
     db.query(getNumbFacturesQuery, (err, numbFactures) => {
       if (err) {
         console.error("Error fetching NULL etatClient rows: " + err);
         return reject(err);
       }
 
-      const numbFacturesAuj = numbFactures[0].facturesAuj;
+      const numbFacturesAuj = numbFactures[0];
 
       resolve(numbFacturesAuj);
     });
@@ -182,7 +190,7 @@ async function getMaxNumDemande() {
 
       resolve(maxNumDemande);
     });
-  })
+  });
 }
 
 async function maxNumDemande() {
@@ -208,7 +216,7 @@ async function getMaxNumFacture() {
 
       resolve(maxNumFacture);
     });
-  })
+  });
 }
 
 async function maxNumFacture() {
@@ -220,22 +228,27 @@ async function maxNumFacture() {
   }
 }
 
-
 async function getNumEnvoyes() {
   return new Promise((resolve, reject) => {
-    const getNumEnvoyesQuery =
-      "SELECT COUNT(*) AS numEnvoyes FROM demande WHERE etatClient = 'Envoyé';";
+    const getNumEnvoyesQuery = `SELECT 
+  SUM(DATE(dateEnregistrement) = CURDATE() AND etatClient = 'Envoyé') AS envoyesAuj,
+  SUM((YEAR(dateEnregistrement) = YEAR(CURDATE()) AND MONTH(dateEnregistrement) = MONTH(CURDATE())) AND etatClient = 'Envoyé') AS envoyesThisMonth,
+  SUM(YEAR(dateEnregistrement) = YEAR(CURDATE()) AND etatClient = 'Envoyé') AS envoyesThisYear
+FROM demande;
+
+`;
+    
     db.query(getNumEnvoyesQuery, (err, numEnvoyesDB) => {
       if (err) {
         console.error("Error fetching NULL etatClient rows: " + err);
         return reject(err);
       }
 
-      const numEnvoyes = numEnvoyesDB[0].numEnvoyes;
+      const numEnvoyes = numEnvoyesDB[0];
 
       resolve(numEnvoyes);
     });
-  })
+  });
 }
 
 async function numEnvoyesRows() {

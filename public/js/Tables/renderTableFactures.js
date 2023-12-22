@@ -6,21 +6,18 @@ $(document).ready(function () {
       var tabledata = data;
 
       var table = new Tabulator("#tableFactures", {
-        data: tabledata, 
-        layout: "fitColumns", 
+        data: tabledata,
+        layout: "fitColumns",
         responsiveLayout: "hide",
         addRowPos: "top",
         history: true,
         pagination: "local",
-        paginationSize: 10, 
-        paginationCounter: "rows", 
+        paginationSize: 10,
+        paginationCounter: "rows",
         movableColumns: false,
-        initialSort: [
-          
-          { column: "name", dir: "asc" },
-        ],
+        initialSort: [{ column: "name", dir: "asc" }],
         columnDefaults: {
-          tooltip: true, 
+          tooltip: true,
         },
         columns: [
           {
@@ -34,7 +31,7 @@ $(document).ready(function () {
             download: false,
             maxWidth: 20,
           },
-        
+
           { title: "N° Facture", field: "numFacture", editor: false },
           {
             title: "Prix",
@@ -85,6 +82,7 @@ $(document).ready(function () {
             width: 130,
             sorter: "string",
           },
+          { title: "N° Demande", field: "numDemande", editor: false },
         ],
       });
     },

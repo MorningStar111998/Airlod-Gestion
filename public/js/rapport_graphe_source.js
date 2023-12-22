@@ -3,6 +3,21 @@ $("#afficherRapports").on("click", function () {
     url: "/combinedDataSources",
     type: "GET",
     success: function (data) {
+      function removeData(chart) {
+        chart.data.labels.pop();
+        chart.data.datasets.forEach((dataset) => {
+          dataset.data.pop();
+        });
+        chart.update();
+      }
+      function addData(chart, label, newData) {
+        chart.data.labels.push(label);
+        chart.data.datasets.forEach((dataset) => {
+          dataset.data.push(newData);
+        });
+        chart.update();
+      }
+
       const whatsappNumb = data.whatsappData;
       const messengerNumb = data.messengerData;
       const instagramNumb = data.instagramData;
@@ -10,18 +25,28 @@ $("#afficherRapports").on("click", function () {
       const landingNumb = data.landingData;
       const baONumb = data.baOData;
       const nullSourcesNumb = data.nullSourcesData;
-      const numbDemandes = data.numbDemandes;
-      const numbFactures = data.numbFactures;
-      const numbEnvoyes = data.numbEnvoyes;
+
+      var numbDemandes = data.numbDemandes.demandesAuj;
+      var numbFactures = data.numbFactures.facturesAuj;
+      var numbEnvoyes = data.numbEnvoyes.envoyesAuj;
+
       $("#kpi-data-1").text(numbDemandes);
       $("#kpi-data-2").text(numbEnvoyes);
       $("#kpi-data-3").text(numbFactures);
 
-
       const ctx = document.getElementById("sourceChart");
+      const dataSetSources = [
+        whatsappNumb,
+        messengerNumb,
+        instagramNumb,
+        siteNumb,
+        landingNumb,
+        baONumb,
+        nullSourcesNumb,
+      ];
 
-      new Chart(ctx, {
-        type: "doughnut",
+      const myChart = new Chart(ctx, {
+        type: "pie",
         data: {
           labels: [
             "Whatsapp",
@@ -35,15 +60,7 @@ $("#afficherRapports").on("click", function () {
           datasets: [
             {
               label: "Origine des Clients",
-              data: [
-                whatsappNumb,
-                messengerNumb,
-                instagramNumb,
-                siteNumb,
-                landingNumb,
-                baONumb,
-                nullSourcesNumb,
-              ],
+              data: dataSetSources,
               backgroundColor: [
                 "#65B741",
                 "#009ef7",
@@ -57,13 +74,42 @@ $("#afficherRapports").on("click", function () {
             },
           ],
         },
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true,
-            },
-          },
-        },
+        options: {},
+      });
+      //update time of search
+      $("#tempsRapport").on("change", function () {
+        var selectedValue = $(this).val();
+
+        if (selectedValue === "auj") {
+          numbDemandes = data.numbDemandes.demandesAuj;
+          numbFactures = data.numbFactures.facturesAuj;
+          numbEnvoyes = data.numbEnvoyes.envoyesAuj;
+
+          myChart.update();
+          $("#kpi-data-1").text(numbDemandes);
+          $("#kpi-data-2").text(numbEnvoyes);
+          $("#kpi-data-3").text(numbFactures);
+        } else if (selectedValue === "mois") {
+          numbDemandes = data.numbDemandes.demandesThisMonth;
+          numbFactures = data.numbFactures.facturesThisMonth;
+          numbEnvoyes = data.numbEnvoyes.envoyesThisMonth;
+          myChart.update();
+
+          $("#kpi-data-1").text(numbDemandes);
+          $("#kpi-data-2").text(numbEnvoyes);
+          $("#kpi-data-3").text(numbFactures);
+        } else if (selectedValue === "annee") {
+          numbDemandes = data.numbDemandes.demandesThisYear;
+          numbFactures = data.numbFactures.facturesThisYear;
+          numbEnvoyes = data.numbEnvoyes.envoyesThisYear;
+          myChart.update();
+
+          $("#kpi-data-1").text(numbDemandes);
+          $("#kpi-data-2").text(numbEnvoyes);
+          $("#kpi-data-3").text(numbFactures);
+        } else {
+          console.log("Another option is selected");
+        }
       });
     },
     error: function (xhr, status, error) {

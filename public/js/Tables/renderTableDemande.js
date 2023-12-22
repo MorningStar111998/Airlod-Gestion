@@ -12,8 +12,9 @@ $.ajax({
       rowFormatter: function (row) {
         row.getElement().classList.add(); //mark rows with age greater than or equal to 18 as successful;
       },
+      downloadRowRange: "active",
       downloadConfig: {
-        rowHeight:60,
+        rowHeight: 60,
         height: "100%",
         columnHeaders: true, //do not include column headers in downloaded table
         columnGroups: true, //do not include column groups in column headers for downloaded table
@@ -86,10 +87,12 @@ $.ajax({
           title: "N° Demande",
           field: "numDemande",
           editor: false,
+          headerFilter: "input",
         },
         {
           title: "Nom Client",
           field: "nomClient",
+          headerFilter: "input",
 
           formatter: function (cell, formatterParams) {
             var value = cell.getValue();
@@ -127,11 +130,13 @@ $.ajax({
           title: "Numéro Téléphone",
           field: "numTelephone",
           editor: false,
+          headerFilter: "input",
         },
         {
           title: "Type Client",
           field: "typeClient",
           editor: false,
+
           headerFilter: "select",
           headerFilterParams: {
             values: [
@@ -161,7 +166,12 @@ $.ajax({
             ],
           },
         },
-        { title: "Produit", field: "produit", editor: false },
+        {
+          title: "Produit",
+          field: "produit",
+          editor: false,
+          headerFilter: "input",
+        },
         { title: "Quantité", field: "quantite", editor: false },
         { title: "Email", field: "email", editor: false, download: false },
         {
@@ -203,8 +213,18 @@ $.ajax({
             download: false,
           },
         },
-        { title: "Ville", field: "ville", editor: false },
-        { title: "Adresse", field: "adresse", editor: false },
+        {
+          title: "Ville",
+          field: "ville",
+          editor: false,
+          headerFilter: "input",
+        },
+        {
+          title: "Adresse",
+          field: "adresse",
+          editor: false,
+          headerFilter: "input",
+        },
         { title: "Prix", field: "prix", editor: false },
         {
           title: "Type Paiement",
@@ -236,14 +256,47 @@ $.ajax({
         dataIds.push(selectedData[i].numDemande);
       }
 
-      // Now, dataIds contains the values from the 'numDemande' property of selectedData.
-      if (confirm("Êtes vous sûr de vouloir supprimer ces demandes ?")) {
-        $.ajax({
-          url: "/mes_demandes/supprimer_demandes",
-          type: "DELETE",
-          success: function (response) {},
+      if (dataIds.length < 1) {
+        $("#customText").text("Vous n'avez sélectionné aucune demande!");
+        $("#customMessage").fadeIn();
+
+        $(document).mouseup(function (e) {
+          var customMessage = $("#customMessage");
+          if (
+            !customMessage.is(e.target) &&
+            customMessage.has(e.target).length === 0
+          ) {
+            customMessage.fadeOut();
+          }
         });
+
+        return false;
       }
+      $.ajax({
+        url: "/mes_demandes/demanderAuth",
+        type: "GET",
+        success: function (response) {
+          if (response == "SuperAdmin") {
+            // Now, dataIds contains the values from the 'numDemande' property of selectedData.
+            if (confirm("Êtes vous sûr de vouloir supprimer ces demandes ?")) {
+
+              
+
+              $.ajax({
+                url: "/mes_demandes/supprimer_demandes",
+                type: "DELETE",
+                contentType: "application/json", // Set content type to JSON
+                data: JSON.stringify({ ids: dataIds }),
+                success: function (response) {
+                  console.log(response.message +"/n Number of rows deleted : " +response.affectedRows);
+                },
+              });
+            }
+          } else {
+            alert("Vous n'êtes pas autorisés à effectuer cette action");
+          }
+        },
+      });
     });
 
     $("#download-csv").on("click", function () {
@@ -263,4 +316,14 @@ $.ajax({
       });
     });
   },
+});
+
+$("#customMessage").textContent = "You have not selected any request!";
+$("#customMessage").fadeIn();
+
+$(document).mouseup(function (e) {
+  var modal = $(".hidden");
+  if (!modal.is(e.target) && modal.has(e.target).length === 0) {
+    $("#customMessage").fadeOut();
+  }
 });

@@ -9,27 +9,32 @@
   <div class="button-container">
     <h1>Tableau de Bord</h1>
     <p>Bienvenue sur le Tableau de Bord, <%= firstName %></p>
-    <button id="afficherRapports">Afficher les Rapports</button>
   </div>
   <div class="accueil">
-    <div class="kpi-container span-2">
-      <div class="kpiData">
-        <h3><i class='bx bxs-user-voice'></i> Demandes</h3>
-        <h4 class="kpi-data" id="kpi-data-1"></h4>
-      </div>
-      <div class="kpiData">
-        <h3>Commandes envoyées</h3>
-        <h4 class="kpi-data" id="kpi-data-2"></h4>
-      </div>
-      <div class="kpiData">
-        <h3><i class='bx bx-spreadsheet' ></i> Factures</h3>
-        <h4 class="kpi-data" id="kpi-data-3"></h4>
-      </div>
-      <div class="kpiData">
-        <canvas id="sourceChart"></canvas>
-      </div>
+    <div class="accueil-kpi kpiData">
+      <h4><i class="bx bxs-user-voice"></i> Demandes</h4>
+      <h4 class="kpi-data" id="kpi-data-1"></h4>
     </div>
-    <div class="accueil-kpi kpi-1 span-2">
+    <div class="accueil-kpi kpiData">
+      <h4>Commandes envoyées</h4>
+      <h4 class="kpi-data" id="kpi-data-2"></h4>
+    </div>
+    <div class="accueil-kpi kpiData">
+      <h4><i class="bx bx-spreadsheet"></i> Factures</h4>
+      <h4 class="kpi-data" id="kpi-data-3"></h4>
+    </div>
+    <div class="kpi-buttons">
+      <button id="afficherRapports">Afficher les Rapports</button>
+      <select name="" id="tempsRapport">
+        <option selected value="auj">Aujourd'hui</option>
+        <option value="mois">Ce Mois</option>
+        <option value="annee">Cette Année</option>
+      </select>
+    </div>
+    <div class="accueil-kpi kpiData kpi-3 span-1">
+      <canvas id="sourceChart"></canvas>
+    </div>
+    <div class="accueil-kpi kpi-1 span-3">
       <canvas id="etatClientChart"></canvas>
     </div>
   </div>

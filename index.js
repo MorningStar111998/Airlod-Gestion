@@ -15,6 +15,7 @@ const app = express();
 
 app.set("view engine", "ejs");
 
+app.use(express.json());
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(
@@ -31,6 +32,7 @@ const users = [
     lastName: process.env.USER_1_LASTNAME,
     email: process.env.USER_1_EMAIL,
     password: process.env.USER_1_PASSWORD,
+    role: process.env.USER_1_ROLE,
   },
   {
     id: 2,
@@ -39,6 +41,7 @@ const users = [
     lastName: process.env.USER_2_LASTNAME,
     email: process.env.USER_2_EMAIL,
     password: process.env.USER_2_PASSWORD,
+    role: process.env.USER_2_ROLE,
   },
   {
     id: 4,
@@ -47,6 +50,7 @@ const users = [
     lastName: process.env.USER_4_LASTNAME,
     email: process.env.USER_4_EMAIL,
     password: process.env.USER_4_PASSWORD,
+    role: process.env.USER_4_ROLE,
   },
   {
     id: 5,
@@ -55,6 +59,7 @@ const users = [
     lastName: process.env.USER_5_LASTNAME,
     email: process.env.USER_5_EMAIL,
     password: process.env.USER_5_PASSWORD,
+    role: process.env.USER_5_ROLE,
   },
 ];
 
@@ -85,6 +90,7 @@ app.post("/login", (req, res) => {
     req.session.userId = user.id;
     req.session.userFirstName = user.firstName;
     req.session.userLastName = user.lastName;
+    req.session.userRole = user.role;
 
     res.redirect("/accueil");
   } else {
@@ -101,7 +107,7 @@ app.get("/logout", function (req, res, next) {
   });
 });
 
-app.get("/accueil", (req, res) => {
+app.get("/accueil", isAuthenticated, (req, res) => {
   res.render("accueil", {
     activePage: "accueil",
     firstName: req.session.userFirstName,
@@ -109,7 +115,7 @@ app.get("/accueil", (req, res) => {
   });
 });
 
-app.get("/ajouter_demande", (req, res) => {
+app.get("/ajouter_demande", isAuthenticated, (req, res) => {
   const getMaxNumDemandeQuery =
     "SELECT MAX(numDemande) AS maxNumDemande FROM demande";
   pool.getConnection((err, connection) => {
@@ -140,28 +146,26 @@ app.get("/ajouter_demande", (req, res) => {
   });
 });
 
-app.get("/mes_demandes",async (req, res) => {
+app.get("/mes_demandes", isAuthenticated, async (req, res) => {
   try {
     const numDemande = await queryResponses.maxNumDemande();
-    
+
     const numFacture = await queryResponses.maxNumFacture();
 
     res.render("mes_demandes", {
       activePage: "mes_demandes",
       firstName: req.session.userFirstName,
       lastName: req.session.userLastName,
-      nextNumDemande: numDemande+1,
-      maxNumFacture: numFacture+1,
+      nextNumDemande: numDemande + 1,
+      maxNumFacture: numFacture + 1,
     });
-   } catch (err) {
+  } catch (err) {
     console.error("Error fetching data: " + err);
     res.status(500).send("Internal Server Error");
   }
-  
-
 });
 
-app.get("/modifier_demande", (req, res) => {
+app.get("/modifier_demande", isAuthenticated, (req, res) => {
   res.render("modifier_demande", {
     activePage: "nd",
     firstName: req.session.userFirstName,
@@ -169,7 +173,7 @@ app.get("/modifier_demande", (req, res) => {
   });
 });
 
-app.get("/ajouter_facture",async (req, res) => {
+app.get("/ajouter_facture", isAuthenticated, async (req, res) => {
   try {
     const numFacture = await queryResponses.maxNumFacture();
 
@@ -177,16 +181,15 @@ app.get("/ajouter_facture",async (req, res) => {
       activePage: "ajouter_facture",
       firstName: req.session.userFirstName,
       lastName: req.session.userLastName,
-      maxNumFacture: numFacture+1,
+      maxNumFacture: numFacture + 1,
     });
   } catch (err) {
     console.error("Error fetching data: " + err);
     res.status(500).send("Internal Server Error");
   }
-  
 });
 
-app.get("/mes_factures", (req, res) => {
+app.get("/mes_factures", isAuthenticated, (req, res) => {
   res.render("mes_factures", {
     activePage: "mes_factures",
     firstName: req.session.userFirstName,
@@ -196,7 +199,7 @@ app.get("/mes_factures", (req, res) => {
 
 //************************ POST forms Handlers *************//
 
-app.post("/ajouter_demande", (req, res) => {
+app.post("/ajouter_demande", isAuthenticated, (req, res) => {
   const {
     demande,
     destinataire,
@@ -258,7 +261,7 @@ app.post("/ajouter_demande", (req, res) => {
   });
 });
 
-app.post("/modifier_demande", (req, res) => {
+app.post("/modifier_demande", isAuthenticated, (req, res) => {
   const {
     demande,
     destinataire,
@@ -336,7 +339,7 @@ app.post("/modifier_demande", (req, res) => {
   });
 });
 
-app.post("/ajouter_facture", (req, res) => {
+app.post("/ajouter_facture", isAuthenticated, (req, res) => {
   const {
     facture,
     prix,
@@ -350,6 +353,8 @@ app.post("/ajouter_facture", (req, res) => {
   } = req.body;
 
   const insertQuery = `INSERT INTO facture ( numFacture, prix, quantite, produit, nomClient, numTelephone, adresse, typePaiement, numDemande) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`;
+  const orderSentQuery = `UPDATE demande SET etatClient = 'Envoyé', dateEnregistrement = NOW() WHERE numDemande = ?;
+`;
 
   const nextNumFacture = req.body.facture;
 
@@ -366,32 +371,49 @@ app.post("/ajouter_facture", (req, res) => {
   ];
   pool.getConnection((err, connection) => {
     if (err) {
-      console.error("Error getting connection from pool :", err);
+      console.error("Error getting connection from pool:", err);
       return res.status(500).send("Internal Server Error");
     }
+
     connection.query(insertQuery, values, (err, result) => {
-      connection.release(); // Release the connection back to the pool
+      connection.release();
 
       if (err) {
-        console.error("Error inserting data into the database: " + err);
-        return res.status(500).send("Internal Server Error");
+        console.error("Error inserting data into the database:", err);
+        return res.status(500).send("Error inserting data");
       }
 
-      console.log("Data inserted into the database successfully!");
-      return res.redirect("/mes_factures");
+      pool.getConnection((err, connection) => {
+        if (err) {
+          console.error("Error getting connection from pool:", err);
+          return res.status(500).send("Internal Server Error");
+        }
+
+        connection.query(orderSentQuery, demande, (err, results) => {
+          connection.release();
+
+          if (err) {
+            console.error("Error updating order to sent:", err);
+            return res.status(500).send("Error updating order to sent");
+          }
+
+          console.log("Order sent for order N°" + demande);
+          return res.redirect("/mes_factures");
+        });
+      });
     });
   });
 });
 
 //************************ Ajax Requests Handlers *************//
 
-app.get("/combinedDataSources", async (req, res) => {
+app.get("/combinedDataSources", isAuthenticated, async (req, res) => {
   try {
     const rowsCount = await queryResponses.assignSourcesRows();
     const numbDemandes = await queryResponses.assignNumDemandesRows();
     const numbFactures = await queryResponses.assignNumFacturesRows();
     const numbEnvoyes = await queryResponses.numEnvoyesRows();
-    
+
     const {
       whatsappRows: whatsappData,
       instagramRows: instagramData,
@@ -479,7 +501,7 @@ app.get("/mes_factures/table", (req, res) => {
       return res.status(500).send("Internal Server Error");
     }
     connection.query(
-      "SELECT * FROM facture ORDER BY dateEnregistrement",
+      "SELECT * FROM facture ORDER BY dateEnregistrement DESC",
       (err, results) => {
         connection.release(); // Release the connection back to the pool
 
@@ -492,6 +514,54 @@ app.get("/mes_factures/table", (req, res) => {
       }
     );
   });
+});
+
+app.get("/mes_demandes/demanderAuth", (req, res) => {
+  res.json(req.session.userRole);
+ 
+});
+
+app.delete("/mes_demandes/supprimer_demandes", (req, res) => {
+  const dataIds = req.body.ids;
+  if (req.session.userRole == "SuperAdmin") {
+    if (!dataIds || !Array.isArray(dataIds) || dataIds.length === 0) {
+      return res
+        .status(400)
+        .json({ error: "Invalid or missing 'ids' in the request body." });
+    }
+
+    const deleteQuery = `
+      DELETE FROM demande
+      WHERE numDemande IN (?);
+    `;
+
+    // Using a parameterized query to prevent SQL injection
+    pool.getConnection((err, connection) => {
+      if (err) {
+        console.error("Error getting connection from pool:", err);
+        return res.status(500).json({ error: "Internal Server Error" });
+      }
+
+      connection.query(deleteQuery, [dataIds], (err, results) => {
+        connection.release(); // Release the connection back to the pool
+
+        if (err) {
+          console.error("Error executing delete query:", err.stack);
+          return res.status(500).json({ error: "Internal Server Error" });
+        }
+
+        res.json({
+          message: "Rows deleted successfully",
+          affectedRows: results.affectedRows,
+        });
+      });
+    });
+  } else {
+    console.log(
+      "Vous n'avez pas le niveau d'autorisation pour effectuer cette action !"
+    );
+    res.status(403).json({ error: "Unauthorized" });
+  }
 });
 
 app.listen(PORT, () => {

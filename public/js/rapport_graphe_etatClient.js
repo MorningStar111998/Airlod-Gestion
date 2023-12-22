@@ -4,17 +4,15 @@ $("#afficherRapports").on("click", function () {
     type: "GET",
     success: function (data) {
       const clientInteresseNumb = data.interesseData;
-        const enDiscussionNumb = data.enDiscussionData;
-        const attenteDeLogoNumb = data.attenteDeLogoData;
-        const attenteDeConfirmationNumb = data.attenteDeConfirmationData;
-        const pasDeReponseNumb = data.pasDeReponseData;
-        const nonInteresseNumb = data.nonInteresseData;
-
-        const ctx = document.getElementById("etatClientChart");
-
-        const a = clientInteresseNumb + enDiscussionNumb;
-        const b = attenteDeLogoNumb + attenteDeConfirmationNumb;
-        const c = pasDeReponseNumb + nonInteresseNumb;
+      const enDiscussionNumb = data.enDiscussionData;
+      const attenteDeLogoNumb = data.attenteDeLogoData;
+      const attenteDeConfirmationNumb = data.attenteDeConfirmationData;
+      const pasDeReponseNumb = data.pasDeReponseData;
+      const nonInteresseNumb = data.nonInteresseData;
+      const ctx = document.getElementById("etatClientChart");
+      const a = clientInteresseNumb + enDiscussionNumb;
+      const b = attenteDeLogoNumb + attenteDeConfirmationNumb;
+      const c = pasDeReponseNumb + nonInteresseNumb;
 
       new Chart(ctx, {
         type: "bar",
