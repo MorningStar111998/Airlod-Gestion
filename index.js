@@ -6,6 +6,7 @@ const queryResponses = require("./utils/query_results");
 const passport = require("passport");
 const PORT = process.env.PORT || 3309;
 const dotenv = require("dotenv");
+const MySQLStore = require("express-mysql-session")(session);
 
 const sessionSecret = process.env.SESSION_SECRET || "defaultSecretKey";
 
@@ -18,8 +19,24 @@ app.set("view engine", "ejs");
 app.use(express.json());
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
+const sessionStore = new MySQLStore({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  port: process.env.DB_PORT,
+  clearExpired: true,
+  checkExpirationInterval: 900000, // Vérifier et effacer les sessions expirées toutes les 15 minutes
+  expiration: 86400000, // Durée de vie par défaut de la session : 1 jour
+});
+
 app.use(
-  session({ secret: sessionSecret, resave: true, saveUninitialized: true })
+  session({
+    secret: sessionSecret,
+    resave: true,
+    saveUninitialized: true,
+    store: sessionStore,
+  })
 );
 app.use(passport.initialize());
 app.use(passport.session());
@@ -518,7 +535,6 @@ app.get("/mes_factures/table", (req, res) => {
 
 app.get("/mes_demandes/demanderAuth", (req, res) => {
   res.json(req.session.userRole);
- 
 });
 
 app.delete("/mes_demandes/supprimer_demandes", (req, res) => {

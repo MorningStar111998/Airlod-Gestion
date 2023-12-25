@@ -1,5 +1,5 @@
+//Ici on crée la connection à la base de données. On limote
 
-//real
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -14,16 +14,6 @@ const pool = createPool({
   port: process.env.DB_PORT,
 });
 
-// //**********************TEST */
-
-// const pool = createPool({
-//   connectionLimit: 10,
-//   host: "localhost",
-//   user: "root",
-//   password: "",
-//   database: "airlod_livraison_test",
-//   port: 3325,
-// });
 
 
 module.exports = pool;

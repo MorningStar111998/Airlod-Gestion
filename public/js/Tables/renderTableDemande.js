@@ -5,7 +5,7 @@ $.ajax({
     var tabledata = data;
     var billIcon = function (cell, formatterParams, onRendered) {
       //plain text value
-      return "<i class='bx bx-money-withdraw'></i>";
+      return "<i style='color:#0cd608;' class='bx bx-money-withdraw'></i>";
     };
 
     var table = new Tabulator("#tableDemandes", {
@@ -58,6 +58,7 @@ $.ajax({
           // width: 40,
           hozAlign: "center",
 
+
           cellClick: function (e, cell) {
             var curDemande = cell.getRow().getData();
 
@@ -69,7 +70,7 @@ $.ajax({
               }
             });
 
-            // console.log(curDemande);
+            // Lorsqu'on clique sur la cellule, le formilaire d'ajout de facture apparaît
 
             $("#ajouter-facture-form").fadeIn();
             $(".form").css("margin-top", 20);
