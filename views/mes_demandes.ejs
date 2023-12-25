@@ -1,29 +1,56 @@
 <%- include("partials/header") -%>
 <div class="list-header">
-  <h1 class="list-title">
-    Demande
-  </h1>
-  <div id="list-search-button">
-    <button type="" class="reloadButton">
-      <i class="bx bx-refresh"></i>
-    </button>
-  </div>
-  <button id="testButton">Supprimer</button>
+  <h1 class="list-title">Demandes</h1>
+  <div id="list-search-button"></div>
 </div>
 <div class="table-components">
-
   <div class="table-features">
     <div class="table-dowload-button">
-      <h5 class="span-3">
-        Exporter format 
-      </h5>
+      <h5 class="span-3">Exporter format</h5>
       <!-- <br> -->
-      <button id="download-csv"><img class="download-symbols" src="/images/csv.png" alt=""></button>
-      <button id="download-xlsx"><img class="download-symbols" src="/images/xls.png" alt=""></button>
-      <button id="download-pdf"><img class="download-symbols" src="/images/pdf.png" alt=""></button>
-      
+      <button id="download-csv">
+        <img class="download-symbols" src="/images/csv.png" alt="" />
+      </button>
+      <button id="download-xlsx">
+        <img class="download-symbols" src="/images/xls.png" alt="" />
+      </button>
+      <button id="download-pdf">
+        <img class="download-symbols" src="/images/pdf.png" alt="" />
+      </button>
     </div>
-    <button id="ajouter-demande-form-button"><i class="bx bx-plus"></i> Ajouter Demande </button>
+    <div class="table-features-buttons">
+      
+      <button id="ajouter-demande-form-button">
+        <i class="bx bx-plus"></i> Ajouter Demande
+      </button>
+      <button id="deleteButton"><i class="bx bxs-trash"></i> Supprimer</button>
+    </div>
+  </div>
+  <div class="filters-container">
+    <select id="filter-field">
+      <option></option>
+      <option value="numDemande">Numéro Demande</option>
+      <option value="nomClient">Nom Client</option>
+      <option value="numTelephone">Numéro Téléphone</option>
+      <option value="produit">Produit</option>
+      <option value="ville">Ville</option>
+      <option value="adresse">Adresse</option>
+      <option value="prix">Prix</option>
+    </select>
+
+    <select id="filter-type">
+      <option value="like">like</option>
+      <option value="=">=</option>
+      <option value="<"><</option>
+      <option value="<="><=</option>
+      <option value=">">></option>
+      <option value=">=">>=</option>
+      <option value="!=">!=</option>
+    </select>
+
+    <input id="filter-value" type="text" placeholder="Rechercher" />
+
+    <button id="filter-clear"><i class="bx bx-refresh"></i></button>
   </div>
 
   <div class="table-container">
@@ -31,9 +58,8 @@
   </div>
 </div>
 
-
-<%- include("partials/alerts") -%>
-  <%- include("partials/ajouter_demande_overlay") -%>
-  <%- include("partials/modifier_demande") -%>
-  <%- include("partials/ajouter_facture_overlay") -%>
-  <%- include("partials/footer") -%>
+<%- include("partials/alerts") -%> <%-
+include("partials/ajouter_demande_overlay") -%> <%-
+include("partials/modifier_demande") -%> <%-
+include("partials/ajouter_facture_overlay") -%> <%- include("partials/footer")
+-%>

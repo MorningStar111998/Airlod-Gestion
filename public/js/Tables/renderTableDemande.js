@@ -8,6 +8,60 @@ $.ajax({
       return "<i style='color:#0cd608;' class='bx bx-money-withdraw'></i>";
     };
 
+    var fieldEl = document.getElementById("filter-field");
+    var typeEl = document.getElementById("filter-type");
+    var valueEl = document.getElementById("filter-value");
+    var tableFilters = $("#tableDemandes input").toArray();
+
+    //Custom filter example
+    function customFilter(data) {
+      return data.car && data.rating < 3;
+    }
+
+    //Trigger setFilter function with correct parameters
+    function updateFilter() {
+      var filterVal = fieldEl.options[fieldEl.selectedIndex].value;
+      var typeVal = typeEl.options[typeEl.selectedIndex].value;
+
+      var filter = filterVal == "function" ? customFilter : filterVal;
+
+      if (filterVal == "function") {
+        typeEl.disabled = true;
+        valueEl.disabled = true;
+      } else {
+        typeEl.disabled = false;
+        valueEl.disabled = false;
+      }
+
+      if (filterVal) {
+        table.setFilter(filter, typeVal, valueEl.value);
+      }
+    }
+
+    //Update filters on value change
+    document
+      .getElementById("filter-field")
+      .addEventListener("change", updateFilter);
+    document
+      .getElementById("filter-type")
+      .addEventListener("change", updateFilter);
+    document
+      .getElementById("filter-value")
+      .addEventListener("keyup", updateFilter);
+
+    document
+      .getElementById("filter-clear")
+      .addEventListener("click", function () {
+        fieldEl.value = "";
+        typeEl.value = "like";
+        valueEl.value = "";
+        tableFilters.forEach((tableFilter) => {
+          tableFilter.value = "";
+        });
+
+        table.clearFilter(true);
+      });
+
     var table = new Tabulator("#tableDemandes", {
       rowFormatter: function (row) {
         row.getElement().classList.add(); //mark rows with age greater than or equal to 18 as successful;
@@ -29,7 +83,7 @@ $.ajax({
       addRowPos: "top", //when adding a new row, add it to the top of the table
       history: true, //allow undo and redo actions on the table
       pagination: true, //paginate the data
-      paginationSize: 12, //allow 7 rows per page of data
+      paginationSize: 10, //allow 7 rows per page of data
       paginationCounter: "rows", //display count of paginated rows in footer
       movableColumns: false, //allow column order to be changed
       initialSort: [
@@ -49,6 +103,7 @@ $.ajax({
           hozAlign: "center",
           headerSort: false,
           download: false,
+          width: 30,
         },
         {
           title: "Générer Facture",
@@ -57,7 +112,6 @@ $.ajax({
 
           // width: 40,
           hozAlign: "center",
-
 
           cellClick: function (e, cell) {
             var curDemande = cell.getRow().getData();
@@ -88,13 +142,11 @@ $.ajax({
           title: "N° Demande",
           field: "numDemande",
           editor: false,
-          headerFilter: "input",
+          hozAlign: "center",
         },
         {
           title: "Nom Client",
           field: "nomClient",
-          headerFilter: "input",
-
           formatter: function (cell, formatterParams) {
             var value = cell.getValue();
             return (
@@ -131,7 +183,7 @@ $.ajax({
           title: "Numéro Téléphone",
           field: "numTelephone",
           editor: false,
-          headerFilter: "input",
+          hozAlign: "center",
         },
         {
           title: "Type Client",
@@ -158,7 +210,7 @@ $.ajax({
           headerFilter: "select",
           headerFilterParams: {
             values: [
-              "",
+              " ",
               "Découvre ses besoins",
               "Conception",
               "Validation",
@@ -171,7 +223,6 @@ $.ajax({
           title: "Produit",
           field: "produit",
           editor: false,
-          headerFilter: "input",
         },
         { title: "Quantité", field: "quantite", editor: false },
         { title: "Email", field: "email", editor: false, download: false },
@@ -218,13 +269,11 @@ $.ajax({
           title: "Ville",
           field: "ville",
           editor: false,
-          headerFilter: "input",
         },
         {
           title: "Adresse",
           field: "adresse",
           editor: false,
-          headerFilter: "input",
         },
         { title: "Prix", field: "prix", editor: false },
         {
@@ -248,7 +297,7 @@ $.ajax({
     });
 
     //functions about table
-    $("#testButton").on("click", function () {
+    $("#deleteButton").on("click", function () {
       let selectedData = table.getSelectedData(); // Get array of currently selected data.
       const lengthData = selectedData.length;
       let dataIds = [];
@@ -280,16 +329,17 @@ $.ajax({
           if (response == "SuperAdmin") {
             // Now, dataIds contains the values from the 'numDemande' property of selectedData.
             if (confirm("Êtes vous sûr de vouloir supprimer ces demandes ?")) {
-
-              
-
               $.ajax({
                 url: "/mes_demandes/supprimer_demandes",
                 type: "DELETE",
                 contentType: "application/json", // Set content type to JSON
                 data: JSON.stringify({ ids: dataIds }),
                 success: function (response) {
-                  console.log(response.message +"/n Number of rows deleted : " +response.affectedRows);
+                  console.log(
+                    response.message +
+                      "/n Number of rows deleted : " +
+                      response.affectedRows
+                  );
                 },
               });
             }

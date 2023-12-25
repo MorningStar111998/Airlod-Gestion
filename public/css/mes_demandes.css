@@ -14,15 +14,7 @@
 .list-header a:hover {
   background-color: #eaedf1;
 }
-#list-search-button button {
-  width: 40px;
-  height: 50%;
-  color: #2f353e;
-  border-radius: 30px;
-  font-size: 26px;
-  border: none;
-  background: none;
-}
+
 
 .table-components {
   background-color: white;
@@ -32,45 +24,27 @@
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
   padding-top: 5px;
   padding-bottom: 10px;
-}
-.table-container {
-  overflow: scroll;
-  width: 100%;
-  overflow: auto;
-  height: 67vh;
+  margin-bottom: 5rem;
+  font-weight: bold;
+
 }
 
-#tableFactures .tabulator-headers .tabulator-col,
-#tableDemandes .tabulator-headers .tabulator-col {
-  background-color: #f2f8ff;
-  padding: 8px;
-  border:none;
-}
 
-#tableDemandes .tabulator-cell{
-  padding: 8px;
-  height: 60px;
-  border: none;
-}
 
-#tableDemandes{
-  border: none;
-}
-#tableDemandes .tabulator-row-even{
-  background-color: #fffcf1;
-}
 
-.tabulator-col-title {
-  color: #4e5155;
-}
-
-#testButton {
+#deleteButton {
   background-color: red;
   color: white;
   padding: 8px 16px;
-  border-radius: 20px;
-  /* border: none; */
-  padding: auto 15px;
+  border-radius: 10px;
+
+}
+
+#ajouter-demande-form-button {
+  background-color: #2174fb;
+  color: white;
+  border-radius: 10px;
+  padding: 8px 16px;
 }
 
 .table-features {
@@ -81,9 +55,6 @@
   padding-right: 50px;
   padding-top: 5px;
   padding-bottom: 10px;
-}
-.table-dowload-button {
-  
 }
 
 .table-dowload-button button {
@@ -96,19 +67,108 @@
   width: 24px;
 }
 
-#ajouter-demande-form-button {
-  background-color: #1d4ed8;
-  color: white;
-  border-radius: 10px;
-  padding: 5px;
-}
-
 .table-dowload-button {
   width: 25%;
   position: relative;
 }
 
-/* Style for the form modal overlay */
+.table-features-buttons{
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  gap: 10px;
+  padding-right: 20px;
+  padding-left: 20px;
+}
+
+.filters-container{
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 10px;
+  padding: 20px;
+}
+
+.filters-container select,
+.filters-container input {
+  padding: 14px;
+  border: solid #94a3b8 1px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  height: 50px;
+  color: #94a3b8;
+}
+
+.filters-container button {
+  min-width: 60px;
+  color: white;
+  background-color: #2f353e;
+  border-radius: 30px;
+  font-size: 26px;
+}
+
+
+.table-container {
+  overflow: scroll;
+  width: 100%;
+  overflow: auto;
+  height: auto;
+}
+.tabulator-col-title {
+  color: #000000;
+}
+
+.tabulator-col-sorter{
+  display: none;
+}
+
+
+
+
+
+#tableFactures .tabulator-headers .tabulator-col,
+#tableDemandes .tabulator-headers .tabulator-col {
+  background-color: white;
+  padding: 8px 16px;
+  border:none;
+  height: 70px;
+}
+
+#tableDemandes .tabulator-col-title input{
+  margin: auto;
+}
+
+#tableDemandes .tabulator-cell{
+  padding: 8px;
+  height: 60px;
+  border: none;
+}
+
+#tableDemandes{
+  border: none;
+}
+#tableDemandes .tabulator-row.tabulator-selectable.tabulator-row-odd.tabulator-selected.tabulator-selected{
+  background-color: #d0e3ff;
+}
+#tableDemandes .tabulator-row-even{
+  background-color: #F1F5FB;
+}
+#tableDemandes .tabulator-row-even:hover{
+  background-color: #d0e3ff;
+}
+#tableDemandes .tabulator-row-odd{
+  background-color: white;
+}
+#tableDemandes .tabulator-row-odd:hover{
+  background-color: #d0e3ff;
+}
+#tableDemandes .tabulator-footer{
+  background-color: white;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  padding-right: 50%;
+}
+
 #ajouter-demande-form {
   display: none;
   position: fixed;

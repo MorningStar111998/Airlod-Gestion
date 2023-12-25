@@ -1,9 +1,8 @@
 //Ici on crée la connection à la base de données. On limote
-
 const dotenv = require("dotenv");
 dotenv.config();
 
-const { createPool } = require("mysql");
+const { createPool } = require("mysql2");
 
 const pool = createPool({
   connectionLimit: 10,
@@ -13,8 +12,6 @@ const pool = createPool({
   database: process.env.DB_NAME,
   port: process.env.DB_PORT,
 });
-
-
 
 module.exports = pool;
 
