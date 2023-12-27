@@ -1,0 +1,123 @@
+.telecharger-facture-formulaire {
+  width: 100%;
+  position: relative;
+  background-color: white;
+  margin: 0;
+}
+
+#modal-telecharger-facture{
+    overflow: hidden;
+    position: relative;
+    margin: 1%;
+
+}
+
+.airlodBackgr {
+  position: absolute;
+  top: 1%;
+  right: -30%;
+  width: 400px;
+  opacity: 0.7;
+  z-index: 0;
+transform: rotate(-40deg);
+}
+
+.airlodLogo {
+  width: 25%;
+}
+
+.infos-commande{
+  width: 100%;
+  margin: 50px auto;
+  z-index: 1000;
+
+}
+.infos-commande table{
+  width: 100%;
+  border: black solid 1px ;
+  z-index: 1000;
+}
+
+.infos-commande table td {
+  border: black solid 1px ;
+  min-height: 30px;
+}
+
+.infos-commande table td input {
+  width: 100%;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.infos-commande table th{
+  border: white solid 1px ;
+  background-color: black;
+  color: white;
+    text-align: center;
+
+}
+
+#devis {
+  font-weight: bolder;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 20px;
+}
+
+#client{
+  font-weight: bolder;
+  margin-left: 2rem;
+}
+.telecharger-facture-formulaire label{
+  font-weight: normal;
+}
+.telecharger-facture-formulaire input{
+  border: none;
+  min-width: 50%;
+  font-weight: bold;
+}
+
+.telecharger-facture-formulaire p{
+  padding: 0;
+  color: black;
+}
+
+.telecharger-facture-formulaire input:hover{
+  border: 1px solid black;
+}
+
+.table-recap {
+  display: table;
+  width: 40%;
+  background-color: #d9d9d9;
+}
+.table-recap input {
+  background-color: #d9d9d9;
+  color: black;
+  height: 3rem;
+  width: 100%;
+}
+
+.table-cell {
+  display: table-cell;
+  border: 1px solid black;
+  padding: 5px;
+  max-width: 60px;
+}
+
+.table-header {
+  font-weight: bold;
+  min-width:40px ;
+}
+
+#facture-form-button {
+  position: fixed;
+  right: 30px;
+  bottom: 30px;
+  background-color: #2f353e;
+  width: 200px;
+  border-radius: 20px;
+  padding: 10px;
+  font-weight: bold;
+  color: white;
+}

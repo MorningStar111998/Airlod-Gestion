@@ -1,23 +1,8 @@
 <%- include("partials/header") -%>
 <div id="list-header" class="list-header">
   <h1 class="list-title">
-    Facture<a href="/ajouter_facture"><i class="bx bx-plus"></i></a>
+    Factures
   </h1>
-  <div id="list-filters" class="list-filters">
-    <div class="filtre-1 list-search-bar">
-      <input
-        id="rechercheFactureInput"
-        type="text"
-        class="search-bar-text"
-        placeholder="Nom du Client"
-      />
-    </div>
-    <div class="filtre-3 list-search-button">
-      <button type="" class="reloadButton">
-        <i class="bx bx-refresh"></i>
-      </button>
-    </div>
-  </div>
 </div>
 
 <div class="table-container">
@@ -25,7 +10,7 @@
   <div id="tableFactures"></div>
 </div>
 
-
+<%- include("partials/telecharger_facture") -%>
 <%- include("partials/footer") -%>
 
 

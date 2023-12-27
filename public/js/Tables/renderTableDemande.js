@@ -63,9 +63,6 @@ $.ajax({
       });
 
     var table = new Tabulator("#tableDemandes", {
-      rowFormatter: function (row) {
-        row.getElement().classList.add(); //mark rows with age greater than or equal to 18 as successful;
-      },
       downloadRowRange: "active",
       downloadConfig: {
         rowHeight: 60,
@@ -98,12 +95,11 @@ $.ajax({
           formatter: "rowSelection",
           titleFormatter: "rowSelection",
           titleFormatterParams: {
-            rowRange: "active", //only toggle the values of the active filtered rows
+            rowRange: "active",
           },
-          hozAlign: "center",
           headerSort: false,
           download: false,
-          width: 30,
+          width: 40,
         },
         {
           title: "Générer Facture",
@@ -124,7 +120,7 @@ $.ajax({
               }
             });
 
-            // Lorsqu'on clique sur la cellule, le formilaire d'ajout de facture apparaît
+            // Lorsqu'on clique sur la cellule, le formulaire pour créer la facture apparaît
 
             $("#ajouter-facture-form").fadeIn();
             $(".form").css("margin-top", 20);
@@ -164,7 +160,6 @@ $.ajax({
               var element = document.getElementById(field[0]);
               if (element) {
                 element.value = field[1];
-                // console.log(field);
               }
             });
 

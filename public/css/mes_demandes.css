@@ -134,9 +134,7 @@
   height: 70px;
 }
 
-#tableDemandes .tabulator-col-title input{
-  margin: auto;
-}
+
 
 #tableDemandes .tabulator-cell{
   padding: 8px;
@@ -164,11 +162,18 @@
 }
 #tableDemandes .tabulator-footer{
   background-color: white;
-  padding-top: 16px;
-  padding-bottom: 16px;
-  padding-right: 50%;
+  padding-top: 32px;
+  padding-bottom: 32px;
+  padding-right: 55%;
 }
 
+#tableDemandes .tabulator-page.active{
+  color: white;
+}
+
+
+
+/*****************************Formulaire Overlay*/
 #ajouter-demande-form {
   display: none;
   position: fixed;

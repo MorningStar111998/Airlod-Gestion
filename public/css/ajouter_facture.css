@@ -103,14 +103,3 @@ select:required:valid:focus {
 }
 
 
-.facture-form-button {
-  position: absolute;
-  right: 30px;
-  bottom: 15px;
-  background-color: #2f353e;
-  width: 120px;
-  border-radius: 20px;
-  padding: 10px;
-  font-weight: bold;
-  color: white;
-}

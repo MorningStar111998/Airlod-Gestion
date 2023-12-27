@@ -369,14 +369,13 @@ app.post("/ajouter_facture", isAuthenticated, (req, res) => {
     demande,
   } = req.body;
 
-  const insertQuery = `INSERT INTO facture ( numFacture, prix, quantite, produit, nomClient, numTelephone, adresse, typePaiement, numDemande) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`;
+  const insertQuery = `INSERT INTO facture ( prix, quantite, produit, nomClient, numTelephone, adresse, typePaiement, numDemande) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?);`;
   const orderSentQuery = `UPDATE demande SET etatClient = 'Envoyé', dateEnregistrement = NOW() WHERE numDemande = ?;
 `;
 
   const nextNumFacture = req.body.facture;
 
   const values = [
-    nextNumFacture,
     prix,
     quantite,
     produit,
