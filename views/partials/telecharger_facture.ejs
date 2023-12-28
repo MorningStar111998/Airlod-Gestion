@@ -1,42 +1,65 @@
 <div id="telecharger-facture" class="telecharger-facture-formulaire">
   <div id="modal-telecharger-facture">
-    <img class="airlodLogo" src="/images/airlodCom.png" alt="" />
-    <p>Date : <span id="dateAuj"></span></p>
-    <p id="devis">Devis 2023</p>
-
-    <div class="infos-client">
-      <br />
-      <p id="client">Client :</p>
-      <div class="input-box span-1">
-        <input id="nomClient" type="text" name="nomClient" placeholder="Nom Client..."/>
+    <div class="telecharger-facture-header">
+      <div class="logo-devis">
+        <img id="header-left-logo" src="/images/ICON .png" alt="" />
+        <h1>Devis</h1>
       </div>
-      <div class="input-box span-1">
-        <input id="adresse" type="text" name="adresse" placeholder="Adresse..."/>
-      </div>
-      <div class="input-box span-1">
-        <label for="telephone"> Numéro de Téléphone </label>
-        <input id="numTelephone" type="tel" name="telephone" />
-      </div>
-      <div class="input-box span-1">
-        <label for="email"> Email </label>
-        <input id="email" type="text" name="email" />
+      <div class="infos-entreprise">
+        <p>Airlod SARL</p>
+        <p>
+          N21 Res. Tachfine Av. Yacoub <br />
+          Lamrani Gueliz 40 000 Marrakech
+        </p>
       </div>
     </div>
+    <section class="details-commande">
+      <div class="infos-client">
+        <p id="client">Client :</p>
+        <div class="input-box span-1">
+          <input
+            id="nomClient"
+            type="text"
+            name="nomClient"
+            placeholder="Nom Client..."
+          />
+        </div>
+        <div class="input-box span-1">
+          <input
+            id="adresse"
+            type="text"
+            name="adresse"
+            placeholder="Adresse..."
+          />
+        </div>
+        <div class="input-box span-1">
+          <label for="telephone"> TEL : </label>
+          <input id="numTelephone" type="tel" name="telephone" />
+        </div>
+        <div class="input-box span-1">
+          <label for="email"> Email </label>
+          <input id="email" type="text" name="email" />
+        </div>
+      </div>
+
+      <div class="date-devis">
+        <p>Date : <span id="dateAuj"></span></p>
+        <p>Référence du devis : <input id="ref" type="text" /></p>
+      </div>
+    </section>
     <div class="infos-commande">
       <table>
         <thead>
           <tr>
-            <th style="width: 80px">Réf</th>
-            <th style="width: 80px"><label for="quantite">Quantité</label></th>
             <th style="width: 400px">Description</th>
+            <th style="width: 80px">Quantité</th>
             <th style="width: 80px">Prix Unitaire</th>
             <th style="width: 80px">Total HT</th>
           </tr>
         </thead>
         <tr>
-          <td><input type="text" /></td>
-          <td><input id="quantite" type="number" name="quantite" /></td>
           <td><input id="produit" type="text" name="description" /></td>
+          <td><input id="quantite" type="number" name="quantite" /></td>
           <td>
             <input id="prix-unitaire" type="number" name="prix-unitaire" />
           </td>
@@ -46,7 +69,10 @@
         </tr>
       </table>
     </div>
+<div id="signature">
+  <h6>Signature</h6>
 
+</div>
     <div class="table-recap">
       <div style="display: table-row">
         <div class="table-header table-cell">Montant Total HT</div>
@@ -59,8 +85,8 @@
       </div>
 
       <div style="display: table-row">
-        <div class="table-header table-cell">Montant Total TTC</div>
-        <div class="table-cell"><input type="text" placeholder="" /></div>
+        <div class="montant-total table-header table-cell">Montant Total TTC</div>
+        <div class=" table-cell"><input class="montant-total" type="text" placeholder="" /></div>
       </div>
     </div>
   </div>

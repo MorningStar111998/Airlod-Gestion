@@ -16,3 +16,4 @@ $("#facture-form-button").on("click", function () {
       element.appendChild(canvas);
     });
 });
+
